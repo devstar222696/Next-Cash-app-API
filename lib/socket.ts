@@ -9,8 +9,7 @@ const useSocket = () => {
     console.log('--- socket server url when initialized ---', socketServerUrl)
     socket = socketClient(socketServerUrl);
   } else {
-    console.log('---no socket url---', process.env);
-    
+    console.log('---no socket url---');
   }
 
   return { socket };

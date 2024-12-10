@@ -1,8 +1,10 @@
 // server.js
-const { createServer } = require('https');
+const { createServer } = require('http');
 const next = require('next');
+const { parse } = require('node:url');
 const { Server } = require('socket.io');
 
+const port = parseInt(process.env.PORT || '3000', 10)
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -10,7 +12,10 @@ const handle = app.getRequestHandler();
 let connectedUsers = [];
 
 app.prepare().then(() => {
-  const server = createServer((req, res) => handle(req, res));
+  const server = createServer((req, res) => {
+    const parsedUrl = parse(req.url, true)
+    handle(req, res, parsedUrl)
+  });
 
   const io = new Server(server);
 
@@ -140,8 +145,8 @@ app.prepare().then(() => {
     });
   });
 
-  server.listen(3000, (err) => {
+  server.listen(port, (err) => {
     if (err) throw err;
-    console.log('Running on 3000', process.env);
+    console.log(`Running on port: ${port}`);
   });
 });
