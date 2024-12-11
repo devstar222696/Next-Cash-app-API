@@ -10,7 +10,6 @@ const useSocket = () => {
     socket = socketClient(socketServerUrl, {
       path: "/socket.io",
       secure: true,
-      rejectUnauthorized: false, // Only if using self-signed certificates
     });
   } else {
     console.log('---no socket url---');
