@@ -7,7 +7,11 @@ const useSocket = () => {
 
   if (!socket && socketServerUrl) {
     console.log('--- socket server url when initialized ---', socketServerUrl)
-    socket = socketClient(socketServerUrl);
+    socket = socketClient(socketServerUrl, {
+      path: "/socket.io",
+      secure: true,
+      rejectUnauthorized: false, // Only if using self-signed certificates
+    });
   } else {
     console.log('---no socket url---');
   }
