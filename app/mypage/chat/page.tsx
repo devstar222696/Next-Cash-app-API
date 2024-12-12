@@ -12,6 +12,10 @@ export const metadata = {
   title: 'Island House'
 };
 
+export const fetchCache = 'only-no-store'
+
+
+
 export default async function Page({ searchParams }: pageProps) {
   searchParamsCache.parse(searchParams);
 
