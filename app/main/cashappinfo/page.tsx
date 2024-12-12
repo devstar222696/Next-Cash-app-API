@@ -10,6 +10,10 @@ export const metadata = {
   title: 'Island House'
 };
 
+export const fetchCache = 'only-no-store'
+
+
+
 export default async function Page({ searchParams }: pageProps) {
   return (
     <RoleMiddleware accessRight="admin">
