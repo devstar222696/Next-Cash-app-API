@@ -7,6 +7,8 @@ export const metadata = {
 
 export const fetchCache = 'only-no-store'
 
+export const dynamic = 'force-dynamic'
+
 
 
 export default function page() {
