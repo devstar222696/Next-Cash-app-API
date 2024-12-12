@@ -35,7 +35,8 @@ export default function UserdetailInfo() {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${id}`
-          }
+          },
+          cache: 'no-store'
         });
 
         if (!response.ok) {

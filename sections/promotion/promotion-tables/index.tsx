@@ -30,7 +30,8 @@ export default function UserPromotionTable() {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${userInfo.token}` // Assuming the token is sent this way
-          }
+          },
+          cache: 'no-store'
         });
 
         if (!withdrawalsResponse.ok) {
@@ -44,7 +45,8 @@ export default function UserPromotionTable() {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${userInfo.token}` // Assuming the token is sent this way
-          }
+          },
+          cache: 'no-store'
         });
 
         if (!usersResponse.ok) {

@@ -37,10 +37,10 @@ export default function AdminWithdrawalHistoryTable() {
       try {
         setLoading(true);
 
-        const withdrawalsResponse = await fetch('/api/admin/getuser');
+        const withdrawalsResponse = await fetch('/api/admin/getuser', { cache: 'no-store' });
         const withdrawalsResult = await withdrawalsResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getuser');
+        const usersResponse = await fetch('/api/admin/getuser', { cache: 'no-store' });
         const usersResult = await usersResponse.json();
 
         const combinedData = withdrawalsResult.data.flatMap(

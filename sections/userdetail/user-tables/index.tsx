@@ -21,10 +21,10 @@ export default function UserdetailTable() {
       try {
         setLoading(true);
 
-        const UserResponse = await fetch('/api/admin/getregister');
+        const UserResponse = await fetch('/api/admin/getregister', { cache: 'no-store' });
         const UserResult = await UserResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getregister');
+        const usersResponse = await fetch('/api/admin/getregister', { cache: 'no-store' });
         const usersResult = await usersResponse.json();
 
         const combinedData = UserResult.data.flatMap((registerEntry: any) =>

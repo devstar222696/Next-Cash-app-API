@@ -24,7 +24,7 @@ export default function UserTable() {
       try {
         setLoading(true);
 
-        const UserResponse = await fetch('/api/admin/getuser');
+        const UserResponse = await fetch('/api/admin/getuser', { cache: 'no-store' });
         const UserResult = await UserResponse.json();
 
         const sortedData = UserResult.data.sort((a: any, b: any) => {

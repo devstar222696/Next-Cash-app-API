@@ -36,10 +36,10 @@ export default function AdminredeemHistoryTable() {
       try {
         setLoading(true);
 
-        const redeemsResponse = await fetch('/api/admin/getuser');
+        const redeemsResponse = await fetch('/api/admin/getuser', { cache: 'no-store' });
         const redeemsResult = await redeemsResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getuser');
+        const usersResponse = await fetch('/api/admin/getuser', { cache: 'no-store' });
         const usersResult = await usersResponse.json();
         const combinedData = redeemsResult.data.flatMap((redeemEntry: any) =>
           redeemEntry.redeem

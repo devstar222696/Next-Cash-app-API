@@ -23,7 +23,7 @@ export default function AdminMainTablePage() {
       try {
         setLoading(true);
 
-        const response = await fetch('/api/admin/totalredeem');
+        const response = await fetch('/api/admin/totalredeem', { cache: 'no-store' });
         const result = await response.json();
 
         const transformedData = result.data

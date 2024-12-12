@@ -38,7 +38,8 @@ export default function MyPageTable() {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${userInfo.token}` // Assuming the token is sent this way
-          }
+          },
+          cache: 'no-store'
         });
 
         if (!response.ok) {
