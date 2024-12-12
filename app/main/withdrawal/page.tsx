@@ -14,6 +14,8 @@ export const metadata = {
 
 export const fetchCache = 'only-no-store'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page({ searchParams }: pageProps) {
   // Allow nested RSCs to access the search params (in a type-safe way)
   searchParamsCache.parse(searchParams);
