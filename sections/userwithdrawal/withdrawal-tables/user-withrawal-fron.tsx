@@ -91,7 +91,8 @@ export default function UserWithdrawalForm() {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${userInfo.token}`
-          }
+          },
+          cache: 'no-store'
         });
 
         if (!response.ok) {

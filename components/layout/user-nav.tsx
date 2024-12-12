@@ -42,10 +42,10 @@ export function UserNav() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const registerResponse = await fetch('/api/admin/getregister');
+        const registerResponse = await fetch('/api/admin/getregister', { cache: 'no-store' });
         const registerResult = await registerResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getregister');
+        const usersResponse = await fetch('/api/admin/getregister', { cache: 'no-store' });
         const usersResult = await usersResponse.json();
 
         const combinedData = registerResult.data.flatMap((registerEntry: any) =>
@@ -69,10 +69,10 @@ export function UserNav() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const registerResponse = await fetch('/api/admin/getuserverify'); // Your API for redeems
+        const registerResponse = await fetch('/api/admin/getuserverify', { cache: 'no-store' }); // Your API for redeems
         const registerResult = await registerResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getuserverify'); // Your API for users
+        const usersResponse = await fetch('/api/admin/getuserverify', { cache: 'no-store' }); // Your API for users
         const usersResult = await usersResponse.json();
 
         const combinedData = registerResult.data.flatMap(
@@ -100,10 +100,10 @@ export function UserNav() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const redeemsResponse = await fetch('/api/admin/getuser');
+        const redeemsResponse = await fetch('/api/admin/getuser', { cache: 'no-store' });
         const redeemsResult = await redeemsResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getuser');
+        const usersResponse = await fetch('/api/admin/getuser', { cache: 'no-store' });
         const usersResult = await usersResponse.json();
 
         const combinedData = redeemsResult.data.flatMap((redeemEntry: any) =>
@@ -129,10 +129,10 @@ export function UserNav() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const withdrawalsResponse = await fetch('/api/admin/getuser'); // Your API for withdrawals
+        const withdrawalsResponse = await fetch('/api/admin/getuser', { cache: 'no-store' }); // Your API for withdrawals
         const withdrawalsResult = await withdrawalsResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getuser'); // Corrected API for users
+        const usersResponse = await fetch('/api/admin/getuser', { cache: 'no-store' }); // Corrected API for users
         const usersResult = await usersResponse.json();
 
         const filteredWithdrawals = withdrawalsResult.data.flatMap(

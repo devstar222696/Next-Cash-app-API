@@ -266,7 +266,7 @@ export default function CashAppInfoPageView() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/admin/getadmin'); // Replace with your API endpoint
+        const response = await fetch('/api/admin/getadmin', { cache: 'no-store' }); // Replace with your API endpoint
         const result = await response.json();
         setCashtag(result.data[0].cashtag);
         setPaypal(result.data[0].paypal);

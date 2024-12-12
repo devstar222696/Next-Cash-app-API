@@ -35,10 +35,10 @@ export default function RegisterTable() {
       try {
         setLoading(true);
 
-        const registerResponse = await fetch('/api/admin/getregister');
+        const registerResponse = await fetch('/api/admin/getregister', { cache: 'no-store' });
         const registerResult = await registerResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getregister');
+        const usersResponse = await fetch('/api/admin/getregister', { cache: 'no-store' });
         const usersResult = await usersResponse.json();
 
         const combinedData = registerResult.data.flatMap((registerEntry: any) =>

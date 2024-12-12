@@ -31,7 +31,7 @@ export default function UserCashApp() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/admin/getadmin'); // Replace with your API endpoint
+        const response = await fetch('/api/admin/getadmin', { cache: 'no-store' }); // Replace with your API endpoint
         const result = await response.json();
         setData(result.data[0].cashtag); // Adjust based on your API response
       } catch (error) {

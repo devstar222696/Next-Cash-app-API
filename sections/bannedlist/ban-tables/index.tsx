@@ -25,7 +25,7 @@ export default function BanTable() {
       try {
         setLoading(true);
 
-        const UserResponse = await fetch('/api/admin/getbannedlist');
+        const UserResponse = await fetch('/api/admin/getbannedlist', { cache: 'no-store' });
         const UserResult = await UserResponse.json();
         const sortedData = UserResult.data.sort((a: any, b: any) => {
           const dateA = new Date(a.createdAt);

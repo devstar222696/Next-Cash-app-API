@@ -34,10 +34,10 @@ export default function VerifyTable() {
       try {
         setLoading(true);
 
-        const registerResponse = await fetch('/api/admin/getuserverify');
+        const registerResponse = await fetch('/api/admin/getuserverify', { cache: 'no-store' });
         const registerResult = await registerResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getuserverify');
+        const usersResponse = await fetch('/api/admin/getuserverify', { cache: 'no-store' });
         const usersResult = await usersResponse.json();
 
         const combinedData = registerResult.data.flatMap(

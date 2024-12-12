@@ -25,7 +25,7 @@ export default function AdminMainTablePage() {
       try {
         setLoading(true);
 
-        const response = await fetch('/api/admin/totalwithdrawal');
+        const response = await fetch('/api/admin/totalwithdrawal', { cache: 'no-store' });
         const result = await response.json();
 
         const transformedData = result.data

@@ -34,8 +34,9 @@ export default function UserWithdrawalTable() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${userInfo.token}`
-          }
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+          cache: 'no-store'
         });
 
         if (!response.ok) {

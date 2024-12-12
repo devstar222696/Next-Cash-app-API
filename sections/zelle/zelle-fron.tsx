@@ -37,7 +37,7 @@ export default function UserZelle() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/admin/getadmin');
+        const response = await fetch('/api/admin/getadmin', { cache: 'no-store' });
         const result = await response.json();
         setData(result.data[0].zelle);
       } catch (error) {
