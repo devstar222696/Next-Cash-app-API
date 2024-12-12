@@ -3,13 +3,13 @@ import dbConnect from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (request: NextRequest) => {
-  await dbConnect();
-
+  
   try {
+    await dbConnect();
     const users = await User.find({
       register: { $elemMatch: { phonenumber: { $ne: 'none' } } }
     });
-
+    console.log('users', users);
     const usersInfo = users.map((user) => user.toObject());
 
     return NextResponse.json(
