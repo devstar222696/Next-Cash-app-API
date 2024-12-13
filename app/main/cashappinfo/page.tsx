@@ -10,9 +10,7 @@ export const metadata = {
   title: 'Island House'
 };
 
-export const fetchCache = 'only-no-store'
 
-export const dynamic = 'force-dynamic'
 
 
 
