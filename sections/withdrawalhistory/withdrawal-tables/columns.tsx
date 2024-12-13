@@ -78,7 +78,7 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
   {
     accessorKey: 'user.loginid',
     header: 'GAME ID',
-    cell: ({ row }) => <span>{row.original.user.register[0].loginid}</span>
+    cell: ({ row }) => <span>{row.original.user?.register[0]?.loginid || 'none'}</span>
   },
   {
     accessorKey: 'paymenttype',
