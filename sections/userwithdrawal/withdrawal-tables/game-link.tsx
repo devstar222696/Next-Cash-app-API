@@ -52,7 +52,7 @@ export const GameLink = () => {
         onClick={milkyway}
       />
       <Image
-        src="/Glogo 3.jpg"
+        src="/Glogo 3.png"
         width={100}
         height={100}
         alt="juwa"
@@ -68,7 +68,7 @@ export const GameLink = () => {
         onClick={juwa}
       />
       <Image
-        src="/Glogo 5.jpg"
+        src="/Glogo 5.png"
         width={100}
         height={100}
         alt="orionstar"
