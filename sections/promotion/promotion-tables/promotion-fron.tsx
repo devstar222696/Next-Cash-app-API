@@ -42,9 +42,9 @@ export default function PromotionPage({ tag }: any) {
       </div>
       <GameLink />
       <div className="grid justify-items-center">
-        <Image src="/promo/promo1.png" width={1000} height={1000} alt="ad" />
+        <Image src="/promo/web-cover.png" width={1000} height={1000} alt="ad" />
         <Image
-          src="/promo/promo2.png"
+          src="/promo/web-cover.png"
           width={1000}
           height={1000}
           alt="ad"
