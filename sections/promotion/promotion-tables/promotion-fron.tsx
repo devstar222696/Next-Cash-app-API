@@ -54,7 +54,7 @@ export default function PromotionPage({ tag }: any) {
       <div className="grid w-full grid-cols-1 place-items-center">
         <div className="justify-items-center lg:flex lg:justify-center">
           <Image
-            src="/001.jpg"
+            src="/register.png"
             width={300}
             height={5}
             className="hover:cursor-pointer hover:opacity-80"
@@ -62,7 +62,7 @@ export default function PromotionPage({ tag }: any) {
             alt="register"
           ></Image>
           <Image
-            src="/002.jpg"
+            src="/recharge.png"
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
@@ -70,7 +70,7 @@ export default function PromotionPage({ tag }: any) {
             alt="recharge"
           ></Image>
           <Image
-            src="/003.jpg"
+            src="/redeem.png"
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
