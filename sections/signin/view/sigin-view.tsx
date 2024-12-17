@@ -20,14 +20,6 @@ export default function SignInViewPage() {
             Log In
           </h1>
           <UserAuthForm />
-          <p className="px-8 text-center text-sm text-muted-foreground">
-            <Link
-              href="/signup"
-              className="underline underline-offset-4 hover:text-primary"
-            >
-              Create new one account
-            </Link>
-          </p>
         </div>
       </div>
     </div>

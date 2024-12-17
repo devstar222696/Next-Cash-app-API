@@ -17,6 +17,7 @@ import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
 import { useRouter } from 'next/navigation';
 import GoogleSignInButton from './google-auth-button';
+import EmailSignInButton from './email-signup-button copy';
 
 const { socket } = useSocket();
 
@@ -155,6 +156,7 @@ export default function UserAuthForm() {
           </span>
         </div>
       </div>
+      <EmailSignInButton />
       <GoogleSignInButton />
     </>
   );
