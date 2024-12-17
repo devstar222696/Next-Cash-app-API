@@ -13,7 +13,7 @@ export default function EmailSignInButton() {
   const handleClick = () => {
     router.push('/signup');
   };
-ㄴ
+
   return (
     <Button
       className="w-full"
