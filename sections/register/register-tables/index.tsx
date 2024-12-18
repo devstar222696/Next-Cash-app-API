@@ -210,14 +210,14 @@ export default function RegisterTable() {
 
   return (
     <div className="space-y-4 ">
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <Button variant="outline" handleClick={multiAccept} className="mr-3">
           Multi Accept
         </Button>
         <Button variant="outline" handleClick={multiDecline}>
           Multi Decline
         </Button>
-      </div>
+      </div> */}
       <RegisterTablePage
         columns={columns as ColumnDef<UserRegister, unknown>[]}
         data={paginatedData}

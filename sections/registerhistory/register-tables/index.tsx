@@ -231,7 +231,7 @@ export default function AdminRegisterHistoryTable() {
 
   return (
     <div className="space-y-4 ">
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <Button
           variant="outline"
           handleClick={multiRestore}
@@ -246,7 +246,7 @@ export default function AdminRegisterHistoryTable() {
         >
           Multi Delete
         </Button>
-      </div>
+      </div> */}
       <AdminredeemHistoryTableView
         columns={columns}
         data={paginatedData}
