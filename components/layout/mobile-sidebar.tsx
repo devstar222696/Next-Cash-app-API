@@ -31,7 +31,6 @@ export function MobileSidebar({ className }: SidebarProps) {
                 <DashboardNav
                   items={userInfo.role === 'admin' ? navItems : userNavItems}
                   isMobileNav={true}
-                  setOpen={setOpen}
                 />
               </div>
             </div>

@@ -52,6 +52,10 @@ export type AdminRegisterUsers = {
   redeem: Paymentredeems[];
   withdrawal: PaymentWithdrawals[];
   totalAmount: any;
+  passwordcode: string;
+  loginid: string
+  status: string
+  codenumber: string
 };
 
 export const navItems: NavItem[] = [
@@ -65,13 +69,21 @@ export const navItems: NavItem[] = [
     title: 'Register',
     href: '/main/register',
     icon: 'user',
-    label: 'register'
-  },
-  {
-    title: 'Code Verify',
-    href: '/main/verify',
-    icon: 'verify',
-    label: 'verify'
+    label: 'register',
+    children: [
+      {
+        title: 'Request',
+        href: '/main/register',
+        icon: 'wallet',
+        label: 'register'
+      },
+      {
+        title: 'History',
+        href: '/main/registerhistory',
+        icon: 'notebookpen',
+        label: 'register'
+      }
+    ]
   },
   {
     title: 'Deposit',
@@ -133,7 +145,7 @@ export const navItems: NavItem[] = [
 
 export const userNavItems: NavItem[] = [
   {
-    title: 'Promotion',
+    title: 'Mainpage',
     href: '/mypage',
     icon: 'product',
     label: 'mypage'

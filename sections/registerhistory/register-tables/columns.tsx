@@ -1,15 +1,15 @@
 'use client';
-import { AdminRegisterUsers, UserRegister } from '@/constants/data';
+import { AdminRegisterUsers, Paymentredeems } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
-import { CodeAction } from './code-number';
 import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
-import { LoginIdAction } from './login-id';
+import { LoginIdAction } from '@/sections/register/register-tables/login-id';
+import { CodeAction } from '@/sections/register/register-tables/code-number';
 
 const { socket } = useSocket();
 
-export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
+export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -87,29 +87,27 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
     header: 'CATEGORY'
   },
   {
-      id: 'actions',
-      header: 'LOGIN ID AND PASSWORD CODE',
-      cell: ({ row }) => {
-        return(
-          <LoginIdAction
-          dateV={row.original.date}
-          loginIdV={row.original.loginid}
-          passwordCodeV={row.original.passwordcode}
-          userName={row.original.user._id}
-        />
-        )
-      }
-    },
+    id: 'actions',
+    header: 'LOGIN ID AND PASSWORD CODE',
+    cell: ({ row }) => (
+      <LoginIdAction
+      dateV={row.original.date}
+      loginIdV={row.original.loginid}
+      passwordCodeV={row.original.passwordcode}
+      userName={row.original.user._id}
+    />
+    )
+  },
   {
     id: 'actions',
     header: 'CODE NUMBER',
     cell: ({ row }) => (
       <CodeAction
-        registerDate={row.original.date}
-        codeNumber={row.original.codenumber}
-        regiStatus={row.original.status}
-        userName={row.original.user._id}
-      />
+      registerDate={row.original.date}
+      codeNumber={row.original.codenumber}
+      regiStatus={row.original.status}
+      userName={row.original.user._id}
+    />
     )
   },
   {
@@ -117,7 +115,7 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
     header: 'ACTION',
     cell: ({ row }) => (
       <CellAction
-      registerDate={row.original.date}
+        redeemDate={row.original.date}
         userId={row.original.user._id}
       />
     )

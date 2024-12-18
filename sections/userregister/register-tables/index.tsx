@@ -47,7 +47,7 @@ export default function UserRegisterTable() {
         }
 
         const result = await response.json();
-        setData(result.data[0].register); 
+        setData(result.data[0]?.register || []); 
         setTotalData(result.totalCount); 
       } catch (error) {
         console.error('Error fetching data:', error);

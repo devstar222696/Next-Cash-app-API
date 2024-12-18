@@ -9,7 +9,8 @@ const registerSchema: Schema = new Schema(
     codenumber: { type: String, default: 'none' },
     loginid: { type: String, default: 'none' },
     passwordcode: { type: String, default: 'none' },
-    date: { type: Date, default: Date.now }
+    date: { type: Date, default: Date.now },
+    comdate: { type: Date }
   },
   { _id: false }
 );

@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { GameLink } from './game-link';
 import { useRouter } from 'next/navigation';
+import TagId from '@/components/ui/tagId';
 
 export default function PromotionPage({ tag }: any) {
   const router = useRouter();
@@ -30,9 +31,7 @@ export default function PromotionPage({ tag }: any) {
   return (
     <>
       <div className="w-full">
-        <p className="text-left text-lg font-bold">
-          Your tag number: {''} #{`${tag}`}
-        </p>
+        <TagId tagId={tag}/>
         <p className="text-md mt-5 text-center font-bold">
           Welcome to ISLAND HOUSE!
         </p>

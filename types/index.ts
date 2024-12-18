@@ -31,3 +31,12 @@ export interface FooterItem {
 export type MainNavItem = NavItemWithOptionalChildren;
 
 export type SidebarNavItem = NavItemWithChildren;
+
+
+export enum PaymentTypes {
+  CashApp = 'CashApp',
+  PayPal = 'PayPal',
+  Zelle = 'Zelle',
+  Venmo = 'Venmo',
+  Bitcoin = 'Bitcoin',
+}

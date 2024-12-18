@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import QRCode from 'qrcode';
+import { getUserNameByPaymentType } from '@/lib/utils';
+import { PaymentTypes } from '@/types';
 
 export default function UserVenmo() {
   const router = useRouter();
@@ -16,7 +18,8 @@ export default function UserVenmo() {
       try {
         const response = await fetch('/api/admin/getadmin', { cache: 'no-store' });
         const result = await response.json();
-        setData(result.data[0].venmo);
+        const venmoUserName = result.data[0].venmo;
+        setData(getUserNameByPaymentType(venmoUserName, PaymentTypes.Venmo));
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -28,7 +31,7 @@ export default function UserVenmo() {
 
   useEffect(() => {
     async function qrcodeData() {
-      const venmoLink = `https://venmo.com/${data}`;
+      const venmoLink = `https://venmo.com/u/${data}`;
 
       try {
         const url = await QRCode.toDataURL(venmoLink);

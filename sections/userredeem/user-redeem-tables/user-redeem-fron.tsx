@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition, useEffect } from 'react';
+import { useState, useTransition, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
+import { QRCodeSVG } from 'qrcode.react';
 
 const formSchema = z.object({
   amount: z.any()
@@ -28,7 +29,18 @@ type UserFormValue = z.infer<typeof formSchema>;
 
 const COOLDOWN_KEY = 'cooldown_data';
 
-export default function UserredeemForm() {
+const DEPOSIT_URLS: Record<string, string> = {
+  CashApp: '/mypage/deposit/cashapp',
+  Bitcoin: '/mypage/deposit/bitcoin',
+  Venmo: '/mypage/deposit/venmo',
+  Paypal: '/mypage/deposit/paypal',
+  Zelle: '/mypage/deposit/zelle'
+};
+interface IUserReemFormProps{
+  setTagId: (args: string)=> void
+}
+
+export default function UserredeemForm({ setTagId }:IUserReemFormProps ) {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
   const form = useForm<UserFormValue>({
@@ -42,7 +54,40 @@ export default function UserredeemForm() {
   const [game, setGame] = useState<string[]>([]);
   const [selectedredeem, setSelectedredeem] = useState('CashApp');
   const [selectedPayment, setSelectedPayment] = useState('');
+  const [data, setData] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  const copyToClipboard = () => {
+    if (inputRef.current) {
+      inputRef.current.select();
+      document.execCommand('copy');
+      toast({
+        title: 'Paypal Copied Successful!',
+        description: 'Welcome! Paypal have copied successfully.'
+      });
+    } else {
+      toast({
+        title: 'Paypal Copied Failed!',
+        description: 'Paypal have copied failed. Please try again!'
+      });
+    }
+  };
+  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('/api/admin/getadmin', { cache: 'no-store'});
+        const result = await response.json();
+        setData(result.data[0].bitcoin);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+      }
+    }
+
+    fetchData();
+  }, []);
+  
   useEffect(() => {
     const cooldownData = localStorage.getItem(COOLDOWN_KEY);
     if (cooldownData) {
@@ -101,7 +146,8 @@ export default function UserredeemForm() {
         }
 
         const result = await response.json();
-        const registerArray = result.data[0].register;
+        setTagId(result?.data[0]?.tag)
+        const registerArray = result.data[0]?.register || [];
 
         if (registerArray.length > 0) {
           setCategory(registerArray[0].status);
@@ -135,7 +181,7 @@ export default function UserredeemForm() {
           return;
         }
 
-        router.push('/mypage/deposit/depositmiddle');
+        router.push(DEPOSIT_URLS[selectedredeem]);
 
         toast({
           title: 'Deposit Request Successful!',
@@ -196,13 +242,13 @@ export default function UserredeemForm() {
     let formattedValue = '0.00000000';
 
     if (rawValue.length > 0) {
-        const valueAsNumber = parseInt(rawValue, 10);
-        formattedValue = (valueAsNumber / 100000000).toFixed(8);
+      const valueAsNumber = parseInt(rawValue, 10);
+      formattedValue = (valueAsNumber / 100000000).toFixed(8);
     }
 
     e.target.value = formattedValue;
     setBitcoin(formattedValue);
-};
+  };
 
   const uniqueGames = Array.from(new Set(game));
 
@@ -214,7 +260,7 @@ export default function UserredeemForm() {
 
   console.log(selectedPayment);
 
-  const ok = () => { };
+  const ok = () => {};
 
   return (
     <div>
@@ -263,20 +309,20 @@ export default function UserredeemForm() {
               </select>
             </div>
             {selectedredeem === 'Bitcoin' ? (
-              <div className="flex justify-center">
+              <div className="flex justify-center sm:flex-nowrap flex-wrap">
                 <FormField
                   control={form.control}
                   name="amount"
                   render={({ field }) => (
                     <FormItem className="flex justify-center">
-                      <FormLabel className="mt-4 w-28">Amount</FormLabel>
+                      <FormLabel className="mt-4 sx:w-28 mr-[5px] sm:mr-[10px]">Amount</FormLabel>
                       <FormControl>
                         <Input
                           className="w-[70px]"
                           disabled={loading || cooldown}
                           onInput={(e) => {
                             const target = e.target as HTMLInputElement;
-                            target.value = target.value.replace(/[^0-9]/g, '');
+                            target.value = target.value.replace(/[^0-9]/g, '')
                           }}
                           placeholder="USD"
                           {...field}
@@ -288,10 +334,24 @@ export default function UserredeemForm() {
                 />
                 <input
                   className="ml-[10px] mt-2 h-9 w-[120px] rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
-                  value={bitcoin}
+                  value={`${bitcoin}`}
                   onChange={handleInputChange}
                   placeholder="BTC"
                 />
+                    <FormItem className="flex justify-center mt-[8px] ml-[10px]">
+                      <FormControl>
+                        <Input
+                          className="w-[70px]"
+                          disabled={true}
+                          onInput={(e) => {
+                            const target = e.target as HTMLInputElement;
+                            target.value = target.value.replace(/[^0-9]/g, '')
+                          }}
+                          placeholder="BTC"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
               </div>
             ) : (
               <FormField
@@ -327,6 +387,25 @@ export default function UserredeemForm() {
           </Button>
         </form>
       </Form>
+      <div className=''>
+          {selectedredeem === 'Bitcoin' ? (  <><div className="border p-2 flex flex-col mx-auto w-max mt-8">
+            <QRCodeSVG value={data} size={180} level={'H'} />
+          </div>
+          <div className="mt-10 flex items-center justify-center">
+        <input
+          type="text"
+          value={data}
+          readOnly
+          className="w-1/2 rounded-md border p-2 text-center outline-none"
+          ref={inputRef}
+        />
+        <Button className="border py-5" handleClick={copyToClipboard}>
+          Copy
+        </Button>
+      </div>
+          </>
+        ):<></>}
+      </div>
     </div>
   );
 }

@@ -1,13 +1,12 @@
 'use client';
 
-import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { columns } from './columns';
 import { useState, useEffect, useTransition } from 'react';
-import RegisterTablePage from './register-table';
-import { Button } from '@/components/ui/button';
+import { Paymentredeems, AdminRegisterUsers, UserRegister } from '@/constants/data';
+import AdminredeemHistoryTableView from './register-table';
 import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
-import { ColumnDef } from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
 import { useSearchParams } from 'next/navigation';
 
 interface SelectMultiIdData {
@@ -15,9 +14,10 @@ interface SelectMultiIdData {
   date?: string;
 }
 
-export default function RegisterTable() {
+export default function AdminRegisterHistoryTable() {
+
   const { socket } = useSocket();
-  const [data, setData] = useState<(AdminRegisterUsers & UserRegister)[]>([]);
+  const [data, setData] = useState<(Paymentredeems & AdminRegisterUsers)[]>([]);
   const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [multiIds, setMultiIds] = useState<SelectMultiIdData[]>([]);
@@ -41,15 +41,15 @@ export default function RegisterTable() {
         const usersResponse = await fetch('/api/admin/getregister', { cache: 'no-store' });
         const usersResult = await usersResponse.json();
 
-        const filteredWithdrawals = registerResult.data.flatMap(
+        const filteredRegister = registerResult.data.flatMap(
           (registerEntry: any) =>
             registerEntry.register.filter(
               (register: UserRegister) =>
-                register.status === 'Processing'
+                register.status === 'decline' || register.status === 'complete'
             )
         );
 
-        const combinedData = filteredWithdrawals.map(
+        const combinedData = filteredRegister.map(
           (register: UserRegister) => {
             const user = usersResult.data.find(
               (user: AdminRegisterUsers) => user._id === register.id
@@ -106,18 +106,19 @@ export default function RegisterTable() {
     };
   }, []);
 
-  const multiDecline = async () => {
+  const multiRestore = async () => {
     if (multiIds.length == 0) {
       toast({
-        title: 'Decline Failed!',
+        title: 'Restore Failed!',
         description: 'Please check item!'
       });
       return;
     }
+
     startTransition(async () => {
       try {
         const response = await userMultiCheck({
-          status: 'decline',
+          status: 'Processing',
           data: multiIds
         });
 
@@ -126,61 +127,26 @@ export default function RegisterTable() {
         }
 
         toast({
-          title: 'Decline Successful!',
-          description: 'You have declined successful!'
+          title: 'Restore Successful!',
+          description: 'You have restored successful!'
         });
 
         location.reload();
       } catch (error) {
         toast({
-          title: 'Decline Failed!',
+          title: 'Restore Failed!',
           description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
-
-  const multiAccept = async () => {
-    if (multiIds.length == 0) {
-      toast({
-        title: 'Accept Failed!',
-        description: 'Please check item!'
-      });
-      return;
-    }
-    startTransition(async () => {
-      try {
-        const response = await userMultiCheck({
-          status: 'complete',
-          data: multiIds
-        });
-
-        if (response.error) {
-          return;
-        }
-
-        toast({
-          title: 'Accept Successful!',
-          description: 'You have accepted successful!'
-        });
-
-        location.reload();
-      } catch (error) {
-        toast({
-          title: 'Accept Failed!',
-          description: 'Your action has been failed. Please try again!'
-        });
-      }
-    });
-  };
-
 
   const userMultiCheck = async (userData: {
     status: string;
     data: any;
   }) => {
-    // /api/admin/register
     try {
+      //api/admin/register
       const response = await fetch('', {
         method: 'POST',
         headers: {
@@ -200,26 +166,89 @@ export default function RegisterTable() {
     }
   };
 
+  const multiDelete = async () => {
+    if (multiIds.length == 0) {
+      toast({
+        title: 'Delete Failed!',
+        description: 'Please check item!'
+      });
+      return;
+    }
+
+    startTransition(async () => {
+      try {
+        const response = await userDeleteMultiCheck({
+          data: multiIds
+        });
+
+        if (response.error) {
+          return;
+        }
+
+        toast({
+          title: 'Delete Successful!',
+          description: 'You have deleted successful!'
+        });
+
+        location.reload();
+      } catch (error) {
+        toast({
+          title: 'Delete Failed!',
+          description: 'Your action has been failed. Please try again!'
+        });
+      }
+    });
+  };
+
+  const userDeleteMultiCheck = async (userData: { data: any }) => {
+    try {
+      const response = await fetch('/api/admin/multiRegisterDelete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'redeem failed' };
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const offset = (page - 1) * limit;
   const paginatedData = data.slice(offset, offset + limit);
 
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
+
 
   return (
     <div className="space-y-4 ">
       {/* <div className="flex justify-end">
-        <Button variant="outline" handleClick={multiAccept} className="mr-3">
-          Multi Accept
+        <Button
+          variant="outline"
+          handleClick={multiRestore}
+          className="mr-3 mt-3"
+        >
+          Multi Restore
         </Button>
-        <Button variant="outline" handleClick={multiDecline}>
-          Multi Decline
+        <Button
+          variant="outline"
+          handleClick={multiDelete}
+          className="mr-3 mt-3"
+        >
+          Multi Delete
         </Button>
       </div> */}
-      <RegisterTablePage
-        columns={columns as ColumnDef<UserRegister, unknown>[]}
+      <AdminredeemHistoryTableView
+        columns={columns}
         data={paginatedData}
         totalItems={data.length}
       />

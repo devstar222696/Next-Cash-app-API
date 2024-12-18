@@ -17,6 +17,10 @@ export const columns: ColumnDef<Paymentredeems>[] = [
     cell: ({ row }) => `$${row.original.amount}`
   },
   {
+    accessorKey: 'paymentstatus',
+    header: 'Status'
+  },
+  {
     accessorKey: 'date',
     header: 'Data/Time',
     cell: ({ row }) => {
@@ -29,10 +33,5 @@ export const columns: ColumnDef<Paymentredeems>[] = [
 
       return `${month}/${day} ${year.toString().slice(-2)} ${hours}:${minutes}`;
     }
-  },
-
-  {
-    accessorKey: 'paymentstatus',
-    header: 'Status'
   }
 ];
