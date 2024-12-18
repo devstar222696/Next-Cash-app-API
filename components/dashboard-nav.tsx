@@ -5,7 +5,6 @@ import { useBreakpoint } from '@/hooks/useBreakPoints';
 import { useSidebar } from '@/hooks/useSidebar';
 import { cn } from '@/lib/utils';
 import { NavItem } from '@/types';
-import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -34,12 +33,10 @@ const NavItemContent = React.memo(
   ({
     item,
     isMinimized,
-    isExpanded,
     path
   }: {
     item: NavItem;
     isMinimized: boolean;
-    isExpanded: boolean;
     path: string;
   }) => {
     const Icon = item.icon ? Icons[item.icon] : Icons.logo;
@@ -83,11 +80,6 @@ const NavItemContent = React.memo(
             {item.title === 'Register' ? registerR : ''}
           </p>
         )}
-        {verifyR !== 0 && (
-          <p className="w-5 rounded-full bg-red-500 text-center text-white">
-            {item.title === 'Code Verify' ? verifyR : ''}
-          </p>
-        )}
         {redeemR !== 0 && (
           <p className="w-5 rounded-full bg-red-500 text-center text-white">
             {item.title === 'Deposit' ? redeemR : ''}
@@ -97,11 +89,6 @@ const NavItemContent = React.memo(
           <p className="w-5 rounded-full bg-red-500 text-center text-white">
             {item.title === 'Withdrawal' ? withdrawalR : ''}
           </p>
-        )}
-        {hasChildren && !isMinimized && (
-          <ChevronRight
-            className={cn('ml-auto h-4 w-4', isExpanded && 'rotate-90')}
-          />
         )}
       </div>
     );
@@ -113,17 +100,14 @@ NavItemContent.displayName = 'NavItemContent';
 const NavItemLink = React.memo(
   ({
     item,
-    onClick,
     children
   }: {
     item: NavItem;
-    onClick: () => void;
     children: React.ReactNode;
   }) => (
     <Link
       href={item.disabled ? '/' : item.href || '#'}
       className={cn('block', item.disabled && 'cursor-not-allowed opacity-80')}
-      onClick={onClick}
     >
       {children}
     </Link>
@@ -170,20 +154,14 @@ export function DashboardNav({
     });
   }, []);
 
-  const handleSetOpen = useCallback(() => {
-    if (setOpen) setOpen(false);
-  }, [setOpen]);
-
   const renderNavItem = useCallback(
     (item: NavItem, depth = 0) => {
       const hasChildren = item.children && item.children.length > 0;
-      const isExpanded = expandedItems.has(item.title);
 
       const content = (
         <NavItemContent
           item={item}
           isMinimized={isMinimized}
-          isExpanded={isExpanded}
           path={path}
         />
       );
@@ -205,7 +183,6 @@ export function DashboardNav({
                     {child.href && (
                       <Link
                         href={child.href}
-                        onClick={handleSetOpen}
                         className="cursor-pointer"
                       >
                         {child.title}
@@ -221,7 +198,8 @@ export function DashboardNav({
       return (
         <div key={item.title}>
           {item.href ? (
-            <NavItemLink item={item} onClick={handleSetOpen}>
+            <NavItemLink item={item}
+             >
               {content}
             </NavItemLink>
           ) : (
@@ -229,7 +207,7 @@ export function DashboardNav({
               {content}
             </NavItemButton>
           )}
-          {hasChildren && !isMinimized && isExpanded && (
+          {hasChildren && !isMinimized && (
             <div className="ml-4 mt-1 space-y-1">
               {item.children &&
                 item.children.map((child) => renderNavItem(child, depth + 1))}
@@ -238,7 +216,7 @@ export function DashboardNav({
         </div>
       );
     },
-    [expandedItems, isMinimized, isAboveLg, path, handleSetOpen, toggleExpand]
+    [expandedItems, isMinimized, isAboveLg, path, toggleExpand]
   );
 
   const memoizedItems = useMemo(() => items, [items]);

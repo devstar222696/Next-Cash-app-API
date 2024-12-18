@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { GameLink } from './game-link';
 import MyPageTableView from './mypage-table';
 import { Button } from '@/components/ui/button';
+import TagId from '@/components/ui/tagId';
 
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
@@ -49,7 +50,7 @@ export default function MyPageTable() {
         const result = await response.json();
 
         setTag(result.data);
-        setData(result.data[0].register); // Adjust based on your API response
+        setData(result.data[0]?.register || []); // Adjust based on your API response
         setTotalData(result.totalCount); // Adjust based on your API response
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -69,6 +70,14 @@ export default function MyPageTable() {
     router.push('/mypage/register');
   };
 
+  const requestDeposit = () => {
+    router.push('/mypage/deposit');
+  };
+
+  const requestRedeem = () => {
+    router.push('/mypage/withdrawal');
+  };
+
   // Filter the data for status "complete"
   const filteredData = data.filter((item) => item.status === 'complete');
 
@@ -77,15 +86,15 @@ export default function MyPageTable() {
 
   return (
     <div className="space-y-4">
-      <p className="text-md ml-10 font-medium">Your Tag Number</p>
-      <p className="ml-14 text-xl font-bold">#{tag[0].tag}</p>
+      <TagId tagId={tag[0]?.tag}/>
       <p className="text-medium py-5 text-center font-bold">Login Info</p>
       <MyPageTableView
         columns={columns}
         data={paginatedData}
         totalItems={filteredData.length}
       />
-      <div className="flex justify-center py-8">
+      <div className="flex flex-col justify-center items-center py-8 gap-2">
+       <div className='flex flex-col gap-2 max-w-max'>
         <Button
           variant="default"
           handleClick={requestSuccess}
@@ -93,6 +102,22 @@ export default function MyPageTable() {
         >
           Request Game Register
         </Button>
+        <Button
+          variant="default"
+          handleClick={requestDeposit}
+          className="text-white w-full"
+        >
+          Request Deposit 
+        </Button>
+        <Button
+          variant="default"
+          handleClick={requestRedeem}
+          className="text-white w-full"
+        >
+          Request Redeem
+        </Button>
+       </div>
+       
       </div>
       <div>
         <p className="text-center text-xl font-semibold">User Info</p>
@@ -100,16 +125,16 @@ export default function MyPageTable() {
           <div className="flex justify-center">
             <p>Name:</p>
             <p className="ml-2">
-              {tag[0].firstname} {tag[0].lastname}
+              {tag[0]?.firstname} {tag[0]?.lastname}
             </p>
           </div>
           <div className="flex justify-center">
             <p>Email:</p>
-            <p className="ml-2">{tag[0].email}</p>
+            <p className="ml-2">{tag[0]?.email}</p>
           </div>
           <div className="flex justify-center">
             <p>Phone Number:</p>
-            <p className="ml-2">{data[0] ? data[0].phonenumber : 'None'}</p>
+            <p className="ml-2">{data[0] ? data[0]?.phonenumber : 'None'}</p>
           </div>
         </div>
       </div>

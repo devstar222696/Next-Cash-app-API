@@ -8,7 +8,7 @@ export const POST = async (request: NextRequest) => {
 
   try {
     // Find the user by the token
-    const user = await User.findOne({ token: token });
+    const user = await User.findOne({ _id: id });
 
     if (user) {
       // Add new redeem information to the existing redeems array

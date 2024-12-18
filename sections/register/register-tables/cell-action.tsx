@@ -1,5 +1,4 @@
 'use client';
-import { AlertModal } from '@/components/modal/alert-modal';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -8,56 +7,59 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Trash2 } from 'lucide-react';
-import { useState, useTransition } from 'react';
+import { CheckCircle, MoreHorizontal, X } from 'lucide-react';
+import { useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
 interface CellActionProps {
-  deleteDate: Date,
+  registerDate:Date,
   userId: any,
   codeRegister?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
-  deleteDate,
+  registerDate,
   userId
 }) => {
   const [loading, startTransition] = useTransition();
-  const [open, setOpen] = useState(false);
 
-  const onConfirm = async () => {
+  const registerAccept = async () => {
     startTransition(async () => {
       try {
-        const response = await deleteRegister({
-          id: userId,
-          date: deleteDate
+        const response = await userRegisterCheck({
+          status: 'complete',
+          date: registerDate,
+          id: userId
         });
 
         if (response.error) {
+          console.error('Register error:', response.error);
           return;
         }
 
-        setOpen(false);
-
         toast({
-          title: 'Delete successful!',
-          description: 'You have verified customer redeem'
+          title: 'Accept Successful!',
+          description: 'You have accepted successful!'
         });
 
         location.reload();
       } catch (error) {
         toast({
-          title: 'Delete Failed!',
+          title: 'Accept Failed!',
           description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
 
-  const deleteRegister = async (userData: { id: string; date: any }) => {
+  const userRegisterCheck = async (userData: {
+    status: string;
+    date: any;
+    id: string;
+  }) => {
     try {
-      const response = await fetch('/api/admin/registerdelete', {
-        method: 'DELETE',
+      const response = await fetch('/api/admin/register', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -66,13 +68,43 @@ export const CellAction: React.FC<CellActionProps> = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        return { error: errorData.message || 'Delete failed' };
+        return { error: errorData.message || 'Register failed' };
       }
 
       return await response.json();
     } catch (error) {
+      console.error('Error during fetch:', error);
       throw error;
     }
+  };
+
+  const unRegisterDecline = async () => {
+    startTransition(async () => {
+      try {
+        const response = await userRegisterCheck({
+          status: 'decline',
+          date: registerDate,
+          id: userId
+        });
+
+        if (response.error) {
+          console.error('Decline error:', response.error);
+          return;
+        }
+
+        toast({
+          title: 'Decline Successful!',
+          description: 'You have declined successful!'
+        });
+
+        location.reload();
+      } catch (error) {
+        toast({
+          title: 'Decline Failed!',
+          description: 'Your action has been failed. Please try again!'
+        });
+      }
+    });
   };
 
   if (loading) {
@@ -83,12 +115,6 @@ export const CellAction: React.FC<CellActionProps> = ({
 
   return (
     <>
-      <AlertModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onConfirm}
-        loading={loading}
-      />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0" handleClick={ok}>
@@ -98,8 +124,11 @@ export const CellAction: React.FC<CellActionProps> = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash2 className="mr-2 h-4 w-4" /> Delete
+           <DropdownMenuItem onClick={registerAccept}>
+            <CheckCircle className="mr-2 h-4 w-4" /> Accept
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={unRegisterDecline}>
+            <X className="mr-2 h-4 w-4" /> Decline
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

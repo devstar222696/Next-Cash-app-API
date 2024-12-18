@@ -100,7 +100,7 @@ export default function UserWithdrawalForm() {
         }
 
         const result = await response.json();
-        const registerArray = result.data[0].register;
+        const registerArray = result.data[0]?.register || [];
 
         if (registerArray.length > 0) {
           setCategory(registerArray[0].status);
