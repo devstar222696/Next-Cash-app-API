@@ -4,13 +4,15 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { QRCodeSVG } from 'qrcode.react';
+import { getUserNameByPaymentType } from '@/lib/utils';
+import { PaymentTypes } from '@/types';
 
 export default function UserCashApp() {
   const router = useRouter();
   const [data, setData] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const cashAppUrl = `cash.app/qr/${data}`;
+  const cashAppUrl = `https://cash.app/${data}?qr=1`;
 
   const copyToClipboard = () => {
     if (inputRef.current) {
@@ -33,7 +35,8 @@ export default function UserCashApp() {
       try {
         const response = await fetch('/api/admin/getadmin', { cache: 'no-store' }); // Replace with your API endpoint
         const result = await response.json();
-        setData(result.data[0].cashtag); // Adjust based on your API response
+        const userName = result.data[0].cashtag;
+        setData(getUserNameByPaymentType(userName, PaymentTypes.CashApp));
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {

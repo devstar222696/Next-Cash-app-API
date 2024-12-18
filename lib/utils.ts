@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Active, DataRef, Over } from '@dnd-kit/core';
+import { PaymentTypes } from '@/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -40,4 +41,19 @@ export function formatBytes(
   return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
     sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytest' : sizes[i] ?? 'Bytes'
   }`;
+}
+
+export function getUserNameByPaymentType(name: string, type: PaymentTypes) {
+  let userName = '';
+  switch (type) {
+    case PaymentTypes.CashApp:
+      userName = `${userName.length && userName[0] !== '$' ? '$' : ''}${userName}`
+    case PaymentTypes.PayPal:
+    case PaymentTypes.Venmo:
+      userName = userName.length && userName[0] === '@' ? userName.slice(1) : userName
+      break;
+    default:
+      break;
+  }
+  return userName;
 }

@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
+import { getUserNameByPaymentType } from '@/lib/utils';
+import { PaymentTypes } from '@/types';
 
 export default function UserPaypal() {
   const router = useRouter();
@@ -37,7 +39,8 @@ export default function UserPaypal() {
       try {
         const response = await fetch('/api/admin/getadmin', { cache: 'no-store'});
         const result = await response.json();
-        setData(result.data[0].paypal);
+        const userName = result.data[0].paypal;
+        setData(getUserNameByPaymentType(userName, PaymentTypes.PayPal));
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
