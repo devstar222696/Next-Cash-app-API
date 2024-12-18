@@ -4,6 +4,7 @@ import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import PromotionPage from '../promotion-tables/promotion-fron';
 import UserPromotionTable from '../promotion-tables';
+import HouseRules from '../promotion-houseRule';
 
 const breadcrumbItems = [{ title: 'Main', link: '/mypage' }];
 
@@ -20,6 +21,7 @@ export default async function Promotion({}: TEmployeeListingPage) {
         </div>
         <Separator />
         <UserPromotionTable />
+        <HouseRules />
       </div>
     </PageContainer>
   );

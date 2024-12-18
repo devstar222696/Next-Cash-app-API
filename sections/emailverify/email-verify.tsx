@@ -1,5 +1,6 @@
 'use client';
 
+import { sendCodeToEmail } from '@/app/utils/emilverify';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -33,13 +34,7 @@ export default function EmailVerifySendPage() {
         throw new Error(data.error || 'Failed to send email.');
       }
 
-      response = await fetch('/api/emailcode', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: userEmail, code })
-      });
+      response = await sendCodeToEmail({ userEmail, code });
 
       data = await response.json();
 

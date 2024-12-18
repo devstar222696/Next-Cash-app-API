@@ -28,6 +28,14 @@ type UserFormValue = z.infer<typeof formSchema>;
 
 const COOLDOWN_KEY = 'cooldown_data';
 
+const DEPOSIT_URLS: Record<string, string> = {
+  CashApp: '/mypage/deposit/cashapp',
+  Bitcoin: '/mypage/deposit/bitcoin',
+  Venmo: '/mypage/deposit/venmo',
+  Paypal: '/mypage/deposit/paypal',
+  Zelle: '/mypage/deposit/zelle'
+};
+
 export default function UserredeemForm() {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
@@ -135,7 +143,8 @@ export default function UserredeemForm() {
           return;
         }
 
-        router.push('/mypage/deposit/depositmiddle');
+        console.log('selectedredeem: ', selectedredeem);
+        router.push(DEPOSIT_URLS[selectedredeem]);
 
         toast({
           title: 'Deposit Request Successful!',
@@ -196,13 +205,13 @@ export default function UserredeemForm() {
     let formattedValue = '0.00000000';
 
     if (rawValue.length > 0) {
-        const valueAsNumber = parseInt(rawValue, 10);
-        formattedValue = (valueAsNumber / 100000000).toFixed(8);
+      const valueAsNumber = parseInt(rawValue, 10);
+      formattedValue = (valueAsNumber / 100000000).toFixed(8);
     }
 
     e.target.value = formattedValue;
     setBitcoin(formattedValue);
-};
+  };
 
   const uniqueGames = Array.from(new Set(game));
 
@@ -214,7 +223,7 @@ export default function UserredeemForm() {
 
   console.log(selectedPayment);
 
-  const ok = () => { };
+  const ok = () => {};
 
   return (
     <div>

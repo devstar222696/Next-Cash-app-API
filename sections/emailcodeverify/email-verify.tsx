@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import { sendCodeToEmail } from '@/app/utils/emilverify';
 
 interface UserData {
   code: string;
@@ -65,9 +66,26 @@ export default function EmailCodeVerifyPage() {
       console.log('Success:', response);
     }
   };
+
+  const resendCode = async () => {
+    if (!userEmail) {
+      toast({
+        title: 'Email Address Missing',
+        description:
+          'Please enter a valid email address to resend the verification code.'
+      });
+    }
+    const code = Math.floor(100000 + Math.random() * 900000);
+    const response = await sendCodeToEmail({ userEmail, code });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to save code in database.');
+    }
+  };
+
   return (
     <div className="flex h-[100vh] w-full items-center justify-center ">
-      <div className="h-52 w-[350px] border border-2 p-8 md:w-1/3">
+      <div className="h-fit w-[350px] border border-2 p-8 md:w-1/3">
         <h1 className="text-center text-2xl font-semibold tracking-tight">
           Email Verification
         </h1>
@@ -82,7 +100,7 @@ export default function EmailCodeVerifyPage() {
             }}
           />
         </div>
-        <div className="mt-5 flex w-full justify-center">
+        <div className="mt-5 flex w-full flex-col items-center justify-center gap-4 ">
           <Button
             variant="default"
             handleClick={verifyEmailCode}
@@ -90,6 +108,17 @@ export default function EmailCodeVerifyPage() {
           >
             Email Code Verify
           </Button>
+          <Button
+            variant="default"
+            handleClick={resendCode}
+            className="w-96 text-white"
+          >
+            Resend Code
+          </Button>
+          <span className="text-sm text-center">
+            It may take 0-3 minutes. If you have not received the verification
+            number, please check your Spam folder
+          </span>
         </div>
       </div>
     </div>
