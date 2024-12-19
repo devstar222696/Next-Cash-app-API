@@ -3,6 +3,7 @@ import CredentialProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import dbConnect from './dbConnect';
 import User from '@/models/User';
+import { generateUniqueTag } from './user';
 
 const authConfig = {
   providers: [
@@ -48,12 +49,8 @@ const authConfig = {
           let existingUser = await User.findOne({ email: user.email });
 
           if (!existingUser) {
-            const lastUser = await User.find({}).sort({ tag: -1 }).limit(1);
-            let newCode = 1000;
+            const newCode = await generateUniqueTag();
 
-            if (lastUser.length > 0 && lastUser[0].tag >= 1000) {
-              newCode = lastUser[0].tag + 1;
-            }
             existingUser = await User.create({
               firstname: user.name,
               email: user.email,
