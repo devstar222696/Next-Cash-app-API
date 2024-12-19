@@ -31,7 +31,7 @@ export default function PromotionPage({ tag }: any) {
   return (
     <>
       <div className="w-full">
-        <TagId tagId={tag}/>
+        <TagId tagId={tag} />
         <p className="text-md mt-5 text-center font-bold">
           Welcome to ISLAND HOUSE!
         </p>
@@ -40,6 +40,9 @@ export default function PromotionPage({ tag }: any) {
         </p>
       </div>
       <GameLink />
+      <div className="grid justify-items-center">
+        <Image src="/promo/promo1.png" width={1000} height={1000} alt="ad" />
+      </div>
       <div className="grid justify-items-center">
         <Image src="/promo/web-cover.png" width={1000} height={1000} alt="ad" />
         <Image

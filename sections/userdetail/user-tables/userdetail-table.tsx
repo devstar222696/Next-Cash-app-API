@@ -8,7 +8,7 @@ import {
   getPaginationRowModel,
   useReactTable
 } from '@tanstack/react-table';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -33,6 +33,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import { RegisterModal } from '@/components/modal/register-modal';
 
 interface DataTableProps<T> {
   columns: ColumnDef<T, unknown>[];
@@ -57,6 +58,7 @@ export default function UserWithdrawalTableView<T>({
       .withOptions({ shallow: false, history: 'push' })
       .withDefault(10)
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const paginationState = {
     pageIndex: currentPage - 1,
@@ -64,6 +66,10 @@ export default function UserWithdrawalTableView<T>({
   };
 
   const pageCount = Math.ceil(totalItems / pageSize);
+
+  const handleAddRegister = () => {
+    setIsModalOpen(true);
+  };
 
   const handlePaginationChange = (
     updaterOrValue:
@@ -95,6 +101,12 @@ export default function UserWithdrawalTableView<T>({
 
   return (
     <>
+      {isModalOpen && (
+        <RegisterModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
       <ScrollArea className=" h-[calc(90vh-220px)] w-[92vw] rounded-md border sm:w-full">
         <Table className="w-full">
           <TableHeader>
@@ -106,9 +118,9 @@ export default function UserWithdrawalTableView<T>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -147,71 +159,80 @@ export default function UserWithdrawalTableView<T>({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className="items-center justify-center gap-2 space-x-2 py-4 sm:flex-row md:flex">
-        <div className="flex items-center justify-center gap-2 sm:justify-end">
-          <Select
-            value={`${paginationState.pageSize}`}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-          >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={paginationState.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              {pageSizeOptions.map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            {totalItems > 0 ? (
-              <>
-                Page {paginationState.pageIndex + 1} of {table.getPageCount()}
-              </>
-            ) : (
-              'No pages'
-            )}
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button
-              aria-label="Go to first page"
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              handleClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
+      <div className='flex flex-wrap justify-between items-center'>
+        <Button
+          variant="default"
+          handleClick={handleAddRegister}
+          className="text-white my-4"
+        >
+          Add Register
+        </Button>
+        <div className="items-center justify-center gap-2 space-x-2 py-4 sm:flex-row md:flex">
+          <div className="flex items-center justify-center gap-2 sm:justify-end">
+            <Select
+              value={`${paginationState.pageSize}`}
+              onValueChange={(value) => {
+                table.setPageSize(Number(value));
+              }}
             >
-              <DoubleArrowLeftIcon className="h-4 w-4" aria-hidden="true" />
-            </Button>
-            <Button
-              aria-label="Go to previous page"
-              variant="outline"
-              className="h-8 w-8 p-0"
-              handleClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
-            </Button>
-            <Button
-              aria-label="Go to next page"
-              variant="outline"
-              className="h-8 w-8 p-0"
-              handleClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
-            </Button>
-            <Button
-              aria-label="Go to last page"
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              handleClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              <DoubleArrowRightIcon className="h-4 w-4" aria-hidden="true" />
-            </Button>
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue placeholder={paginationState.pageSize} />
+              </SelectTrigger>
+              <SelectContent side="top">
+                {pageSizeOptions.map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+              {totalItems > 0 ? (
+                <>
+                  Page {paginationState.pageIndex + 1} of {table.getPageCount()}
+                </>
+              ) : (
+                'No pages'
+              )}
+            </div>
+            <div className="flex items-center space-x-2">
+              <Button
+                aria-label="Go to first page"
+                variant="outline"
+                className="hidden h-8 w-8 p-0 lg:flex"
+                handleClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <DoubleArrowLeftIcon className="h-4 w-4" aria-hidden="true" />
+              </Button>
+              <Button
+                aria-label="Go to previous page"
+                variant="outline"
+                className="h-8 w-8 p-0"
+                handleClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
+              </Button>
+              <Button
+                aria-label="Go to next page"
+                variant="outline"
+                className="h-8 w-8 p-0"
+                handleClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
+              </Button>
+              <Button
+                aria-label="Go to last page"
+                variant="outline"
+                className="hidden h-8 w-8 p-0 lg:flex"
+                handleClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                <DoubleArrowRightIcon className="h-4 w-4" aria-hidden="true" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>

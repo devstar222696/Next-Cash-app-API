@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { sendCodeToEmail } from '@/app/utils/emilverify';
+import { sendCodeToDb, sendCodeToEmail } from '@/app/utils/emilverify';
 
 interface UserData {
   code: string;
@@ -76,11 +76,27 @@ export default function EmailCodeVerifyPage() {
       });
     }
     const code = Math.floor(100000 + Math.random() * 900000);
-    const response = await sendCodeToEmail({ userEmail, code });
-    const data = await response.json();
+
+    let response = await sendCodeToEmail({ userEmail, code });
+
+    let data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to send email.');
+    }
+
+    response = await sendCodeToDb({ userEmail, code });
+
+    data = await response.json();
+
     if (!response.ok) {
       throw new Error(data.error || 'Failed to save code in database.');
     }
+
+    toast({
+      title: 'Sent successfully!',
+      description: 'Verification email sent and code saved successfully!'
+    });
   };
 
   return (
@@ -100,22 +116,22 @@ export default function EmailCodeVerifyPage() {
             }}
           />
         </div>
-        <div className="mt-5 flex w-full flex-col items-center justify-center gap-4 ">
+        <div className="mt-5 flex flex-col items-center justify-center gap-4">
           <Button
             variant="default"
             handleClick={verifyEmailCode}
-            className="w-96 text-white"
+            className="w-full whitespace-nowrap text-white xl:w-96 2xl:w-96"
           >
             Email Code Verify
           </Button>
           <Button
             variant="default"
             handleClick={resendCode}
-            className="w-96 text-white"
+            className="w-full whitespace-nowrap text-white  xl:w-96 2xl:w-96"
           >
             Resend Code
           </Button>
-          <span className="text-sm text-center">
+          <span className="text-center text-sm">
             It may take 0-3 minutes. If you have not received the verification
             number, please check your Spam folder
           </span>

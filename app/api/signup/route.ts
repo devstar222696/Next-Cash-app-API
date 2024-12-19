@@ -2,6 +2,7 @@ import User from '@/models/User';
 import dbConnect from '@/lib/dbConnect';
 import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
+import { generateUniqueTag } from '@/lib/user';
 
 export const POST = async (request: NextRequest) => {
   const { firstname, lastname, email, password } = await request.json();
@@ -14,12 +15,7 @@ export const POST = async (request: NextRequest) => {
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      const lastUser = await User.find({}).sort({ tag: -1 }).limit(1);
-      let newCode = 1000;
-
-      if (lastUser.length > 0 && lastUser[0].tag >= 1000) {
-        newCode = lastUser[0].tag + 1;
-      }
+      const newCode = await generateUniqueTag();
 
       const hashedPassword = await bcrypt.hash(password, 5);
       const newUser = new User({

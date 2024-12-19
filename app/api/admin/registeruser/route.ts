@@ -3,29 +3,40 @@ import dbConnect from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
-  const { token, category, phonenumber, status, id } = await request.json();
+  const { loginid, id, passwordcode, category, phonenumber } = await request.json();
+
+
+  if (!loginid || !passwordcode || !category || !phonenumber || !id) {
+    return NextResponse.json(
+      { error: 'Missing required fields' },
+      { status: 400 }
+    );
+  }
+
   await dbConnect();
 
   try {
     // Find the user by the token
-    const user = await User.findOne({ token: token });
+    const existingUser = await User.findById(id);
 
-    if (user) {
+    if (existingUser) {
       // Add new redeem information to the existing redeems array
-      user.register.push({
+      existingUser.register.push({
+        loginid: loginid,
+        passwordcode: passwordcode,
         category: category,
         phonenumber: phonenumber,
-        status: status,
+        status: 'preparing',
         id: id
       });
 
       try {
         // Save the updated user document
-        await user.save();
+        await existingUser.save();
 
         return NextResponse.json(
           {
-            ok: 'redeem added successfully'
+            ok: 'Register request added successfully'
           },
           { status: 200 }
         ); // Return success with a 200 status

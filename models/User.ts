@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { formatInTimeZone } from 'date-fns-tz';
 
 const registerSchema: Schema = new Schema(
   {
@@ -26,7 +27,15 @@ const redeemSchema: Schema = new Schema(
     dailyChecked: { type: Boolean, default: false },
     bonusChecked: { type: Boolean, default: false },
     date: { type: Date, default: Date.now },
-    comdate: { type: Date }
+    comdate: { type: Date },
+    isBonusInitializeTime: {
+      type: Date,
+      default: () => {
+        const currentDate = new Date();
+        const HstDate = formatInTimeZone(currentDate, 'Pacific/Honolulu', 'yyyy-MM-dd');
+        return `${HstDate}T00:00:00.000Z`;
+      }
+    }
   },
   { _id: false }
 );

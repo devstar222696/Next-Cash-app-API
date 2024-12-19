@@ -146,8 +146,7 @@ export default function AdminRegisterHistoryTable() {
     data: any;
   }) => {
     try {
-      //api/admin/register
-      const response = await fetch('', {
+      const response = await fetch('/api/admin/multiRegisterCheck', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -231,7 +230,7 @@ export default function AdminRegisterHistoryTable() {
 
   return (
     <div className="space-y-4 ">
-      {/* <div className="flex justify-end">
+      <div className="flex justify-end">
         <Button
           variant="outline"
           handleClick={multiRestore}
@@ -246,7 +245,7 @@ export default function AdminRegisterHistoryTable() {
         >
           Multi Delete
         </Button>
-      </div> */}
+      </div>
       <AdminredeemHistoryTableView
         columns={columns}
         data={paginatedData}
