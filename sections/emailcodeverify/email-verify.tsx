@@ -92,6 +92,11 @@ export default function EmailCodeVerifyPage() {
     if (!response.ok) {
       throw new Error(data.error || 'Failed to save code in database.');
     }
+
+    toast({
+      title: 'Sent successfully!',
+      description: 'Verification email sent and code saved successfully!'
+    });
   };
 
   return (
@@ -111,18 +116,18 @@ export default function EmailCodeVerifyPage() {
             }}
           />
         </div>
-        <div className="mt-5 flex w-fit flex-col items-center justify-center gap-4">
+        <div className="mt-5 flex flex-col items-center justify-center gap-4">
           <Button
             variant="default"
             handleClick={verifyEmailCode}
-            className="w-full whitespace-nowrap text-white  "
+            className="w-full whitespace-nowrap text-white xl:w-96 2xl:w-96"
           >
             Email Code Verify
           </Button>
           <Button
             variant="default"
             handleClick={resendCode}
-            className="w-full whitespace-nowrap text-white  "
+            className="w-full whitespace-nowrap text-white  xl:w-96 2xl:w-96"
           >
             Resend Code
           </Button>
