@@ -159,11 +159,11 @@ export default function UserWithdrawalTableView<T>({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className='flex justify-around items-center'>
+      <div className='flex flex-wrap justify-between items-center'>
         <Button
           variant="default"
           handleClick={handleAddRegister}
-          className="text-white"
+          className="text-white my-4"
         >
           Add Register
         </Button>
