@@ -45,7 +45,7 @@ export default function RegisterTable() {
           (registerEntry: any) =>
             registerEntry.register.filter(
               (register: UserRegister) =>
-                register.status === 'Processing' ||   register.status === 'preparing'
+                register.status === 'Processing' || register.status === 'preparing'
             )
         );
 
@@ -179,9 +179,8 @@ export default function RegisterTable() {
     status: string;
     data: any;
   }) => {
-    // /api/admin/register
     try {
-      const response = await fetch('', {
+      const response = await fetch('/api/admin/multiRegisterCheck', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -210,14 +209,14 @@ export default function RegisterTable() {
 
   return (
     <div className="space-y-4 ">
-      {/* <div className="flex justify-end">
+      <div className="flex justify-end">
         <Button variant="outline" handleClick={multiAccept} className="mr-3">
           Multi Accept
         </Button>
         <Button variant="outline" handleClick={multiDecline}>
           Multi Decline
         </Button>
-      </div> */}
+      </div>
       <RegisterTablePage
         columns={columns as ColumnDef<UserRegister, unknown>[]}
         data={paginatedData}

@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const formSchema = z.object({
   amount: z.any()
@@ -36,11 +37,11 @@ const DEPOSIT_URLS: Record<string, string> = {
   Paypal: '/mypage/deposit/paypal',
   Zelle: '/mypage/deposit/zelle'
 };
-interface IUserReemFormProps{
-  setTagId: (args: string)=> void
+interface IUserReemFormProps {
+  setTagId: (args: string) => void
 }
 
-export default function UserredeemForm({ setTagId }:IUserReemFormProps ) {
+export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
   const form = useForm<UserFormValue>({
@@ -54,6 +55,7 @@ export default function UserredeemForm({ setTagId }:IUserReemFormProps ) {
   const [game, setGame] = useState<string[]>([]);
   const [selectedredeem, setSelectedredeem] = useState('CashApp');
   const [selectedPayment, setSelectedPayment] = useState('');
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [data, setData] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -72,11 +74,16 @@ export default function UserredeemForm({ setTagId }:IUserReemFormProps ) {
       });
     }
   };
-  
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setCheckboxChecked(checked);
+    console.log(`Checkbox is now ${checked ? 'checked' : 'unchecked'}`);
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/admin/getadmin', { cache: 'no-store'});
+        const response = await fetch('/api/admin/getadmin', { cache: 'no-store' });
         const result = await response.json();
         setData(result.data[0].bitcoin);
       } catch (error) {
@@ -173,7 +180,8 @@ export default function UserredeemForm({ setTagId }:IUserReemFormProps ) {
           amount: data.amount,
           btc: bitcoin,
           token: userInfo.token,
-          id: userInfo.userId
+          id: userInfo.userId,
+          isChecked: checkboxChecked
         });
 
         if (response.error) {
@@ -214,6 +222,7 @@ export default function UserredeemForm({ setTagId }:IUserReemFormProps ) {
     token: string;
     btc: string;
     id: any;
+    isChecked: boolean
   }) => {
     try {
       const response = await fetch('/api/redeem', {
@@ -338,20 +347,20 @@ export default function UserredeemForm({ setTagId }:IUserReemFormProps ) {
                   onChange={handleInputChange}
                   placeholder="BTC"
                 />
-                    <FormItem className="flex justify-center mt-[8px] ml-[10px]">
-                      <FormControl>
-                        <Input
-                          className="w-[70px]"
-                          disabled={true}
-                          onInput={(e) => {
-                            const target = e.target as HTMLInputElement;
-                            target.value = target.value.replace(/[^0-9]/g, '')
-                          }}
-                          placeholder="BTC"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                <FormItem className="flex justify-center mt-[8px] ml-[10px]">
+                  <FormControl>
+                    <Input
+                      className="w-[70px]"
+                      disabled={true}
+                      onInput={(e) => {
+                        const target = e.target as HTMLInputElement;
+                        target.value = target.value.replace(/[^0-9]/g, '')
+                      }}
+                      placeholder="BTC"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               </div>
             ) : (
               <FormField
@@ -376,6 +385,15 @@ export default function UserredeemForm({ setTagId }:IUserReemFormProps ) {
                 )}
               />
             )}
+            <div className='flex items-center max-w-[312px] mt-[10px] mx-auto'>
+              <div className='w-28 text-sm font-medium'>Daily Bonus</div>
+              <Checkbox
+                checked={checkboxChecked}
+                onCheckedChange={handleCheckboxChange}
+                aria-label="Select row"
+                disabled={loading || cooldown}
+              />
+            </div>
           </div>
           <Button
             disabled={loading || cooldown || category !== 'complete'}
@@ -388,23 +406,23 @@ export default function UserredeemForm({ setTagId }:IUserReemFormProps ) {
         </form>
       </Form>
       <div className=''>
-          {selectedredeem === 'Bitcoin' ? (  <><div className="border p-2 flex flex-col mx-auto w-max mt-8">
-            <QRCodeSVG value={data} size={180} level={'H'} />
-          </div>
+        {selectedredeem === 'Bitcoin' ? (<><div className="border p-2 flex flex-col mx-auto w-max mt-8">
+          <QRCodeSVG value={data} size={180} level={'H'} />
+        </div>
           <div className="mt-10 flex items-center justify-center">
-        <input
-          type="text"
-          value={data}
-          readOnly
-          className="w-1/2 rounded-md border p-2 text-center outline-none"
-          ref={inputRef}
-        />
-        <Button className="border py-5" handleClick={copyToClipboard}>
-          Copy
-        </Button>
-      </div>
-          </>
-        ):<></>}
+            <input
+              type="text"
+              value={data}
+              readOnly
+              className="w-1/2 rounded-md border p-2 text-center outline-none"
+              ref={inputRef}
+            />
+            <Button className="border py-5" handleClick={copyToClipboard}>
+              Copy
+            </Button>
+          </div>
+        </>
+        ) : <></>}
       </div>
     </div>
   );

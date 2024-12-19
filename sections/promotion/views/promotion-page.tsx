@@ -2,7 +2,6 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import PromotionPage from '../promotion-tables/promotion-fron';
 import UserPromotionTable from '../promotion-tables';
 import HouseRules from '../promotion-houseRule';
 
@@ -15,7 +14,6 @@ export default async function Promotion({}: TEmployeeListingPage) {
     <PageContainer scrollable>
       <div className="space-y-4">
         <Breadcrumbs items={breadcrumbItems} />
-
         <div className="flex items-start justify-between">
           <Heading title={`Promotion`} description="" />
         </div>
