@@ -45,7 +45,7 @@ export default function RegisterTable() {
           (registerEntry: any) =>
             registerEntry.register.filter(
               (register: UserRegister) =>
-                register.status === 'Processing'
+                register.status === 'Processing' ||   register.status === 'preparing'
             )
         );
 
