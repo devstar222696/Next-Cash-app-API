@@ -1,6 +1,6 @@
 'use client';
 
-import { sendCodeToEmail } from '@/app/utils/emilverify';
+import { sendCodeToDb, sendCodeToEmail } from '@/app/utils/emilverify';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -20,13 +20,7 @@ export default function EmailVerifySendPage() {
     const code = Math.floor(100000 + Math.random() * 900000);
 
     try {
-      let response = await fetch('/api/sendemail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: userEmail, code })
-      });
+      let response = await sendCodeToEmail({ userEmail, code });
 
       let data = await response.json();
 
@@ -34,7 +28,7 @@ export default function EmailVerifySendPage() {
         throw new Error(data.error || 'Failed to send email.');
       }
 
-      response = await sendCodeToEmail({ userEmail, code });
+      response = await sendCodeToDb({ userEmail, code });
 
       data = await response.json();
 
