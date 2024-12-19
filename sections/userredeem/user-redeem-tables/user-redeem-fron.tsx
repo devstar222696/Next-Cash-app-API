@@ -94,7 +94,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
 
     fetchData();
   }, []);
-  
+
   useEffect(() => {
     const cooldownData = localStorage.getItem(COOLDOWN_KEY);
     if (cooldownData) {
@@ -185,7 +185,10 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
         });
 
         if (response.error) {
-          console.error('deposit error:', response.error);
+          toast({
+            title: 'Request Failed!',
+            description: response.error
+          });
           return;
         }
 
@@ -235,7 +238,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
 
       if (!response.ok) {
         const errorData = await response.json();
-        return { error: errorData.message || 'redeem failed' };
+        return { error: errorData.error || 'redeem failed' };
       }
 
       return await response.json();
