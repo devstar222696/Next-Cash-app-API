@@ -90,7 +90,7 @@ export default function PromotionPage({ tag }: any) {
             alt="facebook"
           ></Image>
           <Image
-            src="/instagram.png"
+            src="/Instagram.png"
             width={50}
             height={50}
             className="ml-5 hover:cursor-pointer hover:opacity-80"

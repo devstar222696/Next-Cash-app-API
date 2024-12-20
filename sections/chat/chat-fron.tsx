@@ -39,7 +39,7 @@ export default function UserChat() {
           alt="facebook"
         ></Image>
         <Image
-          src="/instagram.png"
+          src="/Instagram.png"
           width={100}
           height={100}
           className="hover:cursor-pointer hover:opacity-80"

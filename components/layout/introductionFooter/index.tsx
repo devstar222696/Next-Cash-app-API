@@ -11,7 +11,7 @@ const IntroductionFooter = () => {
               <span className="font-semibold">Follow Us</span>
               <div className="flex gap-2">
                 <Image
-                  src="/instagram.png"
+                  src="/Instagram.png"
                   width={24}
                   height={18}
                   alt="ad"
