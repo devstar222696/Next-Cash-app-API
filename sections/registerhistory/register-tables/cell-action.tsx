@@ -150,9 +150,9 @@ export const CellAction: React.FC<CellActionProps> = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
-          <DropdownMenuItem onClick={restore}>
+          {/* <DropdownMenuItem onClick={restore}>
             <ArchiveRestore className="mr-2 h-4 w-4" /> Restore
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>

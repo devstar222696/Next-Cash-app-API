@@ -4,7 +4,7 @@ const houseRules = [
   'Your tag number is your ID. Please be sure to remember it.',
   'We do not ask for tips, and we do not accept also.',
   'Referral Bonus, Daily Bonus, and First Deposit Bonus can only be received when the User deposits more than $10.',
-  'All bonuses are stackable and cannot be received in one time.',
+  'All bonuses are unstackable and cannot be received in one time.',
   "Only users who have deposited more than $10 are considered 'Old Users'.",
   'The minimum deposit is $1, but we don’t accept cents. Dollars only.',
   'The minimum Cashout is $50, the maximum is $3,000, and if exceeded, User can apply again the next day.',

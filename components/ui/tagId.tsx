@@ -5,7 +5,7 @@ interface ITagIdProps {
   
   const TagId = ({ tagId }: ITagIdProps) => {
     return (
-      <div className="flex items-center">
+      <div className="flex items-center justify-center">
         <div className="relative p-6 border-4 border-blue-500 rounded-md bg-transparent shadow-md shadow-blue-500/30">
           <div className="relative flex items-center justify-center gap-2">
           <span className="text-4xl b-[0px]">🌴</span>

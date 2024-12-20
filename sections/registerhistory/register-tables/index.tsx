@@ -17,7 +17,7 @@ interface SelectMultiIdData {
 export default function AdminRegisterHistoryTable() {
 
   const { socket } = useSocket();
-  const [data, setData] = useState<(Paymentredeems & AdminRegisterUsers)[]>([]);
+  const [data, setData] = useState<(UserRegister & AdminRegisterUsers)[]>([]);
   const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [multiIds, setMultiIds] = useState<SelectMultiIdData[]>([]);
@@ -45,7 +45,7 @@ export default function AdminRegisterHistoryTable() {
           (registerEntry: any) =>
             registerEntry.register.filter(
               (register: UserRegister) =>
-                register.status === 'decline' || register.status === 'complete'
+                register.status === 'decline' || register.status === 'complete' || register.status === 'accept'
             )
         );
 
@@ -231,13 +231,13 @@ export default function AdminRegisterHistoryTable() {
   return (
     <div className="space-y-4 ">
       <div className="flex justify-end">
-        <Button
+        {/* <Button
           variant="outline"
           handleClick={multiRestore}
           className="mr-3 mt-3"
         >
           Multi Restore
-        </Button>
+        </Button> */}
         <Button
           variant="outline"
           handleClick={multiDelete}

@@ -38,7 +38,7 @@ const DEPOSIT_URLS: Record<string, string> = {
   Zelle: '/mypage/deposit/zelle'
 };
 interface IUserReemFormProps {
-  setTagId: (args: string) => void
+  setTagId: (args: string) => void;
 }
 
 export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
@@ -83,7 +83,9 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/admin/getadmin', { cache: 'no-store' });
+        const response = await fetch('/api/admin/getadmin', {
+          cache: 'no-store'
+        });
         const result = await response.json();
         setData(result.data[0].bitcoin);
       } catch (error) {
@@ -153,7 +155,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
         }
 
         const result = await response.json();
-        setTagId(result?.data[0]?.tag)
+        setTagId(result?.data[0]?.tag);
         const registerArray = result.data[0]?.register || [];
 
         if (registerArray.length > 0) {
@@ -225,7 +227,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
     token: string;
     btc: string;
     id: any;
-    isChecked: boolean
+    isChecked: boolean;
   }) => {
     try {
       const response = await fetch('/api/redeem', {
@@ -321,20 +323,22 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
               </select>
             </div>
             {selectedredeem === 'Bitcoin' ? (
-              <div className="flex justify-center sm:flex-nowrap flex-wrap">
+              <div className="flex flex-wrap justify-center sm:flex-nowrap">
                 <FormField
                   control={form.control}
                   name="amount"
                   render={({ field }) => (
                     <FormItem className="flex justify-center">
-                      <FormLabel className="mt-4 sx:w-28 mr-[5px] sm:mr-[10px]">Amount</FormLabel>
+                      <FormLabel className="sx:w-28 mr-[5px] mt-4 sm:mr-[10px]">
+                        Amount
+                      </FormLabel>
                       <FormControl>
                         <Input
                           className="w-[70px]"
                           disabled={loading || cooldown}
                           onInput={(e) => {
                             const target = e.target as HTMLInputElement;
-                            target.value = target.value.replace(/[^0-9]/g, '')
+                            target.value = target.value.replace(/[^0-9]/g, '');
                           }}
                           placeholder="USD"
                           {...field}
@@ -344,26 +348,17 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                     </FormItem>
                   )}
                 />
-                <input
-                  className="ml-[10px] mt-2 h-9 w-[120px] rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
-                  value={`${bitcoin}`}
-                  onChange={handleInputChange}
-                  placeholder="BTC"
-                />
-                <FormItem className="flex justify-center mt-[8px] ml-[10px]">
-                  <FormControl>
-                    <Input
-                      className="w-[70px]"
-                      disabled={true}
-                      onInput={(e) => {
-                        const target = e.target as HTMLInputElement;
-                        target.value = target.value.replace(/[^0-9]/g, '')
-                      }}
-                      placeholder="BTC"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                <div className="ml-[10px] mt-2 flex h-9 w-[140px] items-center rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]">
+                  <input
+                    className="block min-w-0 grow"
+                    value={`${bitcoin}`}
+                    onChange={handleInputChange}
+                    placeholder="BTC"
+                  />
+                  <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6">
+                    BTC
+                  </div>
+                </div>
               </div>
             ) : (
               <FormField
@@ -388,8 +383,8 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 )}
               />
             )}
-            <div className='flex items-center max-w-[312px] mt-[10px] mx-auto'>
-              <div className='w-28 text-sm font-medium'>Daily Bonus</div>
+            <div className="mx-auto mt-[10px] flex max-w-[312px] items-center">
+              <div className="w-28 text-sm font-medium">Daily Bonus</div>
               <Checkbox
                 checked={checkboxChecked}
                 onCheckedChange={handleCheckboxChange}
@@ -408,24 +403,28 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
           </Button>
         </form>
       </Form>
-      <div className=''>
-        {selectedredeem === 'Bitcoin' ? (<><div className="border p-2 flex flex-col mx-auto w-max mt-8">
-          <QRCodeSVG value={data} size={180} level={'H'} />
-        </div>
-          <div className="mt-10 flex items-center justify-center">
-            <input
-              type="text"
-              value={data}
-              readOnly
-              className="w-1/2 rounded-md border p-2 text-center outline-none"
-              ref={inputRef}
-            />
-            <Button className="border py-5" handleClick={copyToClipboard}>
-              Copy
-            </Button>
-          </div>
-        </>
-        ) : <></>}
+      <div className="">
+        {selectedredeem === 'Bitcoin' ? (
+          <>
+            <div className="mx-auto mt-8 flex w-max flex-col border p-2">
+              <QRCodeSVG value={data} size={180} level={'H'} />
+            </div>
+            <div className="mt-10 flex items-center justify-center">
+              <input
+                type="text"
+                value={data}
+                readOnly
+                className="w-1/2 rounded-md border p-2 text-center outline-none"
+                ref={inputRef}
+              />
+              <Button className="border py-5" handleClick={copyToClipboard}>
+                Copy
+              </Button>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

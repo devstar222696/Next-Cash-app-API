@@ -1,5 +1,5 @@
 'use client';
-import { AdminRegisterUsers, Paymentredeems } from '@/constants/data';
+import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -9,7 +9,7 @@ import { CodeAction } from '@/sections/register/register-tables/code-number';
 
 const { socket } = useSocket();
 
-export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
+export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -89,20 +89,24 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     id: 'actions',
     header: 'LOGIN ID AND PASSWORD CODE',
-    cell: ({ row }) => (
-      <LoginIdAction
-      dateV={row.original.date}
-      loginIdV={row.original.loginid}
-      passwordCodeV={row.original.passwordcode}
-      userName={row.original.user._id}
-    />
-    )
+    cell: ({ row,table }) => {
+      return(
+        <LoginIdAction
+        rowId={row.id}
+        dateV={row.original.date}
+        loginIdV={row.original.loginid}
+        passwordCodeV={row.original.passwordcode}
+        userName={row.original.user._id}
+      />
+      )
+    }
   },
   {
     id: 'actions',
     header: 'CODE NUMBER',
     cell: ({ row }) => (
       <CodeAction
+      rowId={row.id}
       registerDate={row.original.date}
       codeNumber={row.original.codenumber}
       regiStatus={row.original.status}

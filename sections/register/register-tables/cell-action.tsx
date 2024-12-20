@@ -10,27 +10,37 @@ import {
 import { CheckCircle, MoreHorizontal, X } from 'lucide-react';
 import { useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import { useRowState } from '@/app/shared/row-state-context';
+import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 
 interface CellActionProps {
+  rowId?: string;
   registerDate:Date,
   userId: any,
   codeRegister?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
+  rowId,
   registerDate,
   userId
 }) => {
   const [loading, startTransition] = useTransition();
+  const rowStates = useRowState();
 
   const registerAccept = async () => {
     startTransition(async () => {
       try {
-        const response = await userRegisterCheck({
-          status: 'complete',
+        const { loginid, passwordcode, codenumber } = (rowStates[rowId as unknown as number]!.current) as UserRegister & AdminRegisterUsers;
+        const body = {
+          status: 'accept',
           date: registerDate,
-          id: userId
-        });
+          id: userId,
+          loginid, 
+          passwordcode, 
+          codenumber
+        }
+        const response = await userRegisterCheck(body);
 
         if (response.error) {
           console.error('Register error:', response.error);
@@ -81,11 +91,16 @@ export const CellAction: React.FC<CellActionProps> = ({
   const unRegisterDecline = async () => {
     startTransition(async () => {
       try {
-        const response = await userRegisterCheck({
+        const { loginid, passwordcode, codenumber } = (rowStates[rowId as unknown as number]!.current) as UserRegister & AdminRegisterUsers;
+        const body = {
           status: 'decline',
           date: registerDate,
-          id: userId
-        });
+          id: userId,
+          loginid, 
+          passwordcode, 
+          codenumber
+        }
+        const response = await userRegisterCheck(body);
 
         if (response.error) {
           console.error('Decline error:', response.error);
@@ -112,7 +127,7 @@ export const CellAction: React.FC<CellActionProps> = ({
   }
 
   const ok = () => {};
-
+  
   return (
     <>
       <DropdownMenu modal={false}>

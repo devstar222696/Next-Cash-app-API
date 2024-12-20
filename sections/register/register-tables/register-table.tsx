@@ -8,7 +8,7 @@ import {
   getPaginationRowModel,
   useReactTable
 } from '@tanstack/react-table';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -33,17 +33,22 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import useSkipper from './hooks/use-skipper';
+import { setInitialRowState, useRowDispatch, useRowState } from '@/app/shared/row-state-context';
+import { Identifiable } from '@/app/shared/row-state-context/types';
 
 interface DataTableProps<T> {
   columns: ColumnDef<T, unknown>[];
   data: T[];
+  setData: React.Dispatch<React.SetStateAction<T[]>>;
   totalItems: number;
   pageSizeOptions?: number[];
 }
 
-export default function UserWithdrawalTableView<T>({
+export default function UserWithdrawalTableView<T extends Identifiable>({
   columns,
   data,
+  setData,
   totalItems,
   pageSizeOptions = [10, 20, 30, 40, 50]
 }: DataTableProps<T>) {
@@ -51,6 +56,8 @@ export default function UserWithdrawalTableView<T>({
     'page',
     parseAsInteger.withOptions({ shallow: false }).withDefault(1)
   );
+  const rowDispatch = useRowDispatch();
+
   const [pageSize, setPageSize] = useQueryState(
     'limit',
     parseAsInteger
@@ -89,9 +96,18 @@ export default function UserWithdrawalTableView<T>({
     onPaginationChange: handlePaginationChange,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getRowId: (row) => (row as any).rowId, // Custom row ID based on `uniqueKey`
     manualPagination: true,
-    manualFiltering: true
+    manualFiltering: true,
+    debugTable: true,
   });
+
+  useEffect(() => {
+    data.forEach((row) => {
+      setInitialRowState(rowDispatch, (row as any).rowId, row);
+    });
+  }, [data, rowDispatch]);
+
 
   return (
     <>

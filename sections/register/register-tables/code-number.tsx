@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
 import useSocket from '@/lib/socket';
+import { updateRowState, useRowDispatch } from '@/app/shared/row-state-context';
 
 const { socket } = useSocket();
 
@@ -13,17 +14,22 @@ interface UserData {
   date: any;
 }
 
+const registerStatuses = ['preparing', 'complete', 'decline'];
+
 export const CodeAction = ({
+  rowId,
   registerDate,
   codeNumber,
   userName,
   regiStatus
 }: {
+  rowId: string;
   registerDate: any;
   codeNumber?: string;
   userName: string;
   regiStatus: string;
 }) => {
+  const rowDispatch = useRowDispatch();
   const [codenum, setCodenum] = useState(codeNumber || ''); // Initialize with codeNumber if available
 
   console.log(registerDate);
@@ -100,25 +106,31 @@ export const CodeAction = ({
     }
   }, [codeNumber]);
 
+  const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      updateRowState(rowDispatch, rowId, { id: userName, codenumber: value });
+      setCodenum(value);
+  }
+
   return (
     <div className="relation flex justify-center">
       <input
         className=" w-32 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         value={codenum}
-        onChange={(e) => setCodenum(e.target.value)}
-        disabled={regiStatus !== 'preparing' || codeNumber !== 'none'}
+        onChange={handleCodeChange}
+        disabled={(!registerStatuses.includes(regiStatus)) || codeNumber !== 'none'}
         onInput={(e) => {
           const target = e.target as HTMLInputElement;
           target.value = target.value.replace(/[^0-9]/g, ''); 
         }}
       />
-      <Button
+      {/* <Button
         className="ml-1 h-8 w-10 bg-blue-500 text-xs text-white"
         handleClick={handleButtonClick}
         disabled={regiStatus !== 'preparing' || codeNumber !== 'none'}
       >
         SEND
-      </Button>
+      </Button> */}
     </div>
   );
 };

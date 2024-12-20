@@ -40,18 +40,14 @@ export default function PromotionPage({ tag }: any) {
         </p>
       </div>
       <GameLink />
-      <div className="grid justify-items-center">
+      {/* <div className="grid justify-items-center">
         <Image src="/promo/promo1.png" width={1000} height={1000} alt="ad" />
+      </div> */}
+      <div className="grid justify-items-center">
+        <Image src="/promo/promo_12.png" width={1000} height={1000} alt="ad" />
       </div>
       <div className="grid justify-items-center">
-        <Image src="/promo/web-cover.png" width={1000} height={1000} alt="ad" />
-        <Image
-          src="/promo/web-cover.png"
-          width={1000}
-          height={1000}
-          alt="ad"
-          className="mt-5"
-        />
+        <Image src="/promo/promo_23.png" width={1000} height={1000} alt="ad" />
       </div>
       <div className="grid w-full grid-cols-1 place-items-center">
         <div className="justify-items-center lg:flex lg:justify-center">

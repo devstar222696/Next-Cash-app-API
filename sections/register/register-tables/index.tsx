@@ -9,6 +9,7 @@ import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
 import { ColumnDef } from '@tanstack/react-table';
 import { useSearchParams } from 'next/navigation';
+import { RowStateProvider } from '@/app/shared/row-state-context';
 
 interface SelectMultiIdData {
   id?: string;
@@ -18,6 +19,7 @@ interface SelectMultiIdData {
 export default function RegisterTable() {
   const { socket } = useSocket();
   const [data, setData] = useState<(AdminRegisterUsers & UserRegister)[]>([]);
+  const [currentData, setCurrentData] = useState<(AdminRegisterUsers & UserRegister)[]>(data);
   const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [multiIds, setMultiIds] = useState<SelectMultiIdData[]>([]);
@@ -70,7 +72,12 @@ export default function RegisterTable() {
           return dateB.getTime() - dateA.getTime();
         });
 
-        setData(sortedData);
+        const dataWithRowId = sortedData.map((item: any, index: number) => ({
+          ...item,
+          rowId: (index + 1).toString()
+        }));
+
+        setData(dataWithRowId);
         setTotalData(registerResult.totalCount);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -201,6 +208,7 @@ export default function RegisterTable() {
 
 
   const offset = (page - 1) * limit;
+  
   const paginatedData = data.slice(offset, offset + limit);
 
   if (loading) {
@@ -217,11 +225,14 @@ export default function RegisterTable() {
           Multi Decline
         </Button>
       </div>
-      <RegisterTablePage
-        columns={columns as ColumnDef<UserRegister, unknown>[]}
-        data={paginatedData}
-        totalItems={data.length}
-      />
+      <RowStateProvider>
+        <RegisterTablePage
+          columns={columns as ColumnDef<UserRegister & AdminRegisterUsers>[]}
+          data={paginatedData}
+          setData={setCurrentData}
+          totalItems={data.length}
+        />
+      </RowStateProvider>
     </div>
   );
 }

@@ -87,11 +87,12 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
     header: 'CATEGORY'
   },
   {
-      id: 'actions',
+      id: 'login-password',
       header: 'LOGIN ID AND PASSWORD CODE',
-      cell: ({ row }) => {
+      cell: ({ row,table }) => {
         return(
           <LoginIdAction
+          rowId={row.id}
           dateV={row.original.date}
           loginIdV={row.original.loginid}
           passwordCodeV={row.original.passwordcode}
@@ -101,10 +102,11 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
       }
     },
   {
-    id: 'actions',
+    id: 'code-number',
     header: 'CODE NUMBER',
     cell: ({ row }) => (
       <CodeAction
+        rowId={row.id}
         registerDate={row.original.date}
         codeNumber={row.original.codenumber}
         regiStatus={row.original.status}
@@ -117,6 +119,7 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
     header: 'ACTION',
     cell: ({ row }) => (
       <CellAction
+      rowId={row.id}
       registerDate={row.original.date}
         userId={row.original.user._id}
       />

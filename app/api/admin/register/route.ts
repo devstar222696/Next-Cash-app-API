@@ -14,10 +14,10 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  const { id, status, date } = requestData;
+  const { id, status, loginid, passwordcode, codenumber, date } = requestData;
 
   // Ensure required fields are present
-  if (!id || !status || !date) {
+  if (!id || !status || !date || !loginid || !passwordcode || !codenumber) {
     return NextResponse.json(
       { error: 'Missing required fields' },
       { status: 400 }
@@ -48,6 +48,9 @@ export const POST = async (request: NextRequest) => {
     }
 
     user.register[registerIndex].status = status;
+    user.register[registerIndex].loginid = loginid;
+    user.register[registerIndex].passwordcode = passwordcode;
+    user.register[registerIndex].codenumber = codenumber;
 
     user.register[registerIndex]._doc.comdate = new Date();
 
