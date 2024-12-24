@@ -44,7 +44,7 @@ export function formatBytes(
 }
 
 export function getUserNameByPaymentType(name: string, type: PaymentTypes) {
-  let userName = '';
+  let userName = name;
   switch (type) {
     case PaymentTypes.CashApp:
       userName = `${userName.length && userName[0] !== '$' ? '$' : ''}${userName}`

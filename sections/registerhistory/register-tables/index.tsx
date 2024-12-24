@@ -8,6 +8,7 @@ import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { useSearchParams } from 'next/navigation';
+import { RowStateProvider } from '@/app/shared/row-state-context';
 
 interface SelectMultiIdData {
   id?: string;
@@ -246,11 +247,13 @@ export default function AdminRegisterHistoryTable() {
           Multi Delete
         </Button>
       </div>
+      <RowStateProvider>
       <AdminredeemHistoryTableView
         columns={columns}
         data={paginatedData}
         totalItems={data.length}
       />
+      </RowStateProvider>
     </div>
   );
 }

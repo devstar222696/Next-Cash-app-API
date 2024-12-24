@@ -14,7 +14,7 @@ interface UserData {
   date: any;
 }
 
-const registerStatuses = ['preparing', 'complete', 'decline'];
+const registerStatuses = ['preparing', 'Processing', 'complete', 'decline'];
 
 export const CodeAction = ({
   rowId,

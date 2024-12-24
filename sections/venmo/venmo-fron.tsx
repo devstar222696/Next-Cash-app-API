@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import QRCode from 'qrcode';
@@ -29,10 +29,10 @@ export default function UserVenmo() {
     fetchData();
   }, []);
 
+  const venmoLink = useMemo(() => `https://venmo.com/u/${data}`, [data]);
+
   useEffect(() => {
     async function qrcodeData() {
-      const venmoLink = `https://venmo.com/u/${data}`;
-
       try {
         const url = await QRCode.toDataURL(venmoLink);
         setQrCodeUrl(url);
@@ -42,7 +42,7 @@ export default function UserVenmo() {
     }
 
     qrcodeData();
-  }, [data]);
+  }, [venmoLink]);
 
   const venmo = () => {
     router.push('/mypage/deposit');
@@ -62,7 +62,7 @@ export default function UserVenmo() {
         description: 'Venmo have copied failed. Please try again!'
       });
     }
-  };
+  };  
 
   return (
     <div>
@@ -80,7 +80,7 @@ export default function UserVenmo() {
       <div className="mt-10 flex items-center justify-center">
         <input
           type="text"
-          value={data}
+          value={venmoLink}
           readOnly
           className="w-1/2 rounded-md border p-2 text-center outline-none"
           ref={inputRef}

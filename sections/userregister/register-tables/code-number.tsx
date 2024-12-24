@@ -13,6 +13,7 @@ interface UserData {
 const { socket } = useSocket();
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
+const registerStatuses = ['preparing', 'complete', 'decline'];
 
 export const CodeAction = ({
   codeNumber,

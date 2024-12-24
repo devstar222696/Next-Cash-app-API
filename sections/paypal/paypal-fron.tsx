@@ -48,7 +48,7 @@ export default function UserPaypal() {
     }
 
     fetchData();
-  }, []);
+  }, []);  
 
   return (
     <div>
@@ -64,7 +64,7 @@ export default function UserPaypal() {
       <div className="mt-10 flex items-center justify-center">
         <input
           type="text"
-          value={data}
+          value={paypalLink}
           readOnly
           className="w-1/2 rounded-md border p-2 text-center outline-none"
           ref={inputRef}

@@ -100,14 +100,17 @@ NavItemContent.displayName = 'NavItemContent';
 const NavItemLink = React.memo(
   ({
     item,
-    children
+    children,
+    handleClick
   }: {
     item: NavItem;
     children: React.ReactNode;
+    handleClick: () => void;
   }) => (
     <Link
       href={item.disabled ? '/' : item.href || '#'}
       className={cn('block', item.disabled && 'cursor-not-allowed opacity-80')}
+      onClick={handleClick}
     >
       {children}
     </Link>
@@ -154,6 +157,12 @@ export function DashboardNav({
     });
   }, []);
 
+  const closeSidebar = useCallback(() => {
+    if (isMobileNav) {
+      setOpen?.(false);
+    }
+  }, [isMobileNav, setOpen]);
+
   const renderNavItem = useCallback(
     (item: NavItem, depth = 0) => {
       const hasChildren = item.children && item.children.length > 0;
@@ -184,6 +193,7 @@ export function DashboardNav({
                       <Link
                         href={child.href}
                         className="cursor-pointer"
+                        onClick={closeSidebar}
                       >
                         {child.title}
                       </Link>
@@ -199,7 +209,7 @@ export function DashboardNav({
         <div key={item.title}>
           {item.href ? (
             <NavItemLink item={item}
-             >
+            handleClick={closeSidebar}>
               {content}
             </NavItemLink>
           ) : (
