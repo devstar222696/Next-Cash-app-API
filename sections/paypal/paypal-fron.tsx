@@ -10,13 +10,12 @@ import { PaymentTypes } from '@/types';
 export default function UserPaypal() {
   const router = useRouter();
   const [data, setData] = useState('');
+  const [url, setUrl] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const paypal = () => {
     router.push('/mypage/deposit');
   };
-
-  const paypalLink = `https://paypal.me/${data}`;
 
   const copyToClipboard = () => {
     if (inputRef.current) {
@@ -40,7 +39,8 @@ export default function UserPaypal() {
         const response = await fetch('/api/admin/getadmin', { cache: 'no-store'});
         const result = await response.json();
         const userName = result.data[0].paypal;
-        setData(getUserNameByPaymentType(userName, PaymentTypes.PayPal));
+        setData(userName);
+        setUrl(`https://paypal.me/${getUserNameByPaymentType(userName, PaymentTypes.PayPal)}`);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -55,7 +55,7 @@ export default function UserPaypal() {
       <div className="mt-20 flex justify-center">
         {data !== 'none' ? (
           <div className="border p-2">
-            <QRCodeSVG value={paypalLink} size={180} level={'H'} />
+            <QRCodeSVG value={url} size={180} level={'H'} />
           </div>
         ) : (
           ''
@@ -64,7 +64,7 @@ export default function UserPaypal() {
       <div className="mt-10 flex items-center justify-center">
         <input
           type="text"
-          value={paypalLink}
+          value={data}
           readOnly
           className="w-1/2 rounded-md border p-2 text-center outline-none"
           ref={inputRef}

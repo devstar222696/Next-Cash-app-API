@@ -10,9 +10,8 @@ import { PaymentTypes } from '@/types';
 export default function UserCashApp() {
   const router = useRouter();
   const [data, setData] = useState('');
+  const [url, setUrl] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const cashAppUrl = `https://cash.app/${data}?qr=1`;
 
   const copyToClipboard = () => {
     if (inputRef.current) {
@@ -36,7 +35,8 @@ export default function UserCashApp() {
         const response = await fetch('/api/admin/getadmin', { cache: 'no-store' }); // Replace with your API endpoint
         const result = await response.json();
         const userName = result.data[0].cashtag;
-        setData(getUserNameByPaymentType(userName, PaymentTypes.CashApp));
+        setData(userName);
+        setUrl(`https://cash.app/${getUserNameByPaymentType(userName, PaymentTypes.CashApp)}?qr=1`);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -55,7 +55,7 @@ export default function UserCashApp() {
       <div className="mt-20 flex justify-center">
         {data !== 'none' ? (
           <div className="border p-2">
-            <QRCodeSVG value={cashAppUrl} size={180} level={'H'} />
+            <QRCodeSVG value={url} size={180} level={'H'} />
           </div>
         ) : (
           ''
@@ -64,7 +64,7 @@ export default function UserCashApp() {
       <div className="mt-10 flex items-center justify-center">
         <input
           type="text"
-          value={cashAppUrl}
+          value={data}
           readOnly
           className="w-1/2 rounded-md border p-2 text-center outline-none"
           ref={inputRef}

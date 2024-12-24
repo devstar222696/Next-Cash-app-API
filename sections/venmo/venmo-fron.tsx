@@ -10,6 +10,7 @@ import { PaymentTypes } from '@/types';
 export default function UserVenmo() {
   const router = useRouter();
   const [data, setData] = useState('');
+  const [userName, setUserName] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
 
@@ -19,7 +20,8 @@ export default function UserVenmo() {
         const response = await fetch('/api/admin/getadmin', { cache: 'no-store' });
         const result = await response.json();
         const venmoUserName = result.data[0].venmo;
-        setData(getUserNameByPaymentType(venmoUserName, PaymentTypes.Venmo));
+        setData(venmoUserName);
+        setUserName(getUserNameByPaymentType(venmoUserName, PaymentTypes.Venmo));
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -29,7 +31,7 @@ export default function UserVenmo() {
     fetchData();
   }, []);
 
-  const venmoLink = useMemo(() => `https://venmo.com/u/${data}`, [data]);
+  const venmoLink = useMemo(() => `https://venmo.com/u/${userName}`, [userName]);
 
   useEffect(() => {
     async function qrcodeData() {
@@ -80,7 +82,7 @@ export default function UserVenmo() {
       <div className="mt-10 flex items-center justify-center">
         <input
           type="text"
-          value={venmoLink}
+          value={data}
           readOnly
           className="w-1/2 rounded-md border p-2 text-center outline-none"
           ref={inputRef}
