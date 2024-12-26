@@ -20,8 +20,8 @@ const navigationUrls = {
 }
 
 export default function OpenInBrowserPage() {
-  // const [copied, setCopied] = React.useState(false)
-  // const [isOpen, setIsOpen] = React.useState(false)
+  const [copied, setCopied] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false)
   // const [deviceInfo, setDeviceInfo] = React.useState({
   //   isAndroid: false,
   //   isIOS: false,
