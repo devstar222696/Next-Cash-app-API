@@ -46,7 +46,7 @@ export default function OpenInBrowserPage() {
         <div className="p-4 bg-white border border-gray-200 rounded-md shadow-sm">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold sm:text-xl text-blue-600">
-              1. Google Login Users
+              1. Google Login
             </h3>
             <Image src="/googlelogin.png" width={180} height={30} alt="Google Login" />
           </div>
@@ -99,7 +99,7 @@ export default function OpenInBrowserPage() {
         <div className="p-4 bg-white border border-gray-200 rounded-md shadow-sm">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold sm:text-xl text-green-600">
-              2. Email Login Users
+              2. Email Login
             </h3>
             <Image src="/emaillogin.png" width={200} height={30} alt="Email Login" />
           </div>
