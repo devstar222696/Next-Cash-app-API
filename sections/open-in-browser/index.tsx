@@ -212,6 +212,9 @@ export default function OpenInBrowserPage() {
       <a href="intent://islandhousesweepstakes.com#Intent;scheme=https;package=com.android.chrome;end">
               Open in Chrome
       </a>
+      <a href="x-safari-https://islandhousesweepstakes.com">
+              Open in Safari
+      </a>
         <Button
           handleClick={handleOpenInBrowser}
           variant="default"
