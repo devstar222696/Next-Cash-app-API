@@ -209,6 +209,9 @@ export default function OpenInBrowserPage() {
       {/* Extra Bottom Spacing if needed */}
       <div className="mt-8" />
       <div className="w-full max-w-xl mx-auto mb-8">
+      <a href="intent://islandhousesweepstakes.com#Intent;scheme=https;package=com.android.chrome;end">
+              Open in Chrome
+      </a>
         <Button
           handleClick={handleOpenInBrowser}
           variant="default"
