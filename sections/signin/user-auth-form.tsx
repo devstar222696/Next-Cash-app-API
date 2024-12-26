@@ -159,16 +159,16 @@ export default function UserAuthForm() {
       </div>
       <EmailSignInButton />
       <GoogleSignInButton />
-        <div>
+     {/*   <div>
         <p className="px-8 text-center text-sm text-muted-foreground">
             <Link
-              href="/open-in-browser"
+              href="/opesn-in-browser"
               className="underline underline-offset-4 hover:text-primary"
             >
               having a trouble in google login?
             </Link>
           </p>
-        </div>
+        </div> */}
     </>
   );
 }
