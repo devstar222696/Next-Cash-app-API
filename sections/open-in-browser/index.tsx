@@ -12,9 +12,53 @@ export const metadata: Metadata = {
   description: 'Island House',
 }
 
+const siteUrl = 'islandhousesweepstakes.com'
+const navigationUrls = {
+  android: `intent://${siteUrl}#Intent;scheme=https;package=com.android.chrome;end`,
+  ios: `x-safari-https://${siteUrl}`,
+
+}
+
 export default function OpenInBrowserPage() {
-  const [copied, setCopied] = React.useState(false)
-  const [isOpen, setIsOpen] = React.useState(false)
+  // const [copied, setCopied] = React.useState(false)
+  // const [isOpen, setIsOpen] = React.useState(false)
+  // const [deviceInfo, setDeviceInfo] = React.useState({
+  //   isAndroid: false,
+  //   isIOS: false,
+  //   isInstagram: false,
+  //   isFacebook: false,
+  // })
+
+    // We only do detection client-side
+    React.useEffect(() => {
+      if (typeof window !== 'undefined') {
+        const userAgent = navigator.userAgent || navigator.vendor || '';
+        const deviceInfo = {
+          // Detect Android or iOS
+          isAndroid: /Android/i.test(userAgent),
+          isIOS: /iPhone|iPad|iPod/i.test(userAgent),
+          // Detect Facebook in-app browser
+          // Usually indicated by FBAN or FBAV, etc.
+          isFacebook: /FBAN|FBAV|FB_IAB|FBIOS|FBANDROID/i.test(userAgent),
+          // Detect Instagram in-app browser
+          isInstagram: /Instagram/i.test(userAgent),
+        }
+
+        const isInAppBrowser = deviceInfo.isFacebook || deviceInfo.isInstagram
+        let url = siteUrl
+        if (isInAppBrowser && deviceInfo.isAndroid) {
+          url = navigationUrls.android
+        }
+        
+        if (isInAppBrowser && deviceInfo.isIOS) {
+          url = navigationUrls.ios
+        }
+
+        window.location.replace(url)
+        // setDeviceInfo()
+      }
+    }, [])
+
 
   const homeUrl = 'https://www.islandhousesweepstakes.com'
 
