@@ -18,6 +18,7 @@ import useSocket from '@/lib/socket';
 import { useRouter } from 'next/navigation';
 import GoogleSignInButton from './google-auth-button';
 import EmailSignInButton from './email-signup-button copy';
+import Link from 'next/link';
 
 const { socket } = useSocket();
 
@@ -158,6 +159,16 @@ export default function UserAuthForm() {
       </div>
       <EmailSignInButton />
       <GoogleSignInButton />
+        <div>
+        <p className="px-8 text-center text-sm text-muted-foreground">
+            <Link
+              href="/open-in-browser"
+              className="underline underline-offset-4 hover:text-primary"
+            >
+              having a trouble in google login?
+            </Link>
+          </p>
+        </div>
     </>
   );
 }
