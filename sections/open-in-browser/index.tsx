@@ -66,7 +66,9 @@ export default function OpenInBrowserPage() {
           </ol>
           <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
             <Dialog.Trigger asChild>
-              <Button variant="link" className="text-sm text-blue-500 underline sm:text-base">
+              <Button variant="link" className="text-sm text-blue-500 underline sm:text-base" handleClick={function (event: React.MouseEvent<HTMLButtonElement>): void {
+                throw new Error('Function not implemented.')
+              } }>
                 How to open in external browser
               </Button>
             </Dialog.Trigger>
@@ -76,7 +78,9 @@ export default function OpenInBrowserPage() {
                 <Dialog.Title className="text-lg font-semibold mb-4 text-gray-700">Open in External Browser</Dialog.Title>
                 <Image src="/Browser-img.png" width={450} height={450} alt="Instructions for External Browser" className="w-full h-auto mb-4" />
                 <Dialog.Close asChild>
-                  <Button variant="default" className="mt-2 w-full">
+                  <Button variant="default" className="mt-2 w-full" handleClick={function (event: React.MouseEvent<HTMLButtonElement>): void {
+                    throw new Error('Function not implemented.')
+                  } }>
                     Close
                   </Button>
                 </Dialog.Close>
