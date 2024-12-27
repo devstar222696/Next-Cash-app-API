@@ -81,14 +81,14 @@ export default function UserWithdrawalTableView<TData, TValue>({
 
   return (
     <>
-      <ScrollArea className="h-[calc(60vh-220px)] rounded-md border">
+      <ScrollArea className="rounded-md border">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className='text-left'>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -109,7 +109,7 @@ export default function UserWithdrawalTableView<TData, TValue>({
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className='text-left pb-1'>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
