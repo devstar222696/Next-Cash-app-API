@@ -40,7 +40,7 @@ export default function UserPromotionTable() {
 
         const withdrawalsResult = await withdrawalsResponse.json();
 
-        const usersResponse = await fetch('/api/customer/getuserInfo', {
+        const redeemPlayerListResponse = await fetch('/api/customer/getredeemplayerlist', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -49,11 +49,11 @@ export default function UserPromotionTable() {
           cache: 'no-store'
         });
 
-        if (!usersResponse.ok) {
+        if (!redeemPlayerListResponse.ok) {
           throw new Error('Network response was not ok');
         }
 
-        const usersResult = await usersResponse.json();
+        const redeemPlayerListResult = await redeemPlayerListResponse.json();
 
         const filteredWithdrawals = withdrawalsResult.data.flatMap(
           (withdrawalEntry: any) =>
@@ -63,17 +63,9 @@ export default function UserPromotionTable() {
             )
         );
 
-        const combinedData = filteredWithdrawals.map(
-          (withdrawal: PaymentWithdrawals) => {
-            const user = usersResult.data.find(
-              (user: AdminRegisterUsers) => user._id === withdrawal.id
-            );
-            return { ...withdrawal, user };
-          }
-        );
 
-        setTag(usersResult.data[0].tag);
-        setData(combinedData);
+        setTag(withdrawalsResult.data[0].tag);
+        setData(redeemPlayerListResult.data);
         setTotalData(filteredWithdrawals.length);
       } catch (error) {
         console.error('Error fetching data:', error);
