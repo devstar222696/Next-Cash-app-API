@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: 'Island House',
 }
 
-const siteUrl = 'islandhousesweepstakes.com'
+const siteUrl = 'islandhouseonline.com'
 const navigationUrls = {
   android: `intent://${siteUrl}#Intent;scheme=https;package=com.android.chrome;end`,
   ios: `x-safari-https://${siteUrl}`,
