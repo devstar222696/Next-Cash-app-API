@@ -60,7 +60,7 @@ export default function OpenInBrowserPage() {
     }, [])
 
 
-  const homeUrl = 'https://www.islandhousesweepstakes.com'
+  const homeUrl = 'https://www.islandhouseonline.com'
 
   /**
    * Opens the main website in a new tab.
@@ -253,10 +253,10 @@ export default function OpenInBrowserPage() {
       {/* Extra Bottom Spacing if needed */}
       <div className="mt-8" />
       <div className="w-full max-w-xl mx-auto mb-8">
-      <a href="intent://islandhousesweepstakes.com#Intent;scheme=https;package=com.android.chrome;end">
+      <a href="intent://islandhouseonline.com#Intent;scheme=https;package=com.android.chrome;end">
               Open in Chrome
       </a>
-      <a href="x-safari-https://islandhousesweepstakes.com">
+      <a href="x-safari-https://www.islandhouseonline.com">
               Open in Safari
       </a>
         <Button
