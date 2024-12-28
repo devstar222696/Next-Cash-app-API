@@ -105,10 +105,25 @@ export default function OpenInBrowserPage() {
       />
 
       {/* Bottom Text */}
-      <div className="mt-auto text-center text-md text-gray-600">
+      <div className="mt-auto text-center text-sm text-gray-600">
         Open the main homepage via Chrome browser
       </div>
-      
+      <div className="mt-8" />
+      <div className="w-full max-w-xl mx-auto mb-8">
+      <a href="intent://islandhouseonline.com#Intent;scheme=https;package=com.android.chrome;end">
+              Open in Chrome
+      </a>
+      <a href="x-safari-https://www.islandhouseonline.com">
+              Open in Safari
+      </a>
+        <Button
+          handleClick={handleOpenInBrowser}
+          variant="default"
+          className="w-full py-6 text-2xl font-semibold text-white bg-black rounded-md shadow hover:bg-gray-900"
+        >
+          Go to Website
+        </Button>
+      </div>
     </div>
   )
 }
