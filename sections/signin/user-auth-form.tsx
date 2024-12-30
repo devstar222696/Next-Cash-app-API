@@ -164,7 +164,7 @@ export default function UserAuthForm() {
         </div>
       </div>
       <EmailSignInButton />
-      <GoogleSignInButton />
+      {/* <GoogleSignInButton /> */}
      {/*   <div>
         <p className="px-8 text-center text-sm text-muted-foreground">
             <Link
