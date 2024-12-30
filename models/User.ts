@@ -65,6 +65,7 @@ export interface IUser extends Document {
   action: string;
   ip: string;
   token: string;
+  verifytoken: string;
   createdAt: Date;
   cashtag: string;
   venmo: string;
@@ -88,6 +89,7 @@ const userSchema: Schema = new Schema({
   action: { type: String, default: 'yes' },
   ip: { type: String },
   token: { type: String },
+  verifytoken: { type: String },
   cashtag: { type: String, default: 'none' },
   venmo: { type: String, default: 'none' },
   paypal: { type: String, default: 'none' },
