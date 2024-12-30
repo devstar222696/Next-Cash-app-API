@@ -20,18 +20,18 @@ import GoogleSignInButton from './google-auth-button';
 import EmailSignInButton from './email-signup-button copy';
 import Link from 'next/link';
 
-const { socket } = useSocket();
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
   password: z
-    .string()
-    .min(6, { message: 'Password must be at least 6 characters' })
+  .string()
+  .min(6, { message: 'Password must be at least 6 characters' })
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
+  const { socket } = useSocket();
   const router = useRouter();
   const [loading, startTransition] = useTransition();
   const [pop, setPop] = useState<boolean>(false);
@@ -100,7 +100,12 @@ export default function UserAuthForm() {
     }
   };
 
+ 
   const ok = () => {};
+
+  const handleForgotPwd=async ()=>{
+    router.push('forgotpassword')
+  }
 
   return (
     <>
@@ -135,6 +140,7 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
+          <div className={"mt-5 text-sm font-medium cursor-pointer"} onClick={handleForgotPwd} > Forgot Password? </div>
           <Button disabled={loading} className="ml-auto w-full" type="submit" handleClick={ok}>
             LOG IN
           </Button>
