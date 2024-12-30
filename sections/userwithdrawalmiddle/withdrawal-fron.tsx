@@ -33,12 +33,52 @@ export default function UserWithdrawalMiddle() {
     resolver: zodResolver(formSchema)
   });
 
-  const onSubmit = async (data: UserFormValue) => {
-    startTransition(async () => {
-      const response = await signUp({
-        paymentgateway: data.paymentgateway,
-        token: userInfo.token
+  const userWithdrawal = async (userData: {
+    token: string;
+    paymentoption: string;
+    paymenttype: string;
+    amount: number;
+    id: any;
+  }) => {
+    try {
+      const response = await fetch('/api/withdrawal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'Withdrawal failed' };
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error during fetch:', error);
+      throw error;
+    }
+  };
+
+  const onSubmit = async (data: UserFormValue) => {
+    const withDrawalData = localStorage.getItem('withdrawaldata');
+    const withDrawalInfo = withDrawalData ? JSON.parse(withDrawalData) : null;  
+    if (!withDrawalInfo) {
+      toast({
+        title: 'Failed to Submit Withdrawal Request!',
+        description: 'Please submit your withdrawal info in first page and try again.'
+      });
+      router.push('/mypage/withdrawal');
+      return false;
+    }
+    startTransition(async () => {
+    const response = await userWithdrawal({
+          token: userInfo.token,
+          id: userInfo.userId,
+          paymentgateway: data.paymentgateway,
+          ...withDrawalInfo
+        });
 
       if (response.error) {
         console.error('Signup error:', response.error);

@@ -11,8 +11,6 @@ const useSocket = () => {
       path: "/socket.io",
       secure: true,
     });
-  } else {
-    console.log('---no socket url---');
   }
 
   return { socket };

@@ -120,18 +120,26 @@ export default function UserWithdrawalForm() {
   const onSubmit = async (data: UserFormValue) => {
     startTransition(async () => {
       try {
-        const response = await userWithdrawal({
-          token: userInfo.token,
-          id: userInfo.userId,
+        const withdrawalData = {
           amount: data.amount,
           paymentoption: selectedPayment,
           paymenttype: selectedWithdrawal
-        });
-
-        if (response.error) {
-          console.error('Withdrawal error:', response.error);
-          return;
         }
+
+        localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
+        
+        // const response = await userWithdrawal({
+        //   token: userInfo.token,
+        //   id: userInfo.userId,
+        //   amount: data.amount,
+        //   paymentoption: selectedPayment,
+        //   paymenttype: selectedWithdrawal
+        // });
+
+        // if (response.error) {
+        //   console.error('Withdrawal error:', response.error);
+        //   return;
+        // }
 
         router.push('/mypage/withdrawal/withdrawalmiddle');
 
