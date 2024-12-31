@@ -1,6 +1,11 @@
 import User from '@/models/User';
 import dbConnect from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
+import twilio from 'twilio';
+
+const ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID as string;
+const AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN as string;
+const SERVICE_ID = process.env.TWILIO_SERVICE_ID as string;
 
 export const POST = async (request: NextRequest) => {
   const { phoneno, phonecode } = await request.json();
@@ -17,22 +22,34 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Compare the provided phonecode with the phonecode in the database
-    if (user.phonecode === phonecode) {
-      user.isphoneverify = 'yes';
-      await user.save();
+    const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
 
+    const verificationCheck = await client.verify.v2
+    .services(SERVICE_ID)
+    .verificationChecks.create({
+      code: phonecode,
+      to: phoneno
+    });
+    if (verificationCheck.status != 'approved' && verificationCheck.valid === false) {
       return NextResponse.json(
-        { message: 'Phone number verified successfully' },
-        { status: 200 }
+        { message: 'Invalid verification code' },
+        { status: 404 }
       );
     }
-    // If codes do not match, return an error
+    user.isphoneverify = 'yes';
+    await user.save();
+
     return NextResponse.json(
-      { error: 'Verification code does not match' },
-      { status: 400 }
+      { message: 'Phone number verified successfully' },
+      { status: 200 }
     );
   } catch (err: any) {
+    if (err.status === 404) {
+      return NextResponse.json(
+        { error: 'Invalid verification code.' },
+        { status: 404 }
+      );
+    }
     return NextResponse.json(
       { error: 'An error occurred while verifying the code' },
       { status: 500 }

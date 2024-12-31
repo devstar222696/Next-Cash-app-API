@@ -61,7 +61,6 @@ export interface IUser extends Document {
   email: string;
   emailcode: string;
   phoneno: string;
-  phonecode: string;
   isphoneverify: string;
   password: string;
   role: string;
@@ -88,7 +87,6 @@ const userSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
   emailcode: { type: String, default: 'none' },
   phoneno: { type: String, required: true, unique: true },
-  phonecode: { type: String, default: 'none' },
   isphoneverify: { type: String, default: 'no' },
   password: { type: String, required: false },
   role: { type: String, default: 'user' },
