@@ -19,7 +19,10 @@ import useSocket from '@/lib/socket';
 const { socket } = useSocket();
 
 const formSchema = z.object({
-  phonenumber: z.string()
+  nickname: z
+  .string()
+  .min(1, "This field is required.")
+  .regex(/^[A-Za-z!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?`~ -]{1,8}$/, "Invalid input. Must be 1-8 characters and no numbers.")
 });
 
 const userInfoStr = localStorage.getItem('userinfo');
@@ -85,7 +88,7 @@ export default function UserRegistrationForm() {
       try {
         const response = await userRegister({
           category: selectedOption,
-          phonenumber: data.phonenumber,
+          nickname: data.nickname,
           token: userInfo.token,
           status: 'Processing',
           id: userInfo.userId
@@ -130,7 +133,7 @@ export default function UserRegistrationForm() {
 
   const userRegister = async (userData: {
     category: string;
-    phonenumber: string;
+    nickname: string;
     token: string;
     status: string;
     id: string;
@@ -167,7 +170,7 @@ export default function UserRegistrationForm() {
         >
           <div className="grid grid-cols-3 gap-5">
             <div className="flex flex-col">
-              <label className="text-sm font-medium">Category</label>
+              <label className="text-sm font-medium">Game</label>
               <select
                 id="FireKirin"
                 value={selectedOption}
@@ -183,23 +186,27 @@ export default function UserRegistrationForm() {
                 <option value="YOLO">YOLO</option>
                 <option value="UltraPanda">UltraPanda</option>
                 <option value="VBlink">VBlink</option>
+                <option value="Blue Dragon">Blue Dragon</option>
+                <option value="Game Room">Game Room</option>
+                <option value="Mr. All In One">Mr. All In One</option>
               </select>
             </div>
             <FormField
               control={form.control}
-              name="phonenumber"
+              name="nickname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel>Nickname</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
                       disabled={loading || cooldown}
+                      placeholder='1-8 characters, no numbers'
                       {...field}
-                      onInput={(e) => {
-                        const target = e.target as HTMLInputElement;
-                        target.value = target.value.replace(/[^0-9]/g, '');
-                      }}
+                      // onInput={(e) => {
+                      //   const target = e.target as HTMLInputElement;
+                      //   target.value = target.value.replace(/[^0-9]/g, '');
+                      // }}
                     />
                   </FormControl>
                   <FormMessage />

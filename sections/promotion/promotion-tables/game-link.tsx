@@ -2,6 +2,22 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Slider from 'react-slick';
+
+const sliderSettings = {
+  dots: false,
+  infinite: true,
+  arrows: false,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  autoplay: true,
+  adaptiveHeight: false,
+  // appendDots: true,
+  speed: 3000,
+  autoplaySpeed: 4000,
+  cssEase: "linear",
+}
+
 
 export const GameLink = () => {
   const router = useRouter();
@@ -35,6 +51,7 @@ export const GameLink = () => {
   };
   return (
     <div className="flex w-full overflow-x-auto lg:justify-center">
+      <Slider {...sliderSettings} className='grid w-full'>
       <Image
         src="/Glogo 1.png"
         width={100}
@@ -107,6 +124,7 @@ export const GameLink = () => {
         className="hover:cursor-pointer hover:opacity-85"
         onClick={vblink}
       />
+      </Slider>
     </div>
   );
 };

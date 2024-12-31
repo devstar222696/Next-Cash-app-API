@@ -5,9 +5,9 @@ import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import UserredeemForm from '../user-redeem-tables/user-redeem-fron';
 import UserredeemTable from '../user-redeem-tables';
-import { GameLink } from '../user-redeem-tables/game-link';
 import TagId from '@/components/ui/tagId';
 import { useState } from 'react';
+import { GameLink } from '@/sections/promotion/promotion-tables/game-link';
 
 const breadcrumbItems = [
   { title: 'Mypage', link: '/mypage' },

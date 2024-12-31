@@ -3,7 +3,7 @@ import dbConnect from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
-  const { token, category, phonenumber, status, id } = await request.json();
+  const { token, category, phonenumber, status, id, nickname } = await request.json();
   await dbConnect();
 
   try {
@@ -15,6 +15,7 @@ export const POST = async (request: NextRequest) => {
       user.register.push({
         category: category,
         phonenumber: phonenumber,
+        nickname: nickname,
         status: status,
         id: id
       });

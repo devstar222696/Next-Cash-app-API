@@ -78,3 +78,7 @@
     height: 100dvh;
   }
 }
+
+.promo-image {
+  max-height: 700px;
+}

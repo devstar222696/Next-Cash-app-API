@@ -3,10 +3,10 @@ import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { columns } from './columns';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { GameLink } from './game-link';
 import MyPageTableView from './mypage-table';
 import { Button } from '@/components/ui/button';
 import TagId from '@/components/ui/tagId';
+import { GameLink } from '@/sections/promotion/promotion-tables/game-link';
 
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
