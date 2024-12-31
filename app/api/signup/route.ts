@@ -12,7 +12,7 @@ export const POST = async (request: NextRequest) => {
   const ip = rawIp.split(',')[0].replace(/^.*:ffff:/, '');
 
   try {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email, phone: phoneno });
 
     if (!user) {
       const newCode = await generateUniqueTag();
