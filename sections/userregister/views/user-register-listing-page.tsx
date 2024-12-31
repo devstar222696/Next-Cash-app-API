@@ -30,12 +30,12 @@ export default function UserRegisterListingPage({}: TEmployeeListingPage) {
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
-        <Breadcrumbs items={breadcrumbItems} />
+        {/*<Breadcrumbs items={breadcrumbItems} /> */}
 
         {/* 헤딩 영역 */}
-        <div className="flex items-start justify-between">
+        {/*<div className="flex items-start justify-between">
           <Heading title={`Register`} description="" />
-        </div>
+        </div>*/}
 
         {/* 안내문 영역 */}
         <div className="text-center">
