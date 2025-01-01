@@ -20,7 +20,8 @@ export const POST = async (request: NextRequest) => {
         { status: 404 }
       );
     }
-
+    console.log('Sending sms to', phoneno, ACCOUNT_SID, AUTH_TOKEN, SERVICE_ID);
+    
     const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
 
     // Send the SMS
