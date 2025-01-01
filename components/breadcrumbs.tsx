@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Slash } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { Fragment, useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Fragment } from 'react';
 import Slider from "react-slick";
 
 type BreadcrumbItemProps = {
@@ -23,23 +23,23 @@ const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 const sliderSettings = {
-    dots: true,
-    infinite: true,
-    arrows: false,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    adaptiveHeight: false,
-    // appendDots: true,
-    speed: 2000,
-    autoplaySpeed: 2500,
-    cssEase: "linear",
-    appendDots: (dots: any) => (
-      <div
-        className='p-0 m-0 text-black dark:text-white'
-      >
-        <ul style={{ margin: "0px" }}> {dots} </ul>
-      </div>)
+  dots: true,
+  infinite: true,
+  arrows: false,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  adaptiveHeight: false,
+  // appendDots: true,
+  speed: 2000,
+  autoplaySpeed: 2500,
+  cssEase: "linear",
+  appendDots: (dots: any) => (
+    <div
+      className='p-0 m-0 text-black dark:text-white'
+    >
+      <ul style={{ margin: "0px" }}> {dots} </ul>
+    </div>)
 }
 
 const posterImages = [
@@ -48,12 +48,12 @@ const posterImages = [
   "/promo/main_poster_3.png",
   "/promo/main_poster_4.png",
   "/promo/main_poster_5.png",
-  
+
 ]
 export function Breadcrumbs({ items }: { items: BreadcrumbItemProps[] }) {
-
   const router = useRouter();
-  
+  const pathName = usePathname();
+
   const chatting = () => {
     router.push('/mypage/chat');
   };
@@ -62,10 +62,10 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItemProps[] }) {
     <Breadcrumb>
       {userInfo.role === "user" ?
         <div>
-          <Slider {...sliderSettings} className='grid mb-10'>
+          {pathName === '/mypage/promotion' ? <Slider {...sliderSettings} className='grid mb-10'>
             {posterImages.map((img, index) => <img src={img} key={img} width={1000} height={500} className="w-full promo-image" alt="cover" />)}
-          </Slider>
-          
+          </Slider> : <Image src="/promo/web-cover.png" width={1000} height={500} className="mb-10 w-full" alt="cover" />}
+
           <Image
             src="/chat-image.png"
             width={70}

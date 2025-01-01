@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const formSchema = z.object({
   amount: z.any()
@@ -127,7 +128,7 @@ export default function UserWithdrawalForm() {
         }
 
         localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
-        
+
         // const response = await userWithdrawal({
         //   token: userInfo.token,
         //   id: userInfo.userId,
@@ -203,18 +204,18 @@ export default function UserWithdrawalForm() {
     </option>
   ));
 
-  const ok = () => {};
+  const ok = () => { };
 
   return (
     <div>
-      <div className="w-full rounded-xl border border-4 border-solid border-gray-300 bg-indigo-600 p-3">
-        <p className="text-center font-semibold text-red-500">※Warning※</p>
-        <p className="mt-2 text-center text-sm font-semibold text-white ">
-          Free Player-Users can request a withdrawal if they have a spin record
-          of $100 or more. And Daily Minimum and Maximum $100.
-          <br /> Deposited Player - Minimum request $50. Maximum $3, 000 for
-          Daily.
-        </p>
+      <div className="flex justify-center w-full">
+        <Image
+          src="/IH_register_3.png"
+          width={500}
+          height={200}
+          className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
+          alt="redeem"
+        ></Image>
       </div>
       <br />
       <Form {...form}>
