@@ -163,13 +163,13 @@ export const userNavItems: NavItem[] = [
     label: 'register'
   },
   {
-    title: 'Deposit',
+    title: 'Recharge',
     href: '/mypage/deposit',
     icon: 'wallet',
     label: 'redeem'
   },
   {
-    title: 'Withdrawal',
+    title: 'Redeem',
     href: '/mypage/withdrawal',
     icon: 'wallet2',
     label: 'withdrawal'
