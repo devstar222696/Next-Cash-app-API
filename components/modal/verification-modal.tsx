@@ -14,13 +14,17 @@ interface VerificationModalProps {
   onClose: () => void;
   loading: boolean;
   phoneNumber: string;
+  title?: string;
+  setNumber:(arg: string)=> void
 }
 
 export const VerificationModal: React.FC<VerificationModalProps> = ({
+  title = 'login',
   isOpen,
   onClose,
   loading,
   phoneNumber,
+  setNumber
 }) => {
   const router = useRouter();
   const [verification, setVerification] = useState(false);
@@ -28,6 +32,9 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [resendDisabled, setResendDisabled] = useState(false);
   const [timer, setTimer] = useState(60);
+  const [isValid, setIsValid] = useState<boolean | null>(null);
+  const [errorCode, setErrorCode] = useState<number | null>(null);
+  const [notice, setNotice] = useState<string>('');
 
   useEffect(() => {
     if (!isOpen) {
@@ -68,21 +75,32 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
     setError(null);
     return true;
   };
-
+  
+  const errorMap = [
+    'Invalid number',
+    'Invalid country code',
+    'Too short',
+    'Too long',
+    'Invalid number'
+  ];
+  
   const handleSendVerificationCode = async () => {
+    if (!isValid)  {
+      const errorMessage = errorMap[errorCode || 0] || 'Invalid number';
+      setNotice(`${errorMessage}`);
+    }
     try {
       setResendDisabled(true)
       let response = await sendSMSPhone({ phoneno: phoneNumber });
       let data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || 'Verification failed.');
+        throw new Error(data.error || data.message || 'Verification failed.');
       }
       setVerification(true);
       toast({
         title: 'Successful!',
         description: data.message
       });
-      return await response.json();
     } catch (error:any) {
       toast({ title: 'Error', description: error.message });
       setResendDisabled(false);
@@ -95,7 +113,7 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
       let response = await sendSMSPhone({ phoneno: phoneNumber });
       let data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || 'Verification failed.');
+        throw new Error(data.error || data.message || 'Verification failed.');
       }
       toast({
         title: 'Successful!',
@@ -114,10 +132,15 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
       let response = await sendCodeVerification({ phoneno: phoneNumber, phonecode: phoneCode });
        let data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || 'Verification failed.');
+        throw new Error(data.error || data.message || 'Verification failed.');
       }
       toast({ title: 'Successful!', description: 'Phone number verified successfully!' });
-      router.push('/sendemail');
+      if(title == 'signup'){
+        router.push('/sendemail');
+      }else{
+        router.push('/');
+      }
+      onClose()
     } catch (error:any) {
       toast({ title: 'Error', description: error.message });
     }
@@ -126,13 +149,21 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
     >
       <div className='text-center sm:text-xl text-sm mb-6'>Enter code sent to your number</div>
-      <div className="flex flex-col gap-2 mb-2">
-      <PhoneInput value={phoneNumber} disabled={true} />
+      <div className="flex flex-col gap-4 mb-2">
+      <PhoneInput
+              value={phoneNumber}
+              disabled={title == 'signup'}
+              onChangeNumber={setNumber}
+              onChangeValidity={setIsValid}
+              onChangeErrorCode={setErrorCode}
+            />
+              <div className="w-full">
+            {notice && <div className="text-destructive">{notice}</div>}
+          </div>
         {verification ? (
-          <>
+          <div className='mb-2'>
             <Input
               placeholder="Code"
               value={phoneCode}
@@ -142,7 +173,7 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
               }}
             />
             {error && <div className="text-destructive text-sm">{error}</div>}
-          </>
+          </div>
         ) : null}
       </div>
       <div className='flex flex-col gap-2 mt-6'>

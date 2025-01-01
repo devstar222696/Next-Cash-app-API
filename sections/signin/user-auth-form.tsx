@@ -19,13 +19,14 @@ import { useRouter } from 'next/navigation';
 import GoogleSignInButton from './google-auth-button';
 import EmailSignInButton from './email-signup-button copy';
 import Link from 'next/link';
+import { VerificationModal } from '@/components/modal/verification-modal';
 
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
   password: z
-  .string()
-  .min(6, { message: 'Password must be at least 6 characters' })
+    .string()
+    .min(6, { message: 'Password must be at least 6 characters' })
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
@@ -35,6 +36,8 @@ export default function UserAuthForm() {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
   const [pop, setPop] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [number, setNumber] = useState<string>('');
 
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema)
@@ -47,7 +50,6 @@ export default function UserAuthForm() {
           email: data.email,
           password: data.password
         });
-
         if (response.user.role === 'admin') {
           router.push('/main');
         } else {
@@ -63,7 +65,8 @@ export default function UserAuthForm() {
           title: 'SignIn Successful!',
           description: 'Welcome! Your signin has been success.'
         });
-      } catch (error) {
+      } catch (error: any) {
+            setIsOpen(true)
         console.error('Signup error:', error);
       }
     });
@@ -100,10 +103,10 @@ export default function UserAuthForm() {
     }
   };
 
- 
-  const ok = () => {};
 
-  const handleForgotPwd=async ()=>{
+  const ok = () => { };
+
+  const handleForgotPwd = async () => {
     router.push('forgotpassword')
   }
 
@@ -165,7 +168,7 @@ export default function UserAuthForm() {
       </div>
       <EmailSignInButton />
       {/* <GoogleSignInButton /> */}
-     {/*   <div>
+      {/*   <div>
         <p className="px-8 text-center text-sm text-muted-foreground">
             <Link
               href="/opesn-in-browser"
@@ -175,6 +178,13 @@ export default function UserAuthForm() {
             </Link>
           </p>
         </div> */}
+      <VerificationModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        loading={loading}
+        phoneNumber={number}
+        setNumber={setNumber}
+      />
     </>
   );
 }

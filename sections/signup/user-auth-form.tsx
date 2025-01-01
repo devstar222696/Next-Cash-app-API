@@ -34,7 +34,7 @@ const formSchema = z
     path: ['confirmPassword']
   });
 
-  
+
 const errorMap = [
   'Invalid number',
   'Invalid country code',
@@ -59,21 +59,21 @@ export default function UserAuthForm() {
   });
 
   const onSubmit = async (data: UserFormValue) => {
-    if (!isValid)  {
+    if (!isValid) {
       const errorMessage = errorMap[errorCode || 0] || 'Invalid number';
       setNotice(`${errorMessage}`);
     }
     startTransition(async () => {
       try {
-        if(number){
+        if (isValid) {
           const response = await signUp({
             firstname: data.firstname,
             lastname: data.lastname,
             email: data.email,
             password: data.password,
-            phoneno:number?.toString()
+            phoneno: number?.toString()
           });
-  
+
           if (response.error) {
             // Handle error (e.g. show error message)
             console.error('Signup error:', response.error);
@@ -82,6 +82,7 @@ export default function UserAuthForm() {
           setOpen(true);
           localStorage.setItem('verifyemail', JSON.stringify(response.email));
         }
+
       } catch (error) {
         // Handle errors that do not come from the response
         console.error('Signup error:', error);
@@ -129,8 +130,8 @@ export default function UserAuthForm() {
     }
   };
 
-  const ok = () => {};
-  
+  const ok = () => { };
+
   return (
     <>
       <Form {...form}>
@@ -177,7 +178,7 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-        <FormItem>
+          <FormItem>
             <FormLabel>Phone number</FormLabel>
             <PhoneInput
               value={number}
@@ -238,6 +239,8 @@ export default function UserAuthForm() {
         onClose={() => setOpen(false)}
         loading={loading}
         phoneNumber={number}
+        title="signup"
+        setNumber={setNumber}
       />
     </>
   );
