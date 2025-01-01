@@ -5,6 +5,7 @@ import twilio from 'twilio';
 
 const ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID as string;
 const AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN as string;
+const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
 const SERVICE_ID = process.env.TWILIO_SERVICE_ID as string;
 
 export const POST = async (request: NextRequest) => {
@@ -21,8 +22,6 @@ export const POST = async (request: NextRequest) => {
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
-
-    const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
 
     const verificationCheck = await client.verify.v2
     .services(SERVICE_ID)
