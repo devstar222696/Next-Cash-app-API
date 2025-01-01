@@ -219,7 +219,7 @@ export default function UserRegistrationForm() {
               className="ml-auto mt-8 w-full text-white"
               handleClick={ok}
             >
-              {cooldown ? `Waiting (${remainingTime}s)` : 'Send Code'}
+              {cooldown ? `Waiting (${remainingTime}s)` : 'Request'}
             </Button>
           </div>
         </form>

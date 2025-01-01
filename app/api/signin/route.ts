@@ -3,6 +3,7 @@ import dbConnect from '@/lib/dbConnect';
 import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
+import { ErrorCodes } from '@/types';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
@@ -20,9 +21,14 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    if (user.verifystatus !== 'yes') {
-      return NextResponse.json({ error: 'User not verified' }, { status: 403 });
+    if (user.isphoneverify !== 'yes') {
+      return NextResponse.json({ error: 'Phone number not verified. Please verify your phone number first.', errCode: ErrorCodes.phoneNotVerified }, { status: 403 });
     }
+
+    if (user.verifystatus !== 'yes') {
+      return NextResponse.json({ error: 'User not verified', errCode: ErrorCodes.emailNotVerified }, { status: 403 });
+    }
+
 
     if (user.action !== 'yes') {
       return NextResponse.json(

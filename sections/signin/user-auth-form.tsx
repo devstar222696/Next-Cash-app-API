@@ -19,13 +19,15 @@ import { useRouter } from 'next/navigation';
 import GoogleSignInButton from './google-auth-button';
 import EmailSignInButton from './email-signup-button copy';
 import Link from 'next/link';
+import { VerificationModal } from '@/components/modal/verification-modal';
+import { ErrorCodes } from '@/types';
 
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
   password: z
-  .string()
-  .min(6, { message: 'Password must be at least 6 characters' })
+    .string()
+    .min(6, { message: 'Password must be at least 6 characters' })
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
@@ -35,6 +37,7 @@ export default function UserAuthForm() {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
   const [pop, setPop] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema)
@@ -48,22 +51,29 @@ export default function UserAuthForm() {
           password: data.password
         });
 
-        if (response.user.role === 'admin') {
-          router.push('/main');
+        if (!response.error) {
+          if (response.user.role === 'admin') {
+            router.push('/main');
+          } else {
+            router.push('/mypage');
+          }
+          localStorage.setItem('userinfo', JSON.stringify(response.user));
+          socket?.emit('register', {
+            userId: response.user.userId,
+            role: response.user.role
+          });
+  
+          toast({
+            title: 'SignIn Successful!',
+            description: 'Welcome! Your signin has been success.'
+          });
         } else {
-          router.push('/mypage');
+          const errorCode = response.errorCode;
+          if (errorCode === ErrorCodes.phoneNotVerified) {
+            setIsOpen(true);
+          }
         }
-        localStorage.setItem('userinfo', JSON.stringify(response.user));
-        socket?.emit('register', {
-          userId: response.user.userId,
-          role: response.user.role
-        });
-
-        toast({
-          title: 'SignIn Successful!',
-          description: 'Welcome! Your signin has been success.'
-        });
-      } catch (error) {
+      } catch (error: any) {
         console.error('Signup error:', error);
       }
     });
@@ -86,11 +96,12 @@ export default function UserAuthForm() {
 
       if (!response.ok) {
         const errorData = await response.json();
+        const errorMessage = errorData.error || 'Your email or password is incorrect! Please try again.';
         toast({
           title: 'SignIn Failed!',
-          description: 'Your email or password is incorrect! Please try again.'
+          description: errorMessage
         });
-        return { error: errorData.message || 'Signin failed' };
+        return { error: errorData.error || 'Signin failed', errorCode: errorData.errCode || null };
       }
 
       return await response.json();
@@ -100,10 +111,10 @@ export default function UserAuthForm() {
     }
   };
 
- 
-  const ok = () => {};
 
-  const handleForgotPwd=async ()=>{
+  const ok = () => { };
+
+  const handleForgotPwd = async () => {
     router.push('forgotpassword')
   }
 
@@ -165,7 +176,7 @@ export default function UserAuthForm() {
       </div>
       <EmailSignInButton />
       {/* <GoogleSignInButton /> */}
-     {/*   <div>
+      {/*   <div>
         <p className="px-8 text-center text-sm text-muted-foreground">
             <Link
               href="/opesn-in-browser"
@@ -175,6 +186,10 @@ export default function UserAuthForm() {
             </Link>
           </p>
         </div> */}
+      <VerificationModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </>
   );
 }

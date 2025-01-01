@@ -40,3 +40,8 @@ export enum PaymentTypes {
   Venmo = 'Venmo',
   Bitcoin = 'Bitcoin',
 }
+
+export const ErrorCodes = {
+  phoneNotVerified: 'PHONE_NUMBER_NOT_VERIFIED',
+  emailNotVerified: 'EMAIL_NOT_VERIFIED',
+}

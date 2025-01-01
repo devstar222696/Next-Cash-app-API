@@ -5,14 +5,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { generateUniqueTag } from '@/lib/user';
 
 export const POST = async (request: NextRequest) => {
-  const { firstname, lastname, email, password } = await request.json();
+  const { firstname, lastname, email, password, phoneno } = await request.json();
   await dbConnect();
   
   const rawIp = request.headers.get('x-forwarded-for') || request.ip || '0.0.0.0';
   const ip = rawIp.split(',')[0].replace(/^.*:ffff:/, '');
 
   try {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email, phone: phoneno });
 
     if (!user) {
       const newCode = await generateUniqueTag();
@@ -22,6 +22,7 @@ export const POST = async (request: NextRequest) => {
         firstname,
         lastname,
         email,
+        phoneno,
         password: hashedPassword,
         ip, 
         tag: newCode
@@ -33,7 +34,8 @@ export const POST = async (request: NextRequest) => {
         return NextResponse.json(
           {
             ok: 'User created',
-            email
+            email,
+            phoneno,
           },
           { status: 201 }
         );

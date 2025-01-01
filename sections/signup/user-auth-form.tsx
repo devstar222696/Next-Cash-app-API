@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -11,11 +10,14 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { toast } from '@/components/ui/use-toast';
 import GoogleSignUpButton from './google-auth-button';
+import { useState, useTransition } from 'react';
+import { VerificationModal } from '@/components/modal/verification-modal';
+import 'intl-tel-input/build/css/intlTelInput.css';
+import PhoneInput from '@/components/ui/phoneInput';
 
 const formSchema = z
   .object({
@@ -25,41 +27,62 @@ const formSchema = z
       .min(6, { message: 'Password must be at least 6 characters' }),
     confirmPassword: z.string(),
     firstname: z.string(),
-    lastname: z.string()
+    lastname: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ['confirmPassword']
   });
 
+
+const errorMap = [
+  'Invalid number',
+  'Invalid country code',
+  'Too short',
+  'Too long',
+  'Invalid number'
+];
+
 type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
-  const router = useRouter();
   const [loading, startTransition] = useTransition();
+  const [open, setOpen] = useState(false);
+
+  const [isValid, setIsValid] = useState<boolean | null>(null);
+  const [number, setNumber] = useState<string>('');
+  const [errorCode, setErrorCode] = useState<number | null>(null);
+  const [notice, setNotice] = useState<string>('');
+
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema)
   });
 
   const onSubmit = async (data: UserFormValue) => {
+    if (!isValid) {
+      const errorMessage = errorMap[errorCode || 0] || 'Invalid number';
+      setNotice(`${errorMessage}`);
+    }
     startTransition(async () => {
       try {
-        // Replace signIn with your signUp function or API call
-        const response = await signUp({
-          firstname: data.firstname,
-          lastname: data.lastname,
-          email: data.email,
-          password: data.password
-        });
+        if (isValid) {
+          const response = await signUp({
+            firstname: data.firstname,
+            lastname: data.lastname,
+            email: data.email,
+            password: data.password,
+            phoneno: number?.toString()
+          });
 
-        if (response.error) {
-          // Handle error (e.g. show error message)
-          console.error('Signup error:', response.error);
-          return;
+          if (response.error) {
+            // Handle error (e.g. show error message)
+            console.error('Signup error:', response.error);
+            return;
+          }
+          setOpen(true);
+          localStorage.setItem('verifyemail', JSON.stringify(response.email));
         }
 
-        localStorage.setItem('verifyemail', JSON.stringify(response.email));
-        router.push('/sendemail');
       } catch (error) {
         // Handle errors that do not come from the response
         console.error('Signup error:', error);
@@ -67,12 +90,12 @@ export default function UserAuthForm() {
     });
   };
 
-  // Example signUp function
   const signUp = async (userData: {
     firstname: string;
     lastname: string;
     email: string;
     password: string;
+    phoneno: string | null;
   }) => {
     try {
       const response = await fetch('api/signup', {
@@ -90,9 +113,8 @@ export default function UserAuthForm() {
           description: 'Sorry! Your email already exists. Please try again'
         });
 
-        return { error: errorData.message || 'Signup failed' }; // Handle response error
+        return { error: errorData.message || 'Signup failed' };
       }
-
       toast({
         title: 'Successful!',
         description: 'Welcome! Your request has been success.'
@@ -108,8 +130,8 @@ export default function UserAuthForm() {
     }
   };
 
-  const ok = () => {};
-  
+  const ok = () => { };
+
   return (
     <>
       <Form {...form}>
@@ -156,6 +178,19 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
+          <FormItem>
+            <FormLabel>Phone number</FormLabel>
+            <PhoneInput
+              value={number}
+              disabled={loading}
+              onChangeNumber={setNumber}
+              onChangeValidity={setIsValid}
+              onChangeErrorCode={setErrorCode}
+            />
+          </FormItem>
+          <div className="w-full">
+            {notice && <div className="text-destructive">{notice}</div>}
+          </div>
           <FormField
             control={form.control}
             name="password"
@@ -169,7 +204,6 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="confirmPassword"
@@ -200,6 +234,12 @@ export default function UserAuthForm() {
         </div>
       </div>
       <GoogleSignUpButton /> */}
+      <VerificationModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        phoneNumber={number}
+        title="signup"
+      />
     </>
   );
 }
