@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -18,8 +17,7 @@ import GoogleSignUpButton from './google-auth-button';
 import { useState, useTransition } from 'react';
 import { VerificationModal } from '@/components/modal/verification-modal';
 import 'intl-tel-input/build/css/intlTelInput.css';
-import IntlTelInput from 'intl-tel-input/react';
-import { useEffect, useRef } from 'react';
+import PhoneInput from '@/components/ui/phoneInput';
 
 const formSchema = z
   .object({
@@ -36,26 +34,35 @@ const formSchema = z
     path: ['confirmPassword']
   });
 
+  
+const errorMap = [
+  'Invalid number',
+  'Invalid country code',
+  'Too short',
+  'Too long',
+  'Invalid number'
+];
+
 type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
-  const router = useRouter();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
-  const phoneInputRef = useRef<HTMLInputElement | null>(null);
-  const intlTelInputInstance = useRef<any>(null);
-  console.log('phoneInputRef: ', phoneInputRef?.current?.value);
 
   const [isValid, setIsValid] = useState<boolean | null>(null);
-  const [number, setNumber] = useState<string | null>(null);
+  const [number, setNumber] = useState<string>('');
   const [errorCode, setErrorCode] = useState<number | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string>('');
 
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema)
   });
 
   const onSubmit = async (data: UserFormValue) => {
+    if (!isValid)  {
+      const errorMessage = errorMap[errorCode || 0] || 'Invalid number';
+      setNotice(`${errorMessage}`);
+    }
     startTransition(async () => {
       try {
         if(number){
@@ -105,7 +112,7 @@ export default function UserAuthForm() {
           description: 'Sorry! Your email already exists. Please try again'
         });
 
-        return { error: errorData.message || 'Signup failed' }; // Handle response error
+        return { error: errorData.message || 'Signup failed' };
       }
       toast({
         title: 'Successful!',
@@ -171,27 +178,17 @@ export default function UserAuthForm() {
             )}
           />
         <FormItem>
-            <FormLabel>Phone no</FormLabel>
-            <div className='phone-input'>
-              <IntlTelInput
-                onChangeNumber={setNumber}
-                onChangeValidity={setIsValid}
-                onChangeErrorCode={setErrorCode}
-                inputProps={{
-                  className:
-                    'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
-                }}
-                // any initialisation options from the readme will work here
-                initOptions={{
-                  initialCountry: 'us',
-                  loadUtils: () =>
-                    import('intl-tel-input/build/js/utils.js' as string)
-                }}
-              />
-            </div>
+            <FormLabel>Phone number</FormLabel>
+            <PhoneInput
+              value={number}
+              disabled={loading}
+              onChangeNumber={setNumber}
+              onChangeValidity={setIsValid}
+              onChangeErrorCode={setErrorCode}
+            />
           </FormItem>
           <div className="w-full">
-            {notice && <div className="notice">{notice}</div>}
+            {notice && <div className="text-destructive">{notice}</div>}
           </div>
           <FormField
             control={form.control}
@@ -206,7 +203,6 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="confirmPassword"
@@ -241,7 +237,7 @@ export default function UserAuthForm() {
         isOpen={open}
         onClose={() => setOpen(false)}
         loading={loading}
-        phoneNumber={number?.toString() || ''}
+        phoneNumber={number}
       />
     </>
   );
