@@ -60,6 +60,10 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
     enableHiding: false
   },
   {
+    accessorKey: 'nickname',
+    header: 'NICKNAME'
+  },
+  {
     accessorKey: 'tag',
     header: 'TAG NUMBER',
     cell: ({ row }) => <span>{row.original.user.tag}</span>

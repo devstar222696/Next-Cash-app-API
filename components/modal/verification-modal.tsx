@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { toast } from '../ui/use-toast';
@@ -12,29 +12,35 @@ import { sendCodeVerification, sendSMSPhone } from '@/app/utils/phonecodeverify'
 interface VerificationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  loading: boolean;
-  phoneNumber: string;
+  phoneNumber?: string;
   title?: string;
-  setNumber:(arg: string)=> void
 }
+  
+const errorMap = [
+  'Invalid number',
+  'Invalid country code',
+  'Too short',
+  'Too long',
+  'Invalid number'
+];
 
 export const VerificationModal: React.FC<VerificationModalProps> = ({
   title = 'login',
   isOpen,
   onClose,
-  loading,
   phoneNumber,
-  setNumber
 }) => {
   const router = useRouter();
   const [verification, setVerification] = useState(false);
   const [phoneCode, setPhoneCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [resendDisabled, setResendDisabled] = useState(false);
+  const [apiLoading, setApiLoading] = useState(false);
   const [timer, setTimer] = useState(60);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [errorCode, setErrorCode] = useState<number | null>(null);
   const [notice, setNotice] = useState<string>('');
+  const [number, setNumber] = useState<string>('');
 
   useEffect(() => {
     if (!isOpen) {
@@ -43,8 +49,46 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
       setError(null);
       setResendDisabled(false);
       setTimer(60);
+      setApiLoading(false);
     }
   }, [isOpen]);
+
+  const handleSendVerificationCode = useCallback(async () => {
+    if (!isValid)  {
+      const errorMessage = errorMap[errorCode || 0] || 'Invalid number';
+      console.log('setNotice', errorMessage);
+      
+      setNotice(`${errorMessage}`);
+      return false;
+    }
+    try {
+      setApiLoading(true);
+      setResendDisabled(true)
+      let response = await sendSMSPhone({ phoneno: number });
+      let data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || data.message || 'Verification failed.');
+      }
+      setVerification(true);
+      toast({
+        title: 'Successful!',
+        description: data.message
+      });
+    } catch (error:any) {
+      toast({ title: 'Error', description: error.message });
+      setResendDisabled(false);
+    } finally {
+      setApiLoading(false);
+    }
+  }, [isValid, errorCode, number]);
+
+  useEffect(() => {
+    if (phoneNumber && isOpen) {
+      setNumber(phoneNumber);
+      handleSendVerificationCode()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phoneNumber, isOpen, handleSendVerificationCode]);
 
   useEffect(() => {
     let countdown: NodeJS.Timeout;
@@ -75,42 +119,18 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
     setError(null);
     return true;
   };
-  
-  const errorMap = [
-    'Invalid number',
-    'Invalid country code',
-    'Too short',
-    'Too long',
-    'Invalid number'
-  ];
-  
-  const handleSendVerificationCode = async () => {
-    if (!isValid)  {
-      const errorMessage = errorMap[errorCode || 0] || 'Invalid number';
-      setNotice(`${errorMessage}`);
-    }
-    try {
-      setResendDisabled(true)
-      let response = await sendSMSPhone({ phoneno: phoneNumber });
-      let data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || data.message || 'Verification failed.');
-      }
-      setVerification(true);
-      toast({
-        title: 'Successful!',
-        description: data.message
-      });
-    } catch (error:any) {
-      toast({ title: 'Error', description: error.message });
-      setResendDisabled(false);
-    }
-  };
+
 
   const handleReSendVerificationCode = async () => {
     try {
+      if (!isValid)  {
+        const errorMessage = errorMap[errorCode || 0] || 'Invalid number';
+        setNotice(`${errorMessage}`);
+        return false;
+      }
+      setApiLoading(true);
       setResendDisabled(true);
-      let response = await sendSMSPhone({ phoneno: phoneNumber });
+      let response = await sendSMSPhone({ phoneno: number });
       let data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || data.message || 'Verification failed.');
@@ -123,13 +143,16 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
     } catch (error:any) {
       toast({ title: 'Error', description: error.message });
       setResendDisabled(false);
+    } finally {
+      setApiLoading(false);
     }
   };
 
-  const handleVerificationCode = async () => {
+  const handleVerifyCode = async () => {
     if (!validatePhoneCode(phoneCode)) return;
     try {
-      let response = await sendCodeVerification({ phoneno: phoneNumber, phonecode: phoneCode });
+      setApiLoading(true);
+      let response = await sendCodeVerification({ phoneno: number, phonecode: phoneCode });
        let data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || data.message || 'Verification failed.');
@@ -143,24 +166,27 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
       onClose()
     } catch (error:any) {
       toast({ title: 'Error', description: error.message });
+    } finally {
+      setApiLoading(false);
     }
   };
 
   return (
     <Modal
       isOpen={isOpen}
+      onClose={onClose}
     >
       <div className='text-center sm:text-xl text-sm mb-6'>Enter code sent to your number</div>
       <div className="flex flex-col gap-4 mb-2">
       <PhoneInput
-              value={phoneNumber}
+              value={number}
               disabled={title == 'signup'}
               onChangeNumber={setNumber}
               onChangeValidity={setIsValid}
               onChangeErrorCode={setErrorCode}
             />
               <div className="w-full">
-            {notice && <div className="text-destructive">{notice}</div>}
+            {notice && !isValid && <div className="text-destructive">{notice}</div>}
           </div>
         {verification ? (
           <div className='mb-2'>
@@ -182,12 +208,13 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
             <Button
               className="ml-auto bg-blue-500 w-full"
               type="submit"
-              handleClick={handleVerificationCode}
+              disabled={apiLoading}
+              handleClick={handleVerifyCode}
             >
               Verify
             </Button>
             <Button
-              disabled={resendDisabled || loading}
+              disabled={resendDisabled || apiLoading}
               className="ml-auto bg-blue-500 w-full"
               type="submit"
               handleClick={handleReSendVerificationCode}
@@ -204,6 +231,7 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
           <Button
             className="ml-auto bg-blue-500 w-full"
             type="submit"
+            disabled={apiLoading}
             handleClick={handleSendVerificationCode}
           >
             Send Verification Code

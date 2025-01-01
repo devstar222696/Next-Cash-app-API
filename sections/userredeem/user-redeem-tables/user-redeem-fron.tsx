@@ -274,7 +274,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
 
   console.log(selectedPayment);
 
-  const ok = () => {};
+  const ok = () => { };
 
   return (
     <div>

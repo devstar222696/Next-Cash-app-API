@@ -78,20 +78,26 @@
     height: 100dvh;
   }
 }
-
 .phone-input .iti {
   display: block;
-  }
+}
 
-  .phone-input .iti__search-input{
-    padding: 10px;
-  }
-    .dark  .phone-input .iti__dropdown-content{
-      background-color: gray;
-    }
-    .dark  .phone-input .iti__country-name{
-      color: azure;
-    }
-    .dark  .phone-input .iti__dial-code{
-      color: azure;
-    }
+.phone-input .iti__search-input {
+  padding: 10px;
+}
+
+.dark .phone-input .iti__dropdown-content {
+  background-color: gray;
+}
+
+.dark .phone-input .iti__country-name {
+  color: azure;
+}
+
+.dark .phone-input .iti__dial-code {
+  color: azure;
+}
+
+.promo-image {
+  max-height: 700px;
+}

@@ -47,9 +47,9 @@ export default function PromotionPage({ tag }: any) {
         <Image src="/promo/promo2.png" width={1000} height={1000} alt="ad" />
       </div> */}
       <div className="grid w-full grid-cols-1 place-items-center">
-        <div className="justify-items-center lg:flex lg:justify-center">
+        <div className="grid grid-cols-2 gap-2 justify-items-center lg:flex lg:justify-center">
           <Image
-            src="/register.png"
+            src="/my-page/button_1.png"
             width={300}
             height={5}
             className="hover:cursor-pointer hover:opacity-80"
@@ -57,7 +57,7 @@ export default function PromotionPage({ tag }: any) {
             alt="register"
           ></Image>
           <Image
-            src="/recharge.png"
+            src="/my-page/button_2.png"
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
@@ -65,11 +65,18 @@ export default function PromotionPage({ tag }: any) {
             alt="recharge"
           ></Image>
           <Image
-            src="/redeem.png"
+            src="/my-page/button_3.png"
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
             onClick={redeem}
+            alt="redeem"
+          ></Image>
+          <Image
+            src="/my-page/button_4.png"
+            width={300}
+            height={5}
+            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
             alt="redeem"
           ></Image>
         </div>

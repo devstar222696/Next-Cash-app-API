@@ -4,7 +4,8 @@ import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import UserWithdrawalForm from '../withdrawal-tables/user-withrawal-fron';
 import UserWithdrawalTable from '../withdrawal-tables';
-import { GameLink } from '../withdrawal-tables/game-link';
+import { GameLink } from '@/sections/promotion/promotion-tables/game-link';
+
 
 const breadcrumbItems = [
   { title: 'MyPage', link: '/mypage' },

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { columns } from './columns';
@@ -6,7 +7,8 @@ import UserRegisterTableView from './user-register-table';
 import UserRegistrationForm from './user-register-fron';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { GameLink } from './game-link';
+import { GameLink } from '@/sections/promotion/promotion-tables/game-link';
+import Image from 'next/image';
 
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
@@ -14,15 +16,15 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 export default function UserRegisterTable() {
   const router = useRouter();
   const [data, setData] = useState<(AdminRegisterUsers & UserRegister)[]>([]);
-  const [totalData, setTotalData] = useState<number>(0); 
+  const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
   const limitParam = searchParams.get('limit');
-  
-  const page = Number(pageParam? pageParam : 1);
-  const limit = Number(limitParam? limitParam : 10);
+
+  const page = Number(pageParam ? pageParam : 1);
+  const limit = Number(limitParam ? limitParam : 10);
 
   useEffect(() => {
     async function fetchData() {
@@ -47,8 +49,8 @@ export default function UserRegisterTable() {
         }
 
         const result = await response.json();
-        setData(result.data[0]?.register || []); 
-        setTotalData(result.totalCount); 
+        setData(result.data[0]?.register || []);
+        setTotalData(result.totalCount);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -70,8 +72,19 @@ export default function UserRegisterTable() {
     router.push('/mypage/promotion');
   };
 
+  const recharge = () => {
+    router.push('/mypage/deposit');
+  };
+
+  const redeem = () => {
+    router.push('/mypage/withdrawal');
+  };
+
   return (
     <div className="space-y-4 ">
+      <div className="flex justify-center w-full">
+        <img src="/IH_register_1.png" alt="recharge" />
+      </div>
       <UserRegistrationForm />
       <Button
         className="ml-[20%] w-[60%] border p-6 text-white"
@@ -79,6 +92,26 @@ export default function UserRegisterTable() {
       >
         Check Your Register Info
       </Button>
+      <div className="grid w-full grid-cols-1 place-items-center">
+        <div className="grid grid-cols-2 justify-items-center gap-2 lg:flex lg:justify-center">
+          <Image
+            src="/IH_register_2.png"
+            width={300}
+            height={5}
+            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
+            onClick={recharge}
+            alt="recharge"
+          ></Image>
+          <Image
+            src="/IH_register_3.png"
+            width={300}
+            height={5}
+            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
+            onClick={redeem}
+            alt="redeem"
+          ></Image>
+        </div>
+      </div>
       <p className="text-medium py-5 text-center font-bold">Register History</p>
       <UserRegisterTableView
         columns={columns}

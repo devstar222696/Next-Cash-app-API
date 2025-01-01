@@ -20,6 +20,7 @@ import GoogleSignInButton from './google-auth-button';
 import EmailSignInButton from './email-signup-button copy';
 import Link from 'next/link';
 import { VerificationModal } from '@/components/modal/verification-modal';
+import { ErrorCodes } from '@/types';
 
 
 const formSchema = z.object({
@@ -37,7 +38,6 @@ export default function UserAuthForm() {
   const [loading, startTransition] = useTransition();
   const [pop, setPop] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [number, setNumber] = useState<string>('');
 
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema)
@@ -50,23 +50,30 @@ export default function UserAuthForm() {
           email: data.email,
           password: data.password
         });
-        if (response.user.role === 'admin') {
-          router.push('/main');
-        } else {
-          router.push('/mypage');
-        }
-        localStorage.setItem('userinfo', JSON.stringify(response.user));
-        socket?.emit('register', {
-          userId: response.user.userId,
-          role: response.user.role
-        });
 
-        toast({
-          title: 'SignIn Successful!',
-          description: 'Welcome! Your signin has been success.'
-        });
+        if (!response.error) {
+          if (response.user.role === 'admin') {
+            router.push('/main');
+          } else {
+            router.push('/mypage');
+          }
+          localStorage.setItem('userinfo', JSON.stringify(response.user));
+          socket?.emit('register', {
+            userId: response.user.userId,
+            role: response.user.role
+          });
+  
+          toast({
+            title: 'SignIn Successful!',
+            description: 'Welcome! Your signin has been success.'
+          });
+        } else {
+          const errorCode = response.errorCode;
+          if (errorCode === ErrorCodes.phoneNotVerified) {
+            setIsOpen(true);
+          }
+        }
       } catch (error: any) {
-            setIsOpen(true)
         console.error('Signup error:', error);
       }
     });
@@ -89,11 +96,12 @@ export default function UserAuthForm() {
 
       if (!response.ok) {
         const errorData = await response.json();
+        const errorMessage = errorData.error || 'Your email or password is incorrect! Please try again.';
         toast({
           title: 'SignIn Failed!',
-          description: 'Your email or password is incorrect! Please try again.'
+          description: errorMessage
         });
-        return { error: errorData.message || 'Signin failed' };
+        return { error: errorData.error || 'Signin failed', errorCode: errorData.errCode || null };
       }
 
       return await response.json();
@@ -181,9 +189,6 @@ export default function UserAuthForm() {
       <VerificationModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        loading={loading}
-        phoneNumber={number}
-        setNumber={setNumber}
       />
     </>
   );

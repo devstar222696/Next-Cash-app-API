@@ -14,9 +14,9 @@ export default async function Promotion({}: TEmployeeListingPage) {
     <PageContainer scrollable>
       <div className="space-y-4">
         <Breadcrumbs items={breadcrumbItems} />
-        <div className="flex items-start justify-between">
+        {/*<div className="flex items-start justify-between">
           <Heading title={`Promotion`} description="" />
-        </div>
+        </div> */}
         <Separator />
         <UserPromotionTable />
         <HouseRules />

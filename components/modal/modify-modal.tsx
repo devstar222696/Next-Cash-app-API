@@ -121,6 +121,9 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
           <option value="YOLO">YOLO</option>
           <option value="UltraPanda">UltraPanda</option>
           <option value="VBlink">VBlink</option>
+          <option value="Blue Dragon">Blue Dragon</option>
+          <option value="Game Room">Game Room</option>
+          <option value="Mr. All In One">Mr. All In One</option>
         </select>
         <label className="mt-3 text-sm font-medium">User ID</label>
         <input
