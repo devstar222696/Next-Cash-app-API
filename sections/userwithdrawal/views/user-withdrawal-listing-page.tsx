@@ -18,12 +18,12 @@ export default async function UserWithdrawalListingPage({}: TEmployeeListingPage
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
-        <Breadcrumbs items={breadcrumbItems} />
+        <Breadcrumbs items={breadcrumbItems} showBreadcrumbs={false} />
 
-        <div className="flex items-start justify-between">
+        {/* <div className="flex items-start justify-between">
           <Heading title={`Withdrawal`} description="" />
-        </div>
-        <Separator />
+        </div> */}
+        {/* <Separator /> */}
         <UserWithdrawalForm />
         <p className="text-medium py-5 text-center font-bold">
           Withdrawal History

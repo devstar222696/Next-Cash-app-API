@@ -3,10 +3,10 @@ import dbConnect from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
-  const { loginid, id, passwordcode, category, phonenumber } = await request.json();
+  const { loginid, id, passwordcode, category } = await request.json();
 
 
-  if (!loginid || !passwordcode || !category || !phonenumber || !id) {
+  if (!loginid || !passwordcode || !category || !id) {
     return NextResponse.json(
       { error: 'Missing required fields' },
       { status: 400 }
@@ -25,8 +25,7 @@ export const POST = async (request: NextRequest) => {
         loginid: loginid,
         passwordcode: passwordcode,
         category: category,
-        phonenumber: phonenumber,
-        status: 'preparing',
+        status: 'complete',
         id: id
       });
 

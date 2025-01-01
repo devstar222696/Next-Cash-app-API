@@ -18,6 +18,10 @@ export default function PromotionPage({ tag }: any) {
   const redeem = () => {
     router.push('/mypage/withdrawal');
   };
+  
+  const ourUs = () => {
+    router.push('/mypage/chat');
+  };
 
   const facebook = () => {
     router.push(
@@ -70,7 +74,8 @@ export default function PromotionPage({ tag }: any) {
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
-            alt="redeem"
+            alt="our us"
+            onClick={ourUs}
           ></Image>
         </div>
       </div>

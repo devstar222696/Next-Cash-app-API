@@ -33,10 +33,9 @@ export const columns: ColumnDef<AdminRegisterUsers, UserRegister>[] = [
     header: 'PHONE NUMBER',
     cell: ({ row }) => (
       <span>
-        {row.original.register &&
-        row.original.register.length > 0 &&
-        row.original.register[0].phonenumber
-          ? row.original.register[0].phonenumber
+        {row.original &&
+        row.original.phoneno
+        ? row.original.phoneno
           : 'none'}
       </span>
     )

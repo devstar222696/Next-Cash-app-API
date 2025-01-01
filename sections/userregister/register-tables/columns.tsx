@@ -12,19 +12,23 @@ export const columns: ColumnDef<UserRegister>[] = [
     accessorKey: 'status',
     header: 'STATUS'
   },
+  // {
+  //   id: 'actions',
+  //   header: 'CODE NUMBER',
+  //   cell: ({ row }) => (
+  //     <CodeAction
+  //       codeNumber={row.original.codenumber}
+  //       statusNow={row.original.status}
+  //       registerDate={row.original.date}
+  //     />
+  //   )
+  // },
   {
-    id: 'actions',
-    header: 'CODE NUMBER',
-    cell: ({ row }) => (
-      <CodeAction
-        codeNumber={row.original.codenumber}
-        statusNow={row.original.status}
-        registerDate={row.original.date}
-      />
-    )
+    accessorKey: 'loginid',
+    header: 'LOGIN ID'
   },
   {
-    accessorKey: 'phonenumber',
-    header: 'PHONE NUMBER'
+    accessorKey: 'passwordcode',
+    header: 'PASSWORD'
   }
 ];

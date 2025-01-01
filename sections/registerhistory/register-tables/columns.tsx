@@ -65,6 +65,10 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
     cell: ({ row }) => <span>{row.original.user.tag}</span>
   },
   {
+    accessorKey: 'nickname',
+    header: 'NICKNAME'
+  },
+  {
     accessorKey: 'username',
     header: 'USERNAME',
     cell: ({ row }) => (
@@ -75,7 +79,8 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   },
   {
     accessorKey: 'phonenumber',
-    header: 'PHONE NUMBER'
+    header: 'PHONE NUMBER',
+    cell: ({ row }) => <span>{row.original.user.phoneno}</span>
   },
   {
     accessorKey: 'ip',
@@ -101,19 +106,19 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
       )
     }
   },
-  {
-    id: 'actions',
-    header: 'CODE NUMBER',
-    cell: ({ row }) => (
-      <CodeAction
-      rowId={row.id}
-      registerDate={row.original.date}
-      codeNumber={row.original.codenumber}
-      regiStatus={row.original.status}
-      userName={row.original.user._id}
-    />
-    )
-  },
+  // {
+  //   id: 'actions',
+  //   header: 'CODE NUMBER',
+  //   cell: ({ row }) => (
+  //     <CodeAction
+  //     rowId={row.id}
+  //     registerDate={row.original.date}
+  //     codeNumber={row.original.codenumber}
+  //     regiStatus={row.original.status}
+  //     userName={row.original.user._id}
+  //   />
+  //   )
+  // },
   {
     id: 'actions',
     header: 'ACTION',

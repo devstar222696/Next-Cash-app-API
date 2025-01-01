@@ -97,7 +97,7 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
     header: 'ACTION',
     cell: ({ row }) => (
       <CellAction
-        phoneNumber={row.original.phonenumber}
+        phoneNumber={row.original.phoneno}
         userId={row.original.user._id}
       />
     )

@@ -18,7 +18,6 @@ interface UserData {
   passwordcode: string;
   category: string;
   id: string;
-  phonenumber: string;
 }
 
 export const RegisterModal: React.FC<AlertModalProps> = ({
@@ -34,13 +33,7 @@ export const RegisterModal: React.FC<AlertModalProps> = ({
   const searchParams = useSearchParams();
 
   const id = searchParams.get('id');
-
-  const phoneNumber = data[0]?.register &&
-    data[0]?.register?.length > 0 &&
-    data[0]?.register[0]?.phonenumber
-    ? data[0]?.register[0]?.phonenumber
-    : 'None'
-
+  
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -89,7 +82,6 @@ export const RegisterModal: React.FC<AlertModalProps> = ({
     passwordcode: passwordCode,
     category: selectedOption,
     id: id ? id : '',
-    phonenumber: phoneNumber
   };
 
   const onSubmit = async (userData: UserData) => {

@@ -133,6 +133,10 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     }
   },
   {
+    accessorKey: 'paymentstatus',
+    header: 'Status'
+  },
+  {
     id: 'actions',
     header: 'ACTION',
     cell: ({ row }) => (

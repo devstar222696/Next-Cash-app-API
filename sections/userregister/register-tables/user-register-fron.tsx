@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
+import { UserRegister } from '@/constants/data';
 
 const { socket } = useSocket();
 
@@ -32,15 +33,33 @@ type UserFormValue = z.infer<typeof formSchema>;
 
 const COOLDOWN_KEY = 'cooldown_data';
 
+const gameOptions = [
+  "FireKirin",
+  "MilkyWay",
+  "OrionStars",
+  "Juwa",
+  "GameVault",
+  "VegasSweep",
+  "YOLO",
+  "UltraPanda",
+  "VBlink",
+  "Blue Dragon",
+  "Game Room",
+  "Mr. All In One"
+];
+
 export default function UserRegistrationForm() {
   const [loading, startTransition] = useTransition();
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema)
   });
 
-  const [selectedOption, setSelectedOption] = useState('FireKirin');
+  const [selectedOption, setSelectedOption] = useState('');
   const [cooldown, setCooldown] = useState(false);
   const [remainingTime, setRemainingTime] = useState(30);
+  const [loadingRegisterRequests, setLoadingRegisterRequests] = useState(false)
+  const [userRegisterCategories, setUserRegisterCategories] = useState<string[]>([])
+  const [availableGameOptions, setAvailableGameOptions] = useState<string[]>([])
 
   useEffect(() => {
     const cooldownData = localStorage.getItem(COOLDOWN_KEY);
@@ -51,6 +70,48 @@ export default function UserRegistrationForm() {
       setRemainingTime(savedRemainingTime);
     }
   }, []);
+
+    useEffect(() => {
+      async function fetchData() {
+        try {
+          if (!userInfo.token) {
+            throw new Error('User not authenticated.');
+          }
+  
+          setLoadingRegisterRequests(true);
+  
+          const response = await fetch('/api/customer/getuserInfo', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${userInfo.token}`
+            },
+            cache: 'no-store'
+          });
+  
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+  
+          const result = await response.json();
+          const registeredRequests = result.data[0]?.register || [];
+          const categories = registeredRequests.map((request: UserRegister) => request.category);
+          setUserRegisterCategories(categories);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        } finally {
+          setLoadingRegisterRequests(false);
+        }
+      }
+  
+      fetchData();
+    }, [userInfo]);
+
+    useEffect(() => {
+      const availableGames = gameOptions.filter((option: string) => !userRegisterCategories.includes(option));
+      setSelectedOption(availableGames[0]|| '');
+      setAvailableGameOptions(availableGames);
+    }, [userRegisterCategories]);
 
   useEffect(() => {
     if (cooldown) {
@@ -160,6 +221,7 @@ export default function UserRegistrationForm() {
   };
 
   const ok = () => {};
+
  
   return (
     <div>
@@ -177,7 +239,7 @@ export default function UserRegistrationForm() {
                 onChange={(e) => setSelectedOption(e.target.value)}
                 className="mt-3 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
               >
-                <option value="FireKirin">FireKirin</option>
+                {/* <option value="FireKirin">FireKirin</option>
                 <option value="MilkyWay">MilkyWay</option>
                 <option value="OrionStars">OrionStars</option>
                 <option value="Juwa">Juwa</option>
@@ -187,8 +249,16 @@ export default function UserRegistrationForm() {
                 <option value="UltraPanda">UltraPanda</option>
                 <option value="VBlink">VBlink</option>
                 <option value="Blue Dragon">Blue Dragon</option>
-                <option value="Game Room">Game Room</option>
+                <option value="Game Room">Game Room</option> 
                 <option value="Mr. All In One">Mr. All In One</option>
+                */}
+                {
+                  availableGameOptions.map((option: string) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))
+                }
               </select>
             </div>
             <FormField

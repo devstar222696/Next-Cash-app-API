@@ -134,7 +134,7 @@ export default function MyPageTable() {
           </div>
           <div className="flex justify-center">
             <p>Phone Number:</p>
-            <p className="ml-2">{data[0] ? data[0]?.phonenumber : 'None'}</p>
+            <p className="ml-2">{tag[0]?.phoneno}</p>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition, useEffect, useRef } from 'react';
+import { useState, useTransition, useEffect, useRef, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -18,6 +18,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
 import { Checkbox } from '@/components/ui/checkbox';
+import { UserRegister } from '@/constants/data';
 
 const formSchema = z.object({
   amount: z.any()
@@ -50,9 +51,9 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
 
   const [cooldown, setCooldown] = useState(false);
   const [remainingTime, setRemainingTime] = useState(30);
-  const [category, setCategory] = useState<string>('');
   const [bitcoin, setBitcoin] = useState('0.00000000');
   const [game, setGame] = useState<string[]>([]);
+  const [gamesByName, setGameByName] = useState<{[key:string]: UserRegister}>({});
   const [selectedredeem, setSelectedredeem] = useState('CashApp');
   const [selectedPayment, setSelectedPayment] = useState('');
   const [checkboxChecked, setCheckboxChecked] = useState(false);
@@ -157,10 +158,11 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
         const result = await response.json();
         setTagId(result?.data[0]?.tag);
         const registerArray = result.data[0]?.register || [];
-
-        if (registerArray.length > 0) {
-          setCategory(registerArray[0].status);
-        }
+        const gamesKeyByName = registerArray.reduce((acc: any, item: any) => {
+          acc[item.category] = item;
+          return acc;
+        }, {});
+        setGameByName(gamesKeyByName);
 
         const categories = registerArray.map((item: any) => item.category);
         setGame(categories);
@@ -276,9 +278,14 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
 
   const ok = () => { };
 
+  const allowRequest = useMemo(() => {
+    console.log('selectedPayment', gamesByName[selectedPayment]);
+    return gamesByName[selectedPayment]?.status === 'complete'; 
+  }, [selectedPayment, gamesByName]);
+
   return (
     <div>
-      <div className="w-full rounded-xl border border-4 border-solid border-gray-300 bg-indigo-600 p-3">
+      {/* <div className="w-full rounded-xl border border-4 border-solid border-gray-300 bg-indigo-600 p-3">
         <p className="text-center font-semibold text-red-500">※Warning※</p>
         <p className="mt-2 text-center text-sm font-semibold text-white ">
           When you Deposit, please make sure to enter your 'Tag Number' in the
@@ -286,7 +293,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
           very slow.
           <br /> Thank you🙂
         </p>
-      </div>
+      </div> */}
       <br />
       <Form {...form}>
         <form
@@ -394,7 +401,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
             </div>
           </div>
           <Button
-            disabled={loading || cooldown || category !== 'complete'}
+            disabled={loading || cooldown || !allowRequest}
             className="ml-[30%] mt-11 w-[40%] p-6 text-white"
             type="submit"
             handleClick={ok}

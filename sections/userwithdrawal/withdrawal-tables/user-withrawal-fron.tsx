@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -17,31 +17,41 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { UserRegister } from '@/constants/data';
 
-const formSchema = z.object({
-  amount: z.any()
-});
 
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
-type UserFormValue = z.infer<typeof formSchema>;
+// type UserFormValue = z.infer<typeof formSchema>;
 
 const COOLDOWN_KEY = 'cooldown_data';
 
 export default function UserWithdrawalForm() {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
-  const form = useForm<UserFormValue>({
+  const formSchema = z.object({
+    amount: z.string()
+    .min(1, "Amount is required.") // Ensure the field is not empty
+    .refine((value) => !isNaN(Number(value)), {
+      message: "Amount must be a valid number.",
+    })
+    .refine(
+      (value) => selectedWithdrawal === 'Bitcoin' || Number(value) >= 50,
+      {
+        message: "Amount must be at least 50.",
+      }
+    ),
+  });
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
   });
-
   const [game, setGame] = useState<string[]>([]);
   const [selectedPayment, setSelectedPayment] = useState('');
   const [selectedWithdrawal, setSelectedWithdrawal] = useState('CashApp');
   const [cooldown, setCooldown] = useState(false);
   const [remainingTime, setRemainingTime] = useState(30);
-  const [category, setCategory] = useState('');
+  const [gamesByName, setGameByName] = useState<{[key:string]: UserRegister}>({});
 
   useEffect(() => {
     const cooldownData = localStorage.getItem(COOLDOWN_KEY);
@@ -103,9 +113,11 @@ export default function UserWithdrawalForm() {
         const result = await response.json();
         const registerArray = result.data[0]?.register || [];
 
-        if (registerArray.length > 0) {
-          setCategory(registerArray[0].status);
-        }
+        const gamesKeyByName = registerArray.reduce((acc: any, item: any) => {
+          acc[item.category] = item;
+          return acc;
+        }, {});
+        setGameByName(gamesKeyByName);
 
         const categories = registerArray.map((item: any) => item.category);
         setGame(categories);
@@ -118,7 +130,7 @@ export default function UserWithdrawalForm() {
     fetchData();
   }, [userInfo]);
 
-  const onSubmit = async (data: UserFormValue) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     startTransition(async () => {
       try {
         const withdrawalData = {
@@ -206,6 +218,11 @@ export default function UserWithdrawalForm() {
 
   const ok = () => { };
 
+  const allowRequest = useMemo(() => {
+      console.log('selectedPayment', gamesByName[selectedPayment]);
+    return gamesByName[selectedPayment]?.status === 'complete';
+  }, [selectedPayment, gamesByName]);
+
   return (
     <div>
       <div className="flex justify-center w-full">
@@ -256,17 +273,17 @@ export default function UserWithdrawalForm() {
               control={form.control}
               name="amount"
               render={({ field }) => (
-                <FormItem className="flex justify-center">
+                <FormItem className="flex flex-wrap justify-center">
                   <FormLabel className="mt-3 w-28">Amount</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading || cooldown}
                       {...field}
                       className="w-[200px]"
-                      onInput={(e) => {
-                        const target = e.target as HTMLInputElement;
-                        target.value = target.value.replace(/[^0-9]/g, '');
-                      }}
+                      // onInput={(e) => {
+                      //   const target = e.target as HTMLInputElement;
+                      //   target.value = target.value.replace(/[^0-9]/g, '');
+                      // }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -275,7 +292,7 @@ export default function UserWithdrawalForm() {
             />
           </div>
           <Button
-            disabled={loading || cooldown || category !== 'complete'}
+            disabled={loading || cooldown || !allowRequest}
             className="ml-[30%] mt-11 w-[40%] p-6 text-white"
             type="submit"
             handleClick={ok}

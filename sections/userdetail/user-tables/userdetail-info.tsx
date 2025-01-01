@@ -127,10 +127,8 @@ export default function UserdetailInfo() {
         <div className="mt-5 flex">
           <p className="text-md w-[150px] font-semibold">Phone Number</p>
           <p className="text-start">
-            {data[0].register &&
-            data[0].register.length > 0 &&
-            data[0].register[0].phonenumber
-              ? data[0].register[0].phonenumber
+            {data[0].phoneno
+              ? data[0].phoneno
               : 'None'}
           </p>
         </div>

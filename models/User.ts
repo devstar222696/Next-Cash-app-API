@@ -5,10 +5,10 @@ const registerSchema: Schema = new Schema(
   {
     id: { type: String, default: 'none' },
     category: { type: String, default: 'none' },
-    phonenumber: { type: String, default: 'none' },
+    // phonenumber: { type: String, default: 'none' },
     nickname: { type: String, default: 'none' },
     status: { type: String, default: 'none' },
-    codenumber: { type: String, default: 'none' },
+    // codenumber: { type: String, default: 'none' },
     loginid: { type: String, default: 'none' },
     passwordcode: { type: String, default: 'none' },
     date: { type: Date, default: Date.now },

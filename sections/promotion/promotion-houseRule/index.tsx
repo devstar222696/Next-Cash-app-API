@@ -1,6 +1,10 @@
 import React from 'react';
 
 const houseRules = [
+  'Withdrawal Rule',
+  '$20 or more Deposited Player - Minimum request for $50 and Daily max amount $3,000',
+  'Free Player - To apply for Redeem, users need to have a spin record of at least $100.',
+  ' The minimum amount that can be requested is $100, and the maximum amount that can be withdrawn per day is also $100.',
   'Your tag number is your ID. Please be sure to remember it.',
   'We do not ask for tips, and we do not accept also.',
   'Referral Bonus, Daily Bonus, and First Deposit Bonus can only be received when the User deposits more than $10.',

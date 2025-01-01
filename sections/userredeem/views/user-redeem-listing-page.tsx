@@ -8,6 +8,7 @@ import UserredeemTable from '../user-redeem-tables';
 import TagId from '@/components/ui/tagId';
 import { useState } from 'react';
 import { GameLink } from '@/sections/promotion/promotion-tables/game-link';
+import Image from 'next/image';
 
 const breadcrumbItems = [
   { title: 'Mypage', link: '/mypage' },
@@ -22,12 +23,15 @@ export default function UserredeemListingPage({ }: TEmployeeListingPage) {
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
-        <Breadcrumbs items={breadcrumbItems} />
+        <Breadcrumbs items={breadcrumbItems} showBreadcrumbs={false}/>
 
-        <div className="flex items-start justify-between">
+        {/* <div className="flex items-start justify-between">
           <Heading title={`Deposit`} description="" />
         </div>
-        <Separator />
+        <Separator /> */}
+        <div className="grid justify-items-center">
+          <Image src="/IH recharge notice.png" width={1000} height={1000} alt="ad" />
+        </div>
         <TagId tagId={tagId} />
         <UserredeemForm setTagId={setTagId} />
         <p className="text-medium py-5 text-center font-bold">

@@ -2,9 +2,9 @@ import { NavItem } from '@/types';
 
 export type UserRegister = {
   id: string;
-  phonenumber: string;
+  // phonenumber: string;
   category: string;
-  codenumber: string;
+  // codenumber: string;
   loginid: string;
   passwordcode: string;
   date: Date;
@@ -40,6 +40,7 @@ export type AdminRegisterUsers = {
   lastname: string;
   tag: number;
   email: string;
+  phoneno: string;
   ip: string;
   action: string;
   cashtag: string;
@@ -173,5 +174,11 @@ export const userNavItems: NavItem[] = [
     href: '/mypage/withdrawal',
     icon: 'wallet2',
     label: 'withdrawal'
+  },
+  {
+    title: 'House Rule',
+    href: '/mypage/house-rules',
+    icon: 'help',
+    label: 'house rule'
   }
 ];

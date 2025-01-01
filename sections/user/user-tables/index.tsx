@@ -55,13 +55,13 @@ export default function UserTable() {
       case 'tag':
         return item.tag?.toString().includes(param);
       case 'firstname':
-        return item.firstname?.toLowerCase().includes(param);
+        return (item.firstname?.toLowerCase().includes(param) || item.lastname?.toLowerCase().includes(param));
       case 'email':
         return item.email?.toLowerCase().includes(param);
       case 'ip':
         return item.ip?.toLowerCase().includes(param);
-      // case 'phonenumber':
-      //   return item.phonenumber?.toLowerCase().includes(param);
+      case 'phonenumber':
+        return item.phoneno?.toLowerCase().includes(param);
       default:
         return true;
     }

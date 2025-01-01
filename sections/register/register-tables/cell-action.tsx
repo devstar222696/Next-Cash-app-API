@@ -7,11 +7,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { CheckCircle, MoreHorizontal, X } from 'lucide-react';
+import { CheckCircle, InfoIcon, MoreHorizontal, X } from 'lucide-react';
 import { useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRowState } from '@/app/shared/row-state-context';
 import { AdminRegisterUsers, UserRegister } from '@/constants/data';
+import { useRouter } from 'next/navigation';
 
 interface CellActionProps {
   rowId?: string;
@@ -27,18 +28,18 @@ export const CellAction: React.FC<CellActionProps> = ({
 }) => {
   const [loading, startTransition] = useTransition();
   const rowStates = useRowState();
+  const router = useRouter();
 
   const registerAccept = async () => {
     startTransition(async () => {
       try {
-        const { loginid, passwordcode, codenumber } = (rowStates[rowId as unknown as number]!.current) as UserRegister & AdminRegisterUsers;
+        const { loginid, passwordcode } = (rowStates[rowId as unknown as number]!.current) as UserRegister & AdminRegisterUsers;
         const body = {
-          status: 'accept',
+          status: 'complete',
           date: registerDate,
           id: userId,
           loginid, 
           passwordcode, 
-          codenumber
         }
         const response = await userRegisterCheck(body);
 
@@ -91,14 +92,13 @@ export const CellAction: React.FC<CellActionProps> = ({
   const unRegisterDecline = async () => {
     startTransition(async () => {
       try {
-        const { loginid, passwordcode, codenumber } = (rowStates[rowId as unknown as number]!.current) as UserRegister & AdminRegisterUsers;
+        const { loginid, passwordcode } = (rowStates[rowId as unknown as number]!.current) as UserRegister & AdminRegisterUsers;
         const body = {
           status: 'decline',
           date: registerDate,
           id: userId,
           loginid, 
           passwordcode, 
-          codenumber
         }
         const response = await userRegisterCheck(body);
 
@@ -122,6 +122,10 @@ export const CellAction: React.FC<CellActionProps> = ({
     });
   };
 
+  const userdetail = () => {
+    router.push(`/main/user/userdetail?id=${userId}`);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -139,6 +143,9 @@ export const CellAction: React.FC<CellActionProps> = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
+          <DropdownMenuItem onClick={userdetail}>
+            <InfoIcon className="mr-2 h-4 w-4" /> User Detail
+          </DropdownMenuItem>
            <DropdownMenuItem onClick={registerAccept}>
             <CheckCircle className="mr-2 h-4 w-4" /> Accept
           </DropdownMenuItem>
