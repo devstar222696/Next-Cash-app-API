@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { AdminRegisterUsers, PaymentWithdrawals } from '@/constants/data';
 import UserPromotionTableView from './user-promtion-table';
 import PromotionPage from './promotion-fron';
+import Image from 'next/image';
 
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
@@ -94,6 +95,10 @@ export default function UserPromotionTable() {
         data={latestData}
         totalItems={totalData}
       />
+      <div className="grid justify-items-center">
+        <Image src="/my-page/IH benefits 2.png" width={1000} height={1000} alt="ad" />
+        <Image src="/my-page/IH benefits 1.png" width={1000} height={1000} alt="ad" />
+      </div>
     </div>
   );
 }

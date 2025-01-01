@@ -31,8 +31,8 @@ const sliderSettings = {
   autoplay: true,
   adaptiveHeight: false,
   // appendDots: true,
-  speed: 2000,
-  autoplaySpeed: 2500,
+  speed: 500,
+  autoplaySpeed: 3000,
   cssEase: "linear",
   appendDots: (dots: any) => (
     <div
@@ -50,7 +50,7 @@ const posterImages = [
   "/promo/main_poster_5.png",
 
 ]
-export function Breadcrumbs({ items }: { items: BreadcrumbItemProps[] }) {
+export function Breadcrumbs({ items, showBreadcrumbs = true }: { items: BreadcrumbItemProps[], showBreadcrumbs?: boolean }) {
   const router = useRouter();
   const pathName = usePathname();
 
@@ -62,9 +62,15 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItemProps[] }) {
     <Breadcrumb>
       {userInfo.role === "user" ?
         <div>
-          {pathName === '/mypage/promotion' ? <Slider {...sliderSettings} className='grid mb-10'>
+          {pathName === '/mypage' ? 
+          (
+          <Slider {...sliderSettings} className='grid mb-10'>
             {posterImages.map((img, index) => <img src={img} key={img} width={1000} height={500} className="w-full promo-image" alt="cover" />)}
-          </Slider> : <Image src="/promo/web-cover.png" width={1000} height={500} className="mb-10 w-full" alt="cover" />}
+          </Slider>
+          ) 
+          : 
+          <Image src="/promo/web-cover.png" width={1000} height={500} className="mb-10 w-full" alt="cover" />
+          }
 
           <Image
             src="/chat-image.png"
@@ -77,6 +83,7 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItemProps[] }) {
         </div>
         : ""
       }
+      {showBreadcrumbs && (
       <BreadcrumbList>
         {items.map((item, index) => (
           <Fragment key={item.title}>
@@ -96,6 +103,7 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItemProps[] }) {
           </Fragment>
         ))}
       </BreadcrumbList>
+      )}
     </Breadcrumb>
   );
 }

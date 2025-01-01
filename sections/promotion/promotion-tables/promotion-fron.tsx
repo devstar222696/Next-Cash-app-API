@@ -32,27 +32,20 @@ export default function PromotionPage({ tag }: any) {
     <>
       <div className="w-full">
         <TagId tagId={tag} />
-        <p className="text-md mt-5 text-center font-bold">
-          Welcome to ISLAND HOUSE!
-        </p>
-        <p className="text-md text-center font-bold">
-          Click image to download link
-        </p>
       </div>
-      <GameLink />
-      <div className="grid justify-items-center">
+      {/* <div className="grid justify-items-center">
         <Image src="/promo/promo1.png" width={1000} height={1000} alt="ad" />
-      </div>
+      </div> */}
       {/* <div className="grid justify-items-center">
         <Image src="/promo/promo2.png" width={1000} height={1000} alt="ad" />
       </div> */}
       <div className="grid w-full grid-cols-1 place-items-center">
-        <div className="grid grid-cols-2 gap-2 justify-items-center lg:flex lg:justify-center">
+        <div className="grid grid-cols-2 justify-items-center gap-2 lg:flex lg:justify-center">
           <Image
             src="/my-page/button_1.png"
             width={300}
             height={5}
-            className="hover:cursor-pointer hover:opacity-80"
+            className="hover:cursor-pointer hover:opacity-80 pt-[3px]"
             onClick={register}
             alt="register"
           ></Image>
@@ -80,25 +73,16 @@ export default function PromotionPage({ tag }: any) {
             alt="redeem"
           ></Image>
         </div>
-        <div className="mt-3 flex justify-evenly lg:justify-center">
-          <Image
-            src="/facebook.png"
-            width={50}
-            height={50}
-            className="hover:cursor-pointer hover:opacity-80"
-            onClick={facebook}
-            alt="facebook"
-          ></Image>
-          <Image
-            src="/Instagram.png"
-            width={50}
-            height={50}
-            className="ml-5 hover:cursor-pointer hover:opacity-80"
-            onClick={instagram}
-            alt="instagram"
-          ></Image>
-        </div>
       </div>
+      <div className="w-full">
+        <p className="text-md mt-5 text-center font-bold">
+          Welcome to ISLAND HOUSE!
+        </p>
+        <p className="text-md text-center font-bold">
+          Click image to download link
+        </p>
+      </div>
+      <GameLink />
     </>
   );
 }

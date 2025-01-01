@@ -30,7 +30,7 @@ export default function UserRegisterListingPage({}: TEmployeeListingPage) {
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
-        {/*<Breadcrumbs items={breadcrumbItems} /> */}
+        <Breadcrumbs items={breadcrumbItems} showBreadcrumbs={false} />
 
         {/* 헤딩 영역 */}
         {/*<div className="flex items-start justify-between">
@@ -38,11 +38,11 @@ export default function UserRegisterListingPage({}: TEmployeeListingPage) {
         </div>*/}
 
         {/* 안내문 영역 */}
-        <div className="text-center">
+        {/* <div className="text-center">
           <p className="text-sm text-muted-foreground">
             We cannot process register requests for two days. We will fix it as soon as possible.
           </p>
-        </div>
+        </div> */}
 
         <Separator />
 
