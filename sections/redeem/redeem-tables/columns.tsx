@@ -84,7 +84,7 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     accessorKey: 'user.loginid',
     header: 'GAME ID',
     cell: ({ row }) => {
-      const paymentType = row.original.paymenttype;
+      const paymentType = row.original.paymentoption;
   
       const registers = row.original.user?.register ?? [];
   
