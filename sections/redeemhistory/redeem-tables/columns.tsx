@@ -80,7 +80,17 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     accessorKey: 'user.loginid',
     header: 'GAME ID',
-    cell: ({ row }) => <span>{row.original.user?.register[0]?.loginid || 'none'}</span>
+    cell: ({ row }) => {
+      const paymentType = row.original.paymentoption;
+  
+      const registers = row.original.user?.register ?? [];
+  
+      const filtered = registers.filter((r: { category: string; }) => r.category === paymentType);
+
+      const lastRegister = filtered[filtered.length - 1];
+
+      return lastRegister?.loginid || 'none';
+    },
   },
   {
     accessorKey: 'paymenttype',
