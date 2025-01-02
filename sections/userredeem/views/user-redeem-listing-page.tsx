@@ -33,6 +33,9 @@ export default function UserredeemListingPage({ }: TEmployeeListingPage) {
           <Heading title={`Deposit`} description="" />
         </div>
         <Separator /> */}
+        <div className="flex justify-center w-full">
+        <img src="/IH_register_2.png" alt="recharge" />
+        </div>
         <div className="grid justify-items-center">
           <Image src="/IH recharge notice.png" width={1000} height={1000} alt="ad" />
         </div>
