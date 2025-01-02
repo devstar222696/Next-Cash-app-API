@@ -230,7 +230,7 @@ export default function UserWithdrawalForm() {
           src="/IH_register_3.png"
           width={500}
           height={200}
-          className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
+          className="mt-1 hover:opacity-80 lg:ml-2 lg:mt-0"
           alt="redeem"
         ></Image>
       </div>
