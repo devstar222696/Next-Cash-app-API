@@ -63,11 +63,11 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
       requiredPermissions: [PermissionsMap.multi_select]
     },
   },
-  {
-    accessorKey: 'tag',
-    header: 'TAG NUMBER',
-    cell: ({ row }) => <span>{row.original.user.tag || 'none'}</span>
-  },
+  // {
+  //   accessorKey: 'tag',
+  //   header: 'TAG NUMBER',
+  //   cell: ({ row }) => <span>{row.original.user.tag || 'none'}</span>
+  // },
   {
     accessorKey: 'nickname',
     header: 'NICKNAME'
