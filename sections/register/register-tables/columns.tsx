@@ -77,8 +77,6 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
   {
     accessorKey: 'nickname',
     header: 'NICKNAME',
-    // nickname은 row.original에서 직접 가져온다고 가정
-    cell: ({ row }) => <span>{row.original.nickname ?? 'N/A'}</span>
   },
   {
     accessorKey: 'username',
