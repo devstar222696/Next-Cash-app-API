@@ -1,4 +1,5 @@
 'use client';
+
 import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { CodeAction } from './code-number';
@@ -60,56 +61,73 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
     enableSorting: false,
     enableHiding: false,
     meta: {
-      requiredPermissions: [PermissionsMap.multi_select]
+      requiredPermissions: [PermissionsMap.multi_select],
     },
   },
-  // {
-  //   accessorKey: 'tag',
-  //   header: 'TAG NUMBER',
-  //   cell: ({ row }) => <span>{row.original.user.tag || 'none'}</span>
-  // },
+  {
+    accessorKey: 'tag',
+    header: 'TAG NUMBER',
+    cell: ({ row }) => (
+      <span>
+        {/* user?.tag가 undefined/null이면 'N/A' 표시 */}
+        {row.original.user?.tag ?? 'N/A'}
+      </span>
+    ),
+  },
   {
     accessorKey: 'nickname',
-    header: 'NICKNAME'
+    header: 'NICKNAME',
+    // nickname은 row.original에서 직접 가져온다고 가정
+    cell: ({ row }) => <span>{row.original.nickname ?? 'N/A'}</span>
   },
   {
     accessorKey: 'username',
     header: 'USERNAME',
     cell: ({ row }) => (
       <span>
-        {row.original.user.firstname} {row.original.user.lastname}
+        {/* user?.firstname 과 user?.lastname가 undefined/null이면 빈 문자열로 처리 */}
+        {row.original.user?.firstname ?? ''} {row.original.user?.lastname ?? ''}
       </span>
-    )
+    ),
   },
   {
     accessorKey: 'phonenumber',
     header: 'PHONE NUMBER',
-    cell: ({ row }) => <span>{row.original.user.phoneno}</span>
+    cell: ({ row }) => (
+      <span>
+        {row.original.user?.phoneno ?? 'N/A'}
+      </span>
+    ),
   },
   {
     accessorKey: 'ip',
     header: 'IP ADDRESS',
-    cell: ({ row }) => <span>{row.original.user.ip}</span>
+    cell: ({ row }) => (
+      <span>
+        {row.original.user?.ip ?? 'N/A'}
+      </span>
+    ),
   },
   {
     accessorKey: 'category',
-    header: 'CATEGORY'
+    header: 'CATEGORY',
+    cell: ({ row }) => <span>{row.original.category ?? 'N/A'}</span>,
   },
   {
-      id: 'login-password',
-      header: 'LOGIN ID AND PASSWORD CODE',
-      cell: ({ row,table }) => {
-        return(
-          <LoginIdAction
+    id: 'login-password',
+    header: 'LOGIN ID AND PASSWORD CODE',
+    cell: ({ row, table }) => {
+      return (
+        <LoginIdAction
           rowId={row.id}
           dateV={row.original.date}
           loginIdV={row.original.loginid}
           passwordCodeV={row.original.passwordcode}
-          userName={row.original.user._id}
+          userName={row.original.user?._id ?? ''}
         />
-        )
-      }
+      );
     },
+  },
   // {
   //   id: 'code-number',
   //   header: 'CODE NUMBER',
@@ -119,7 +137,7 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
   //       registerDate={row.original.date}
   //       codeNumber={row.original.codenumber}
   //       regiStatus={row.original.status}
-  //       userName={row.original.user._id}
+  //       userName={row.original.user?._id ?? ''}
   //     />
   //   )
   // },
@@ -128,10 +146,10 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
     header: 'ACTION',
     cell: ({ row }) => (
       <CellAction
-      rowId={row.id}
-      registerDate={row.original.date}
-        userId={row.original.user._id}
+        rowId={row.id}
+        registerDate={row.original.date}
+        userId={row.original.user?._id ?? ''}
       />
-    )
-  }
+    ),
+  },
 ];
