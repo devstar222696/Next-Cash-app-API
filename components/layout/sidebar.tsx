@@ -3,6 +3,7 @@
 import { DashboardNav } from '@/components/dashboard-nav';
 import { navItems } from '@/constants/data';
 import { userNavItems } from '@/constants/data';
+import { AdminRoles } from '@/constants/roles';
 import { useSidebar } from '@/hooks/useSidebar';
 import { cn } from '@/lib/utils';
 import { ChevronLeft } from 'lucide-react';
@@ -44,7 +45,7 @@ export default function Sidebar({ className }: SidebarProps) {
         <div className="px-3 py-2">
           <div className="mt-3 space-y-1">
             <DashboardNav
-              items={userInfo.role === 'admin' ? navItems : userNavItems}
+              items={AdminRoles.includes(userInfo.role) ? navItems : userNavItems}
             />
           </div>
         </div>

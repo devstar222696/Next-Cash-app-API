@@ -2,13 +2,14 @@ import User from '@/models/User';
 import dbConnect from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { UserRoles } from '@/constants/roles';
 
 export const GET = async (request: NextRequest) => {
   await dbConnect();
 
   try {
     revalidatePath('/')
-    const users = await User.find({ action: 'no', role: 'user' });
+    const users = await User.find({ action: 'no', role: UserRoles });
 
     const usersInfo = users.map((user) => user.toObject());
 

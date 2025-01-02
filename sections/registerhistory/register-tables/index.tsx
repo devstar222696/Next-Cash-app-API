@@ -9,6 +9,8 @@ import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { useSearchParams } from 'next/navigation';
 import { RowStateProvider } from '@/app/shared/row-state-context';
+import { PermissionsMap } from '@/constants/permissions';
+import AccessControl from '@/components/accessControl';
 
 interface SelectMultiIdData {
   id?: string;
@@ -231,22 +233,25 @@ export default function AdminRegisterHistoryTable() {
 
   return (
     <div className="space-y-4 ">
-      <div className="flex justify-end">
-        {/* <Button
-          variant="outline"
-          handleClick={multiRestore}
-          className="mr-3 mt-3"
-        >
-          Multi Restore
-        </Button> */}
-        <Button
-          variant="outline"
-          handleClick={multiDelete}
-          className="mr-3 mt-3"
-        >
-          Multi Delete
-        </Button>
-      </div>
+        <AccessControl requiredPermissions={[PermissionsMap.multi_delete]}>
+          <div className="flex justify-end">
+            {/* <Button
+              variant="outline"
+              handleClick={multiRestore}
+              className="mr-3 mt-3"
+            >
+              Multi Restore
+            </Button> */}
+
+            <Button
+              variant="outline"
+              handleClick={multiDelete}
+              className="mr-3 mt-3"
+              >
+              Multi Delete
+            </Button>
+          </div>
+      </AccessControl>
       <RowStateProvider>
       <AdminredeemHistoryTableView
         columns={columns}

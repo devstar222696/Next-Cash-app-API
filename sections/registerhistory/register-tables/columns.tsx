@@ -6,12 +6,16 @@ import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
 import { LoginIdAction } from '@/sections/register/register-tables/login-id';
 import { CodeAction } from '@/sections/register/register-tables/code-number';
+import { PermissionsMap } from '@/constants/permissions';
 
 const { socket } = useSocket();
 
 export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     id: 'select',
+    meta: {
+      requiredPermissions: [PermissionsMap.multi_select]
+    },
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}

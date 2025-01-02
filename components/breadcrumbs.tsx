@@ -8,6 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/components/ui/breadcrumb';
+import { UserRoles } from '@/constants/roles';
 import { Slash } from 'lucide-react';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -60,7 +61,7 @@ export function Breadcrumbs({ items, showBreadcrumbs = true }: { items: Breadcru
 
   return (
     <Breadcrumb>
-      {userInfo.role === "user" ?
+      {UserRoles.includes(userInfo.role) ?
         <div>
           {pathName === '/mypage' ? 
           (

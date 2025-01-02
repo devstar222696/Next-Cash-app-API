@@ -18,7 +18,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { UserRegister } from '@/constants/data';
+import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 
 const formSchema = z.object({
   amount: z.any()
@@ -39,7 +39,7 @@ const DEPOSIT_URLS: Record<string, string> = {
   Zelle: '/mypage/deposit/zelle'
 };
 interface IUserReemFormProps {
-  setTagId: (args: string) => void;
+  setTagId: (args: AdminRegisterUsers | null) => void;
 }
 
 export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
@@ -53,7 +53,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   const [remainingTime, setRemainingTime] = useState(30);
   const [bitcoin, setBitcoin] = useState('0.00000000');
   const [game, setGame] = useState<string[]>([]);
-  const [gamesByName, setGameByName] = useState<{[key:string]: UserRegister}>({});
+  const [gamesByName, setGameByName] = useState<{ [key: string]: UserRegister }>({});
   const [selectedredeem, setSelectedredeem] = useState('CashApp');
   const [selectedPayment, setSelectedPayment] = useState('');
   const [checkboxChecked, setCheckboxChecked] = useState(false);
@@ -156,7 +156,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
         }
 
         const result = await response.json();
-        setTagId(result?.data[0]?.tag);
+        setTagId(result?.data[0]);
         const registerArray = result.data[0]?.register || [];
         const gamesKeyByName = registerArray.reduce((acc: any, item: any) => {
           acc[item.category] = item;
@@ -280,7 +280,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
 
   const allowRequest = useMemo(() => {
     console.log('selectedPayment', gamesByName[selectedPayment]);
-    return gamesByName[selectedPayment]?.status === 'complete'; 
+    return gamesByName[selectedPayment]?.status === 'complete';
   }, [selectedPayment, gamesByName]);
 
   return (

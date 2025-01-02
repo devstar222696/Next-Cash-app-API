@@ -33,6 +33,8 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import useRole from '@/hooks/use-role';
+import { filterColumnsByPermissions } from '@/lib/permission-utils';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -79,9 +81,12 @@ export default function UserWithdrawalTableView<TData, TValue>({
     setPageSize(pagination.pageSize);
   };
 
+  const { role } = useRole();
+  const filteredColumns = filterColumnsByPermissions(role, columns);
+
   const table = useReactTable({
     data,
-    columns,
+    columns: filteredColumns,
     pageCount: pageCount,
     state: {
       pagination: paginationState

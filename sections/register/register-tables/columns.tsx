@@ -6,6 +6,7 @@ import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
 import { LoginIdAction } from './login-id';
+import { PermissionsMap } from '@/constants/permissions';
 
 const { socket } = useSocket();
 
@@ -57,7 +58,10 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
       />
     ),
     enableSorting: false,
-    enableHiding: false
+    enableHiding: false,
+    meta: {
+      requiredPermissions: [PermissionsMap.multi_select]
+    },
   },
   {
     accessorKey: 'tag',

@@ -11,6 +11,8 @@ import {
 import { ArchiveRestore, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import AccessControl from '@/components/accessControl';
+import { PermissionsMap } from '@/constants/permissions';
 
 interface CellActionProps {
   userId: any,
@@ -153,9 +155,11 @@ export const CellAction: React.FC<CellActionProps> = ({
           {/* <DropdownMenuItem onClick={restore}>
             <ArchiveRestore className="mr-2 h-4 w-4" /> Restore
           </DropdownMenuItem> */}
+          <AccessControl requiredPermissions={[PermissionsMap.delete]}>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
+          </AccessControl>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

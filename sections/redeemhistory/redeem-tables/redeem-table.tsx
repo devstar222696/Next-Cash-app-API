@@ -15,6 +15,8 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import useRole from '@/hooks/use-role';
+import { filterColumnsByPermissions } from '@/lib/permission-utils';
 import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon
@@ -75,9 +77,12 @@ export default function UserWithdrawalTableView<TData, TValue>({
     setPageSize(pagination.pageSize);
   };
 
+  const { role } = useRole();
+  const filteredColumns = filterColumnsByPermissions(role, columns);
+
   const table = useReactTable({
     data,
-    columns,
+    columns: filteredColumns,
     pageCount: pageCount,
     state: {
       pagination: paginationState

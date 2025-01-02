@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
 import { UserRegister } from '@/constants/data';
+import { GamesList } from '@/constants/games';
 
 const { socket } = useSocket();
 
@@ -33,20 +34,6 @@ type UserFormValue = z.infer<typeof formSchema>;
 
 const COOLDOWN_KEY = 'cooldown_data';
 
-const gameOptions = [
-  "FireKirin",
-  "MilkyWay",
-  "OrionStars",
-  "Juwa",
-  "GameVault",
-  "VegasSweep",
-  "YOLO",
-  "UltraPanda",
-  "VBlink",
-  "Blue Dragon",
-  "Game Room",
-  "Mr. All In One"
-];
 
 export default function UserRegistrationForm() {
   const [loading, startTransition] = useTransition();
@@ -108,7 +95,7 @@ export default function UserRegistrationForm() {
     }, [userInfo]);
 
     useEffect(() => {
-      const availableGames = gameOptions.filter((option: string) => !userRegisterCategories.includes(option));
+      const availableGames = GamesList.filter((option: string) => !userRegisterCategories.includes(option));
       setSelectedOption(availableGames[0]|| '');
       setAvailableGameOptions(availableGames);
     }, [userRegisterCategories]);

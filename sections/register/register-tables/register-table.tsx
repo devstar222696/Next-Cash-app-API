@@ -36,6 +36,8 @@ import { parseAsInteger, useQueryState } from 'nuqs';
 import useSkipper from './hooks/use-skipper';
 import { setInitialRowState, useRowDispatch, useRowState } from '@/app/shared/row-state-context';
 import { Identifiable } from '@/app/shared/row-state-context/types';
+import useRole from '@/hooks/use-role';
+import { filterColumnsByPermissions } from '@/lib/permission-utils';
 
 interface DataTableProps<T> {
   columns: ColumnDef<T, unknown>[];
@@ -86,9 +88,12 @@ export default function UserWithdrawalTableView<T extends Identifiable>({
     setPageSize(pagination.pageSize);
   };
 
+  const { role } = useRole();
+  const filteredColumns = filterColumnsByPermissions(role, columns);
+
   const table = useReactTable({
     data,
-    columns,
+    columns: filteredColumns,
     pageCount: pageCount,
     state: {
       pagination: paginationState

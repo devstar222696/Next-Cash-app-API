@@ -2,8 +2,9 @@
 
 import { AdminRegisterUsers } from '@/constants/data';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import { Roles } from '@/constants/roles';
 
 interface UserData {
   tag: string;
@@ -82,6 +83,34 @@ export default function UserdetailInfo() {
     }
   };
 
+  const toggleVIPUserRole = async () => {
+    try {
+      const payload = {
+        id: id,
+        role: data[0].role === Roles.user ? Roles.vip_user : Roles.user
+      }
+      setLoading(true);
+      const response = await fetch('/api/customer/make-vip-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'Failed make user vip' };
+      }
+
+      location.reload();
+
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const handleKeyDown = async (event: any) => {
     if (event.key === 'Enter') {
       const response = await onTagNumber(userData);
@@ -99,6 +128,8 @@ export default function UserdetailInfo() {
     }
   };
 
+  const isVIPUser = useMemo(() => data[0]?.role === Roles.vip_user, [data]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -112,6 +143,15 @@ export default function UserdetailInfo() {
           onChange={(e) => setTag(e.target.value)}
           onKeyDown={handleKeyDown}
         />
+        <div className='ml-2 inline-block'>
+          <input
+            type="checkbox"
+            checked={isVIPUser}
+            onChange={toggleVIPUserRole}
+            className="h-4 w-4 rounded ml-2 mt-4 mr-2"
+          />
+          <span>VIP User</span>
+        </div>
         <div className="mt-10 flex">
           <p className="text-md w-[150px] font-semibold">Name</p>
           <p className="text-start">

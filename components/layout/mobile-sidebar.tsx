@@ -3,6 +3,7 @@ import { DashboardNav } from '@/components/dashboard-nav';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { navItems } from '@/constants/data';
 import { userNavItems } from '@/constants/data';
+import { AdminRoles } from '@/constants/roles';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -29,7 +30,7 @@ export function MobileSidebar({ className }: SidebarProps) {
               <Image src="/logo.png" width={150} height={150} alt="logo" />
               <div className="mt-5 space-y-1">
                 <DashboardNav
-                  items={userInfo.role === 'admin' ? navItems : userNavItems}
+                  items={AdminRoles.includes(userInfo.role) ? navItems : userNavItems}
                   isMobileNav={true}
                   setOpen={setOpen}
                 />

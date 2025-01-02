@@ -39,6 +39,7 @@ export type AdminRegisterUsers = {
   firstname: string;
   lastname: string;
   tag: number;
+  role: string
   email: string;
   phoneno: string;
   ip: string;

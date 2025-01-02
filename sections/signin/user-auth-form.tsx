@@ -21,6 +21,7 @@ import EmailSignInButton from './email-signup-button copy';
 import Link from 'next/link';
 import { VerificationModal } from '@/components/modal/verification-modal';
 import { ErrorCodes } from '@/types';
+import { AdminRoles } from '@/constants/roles';
 
 
 const formSchema = z.object({
@@ -52,7 +53,7 @@ export default function UserAuthForm() {
         });
 
         if (!response.error) {
-          if (response.user.role === 'admin') {
+          if (AdminRoles.includes(response.user.role)) {
             router.push('/main');
           } else {
             router.push('/mypage');

@@ -9,7 +9,7 @@ export const GET = async (request: NextRequest) => {
     revalidatePath('/')
     await dbConnect();
     const users = await User.find({
-      register: { $elemMatch: { nickname: { $ne: 'none' } } }
+      // register: { $elemMatch: { nickname: { $ne: 'none' } } }
     });
     const usersInfo = users.map((user) => user.toObject());
     return NextResponse.json(

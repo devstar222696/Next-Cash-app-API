@@ -6,12 +6,16 @@ import { CheckboxDaily } from './checkboxdaily';
 import { CheckboxBonus } from './checkboxbonus';
 import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
+import { PermissionsMap } from '@/constants/permissions';
 
 const { socket } = useSocket();
 
 export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     id: 'select',
+    meta: {
+      requiredPermissions: [PermissionsMap.multi_select]
+    },
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}

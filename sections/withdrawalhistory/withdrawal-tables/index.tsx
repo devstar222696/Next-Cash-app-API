@@ -7,6 +7,8 @@ import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { useSearchParams } from 'next/navigation';
+import AccessControl from '@/components/accessControl';
+import { PermissionsMap } from '@/constants/permissions';
 
 interface SelectMultiIdData {
   id?: string;
@@ -247,6 +249,7 @@ export default function AdminWithdrawalHistoryTable() {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
+      <AccessControl requiredPermissions={[PermissionsMap.multi_restore, PermissionsMap.multi_delete]}>
         <Button
           variant="outline"
           handleClick={multiRestore}
@@ -261,6 +264,7 @@ export default function AdminWithdrawalHistoryTable() {
         >
           Multi Delete
         </Button>
+        </AccessControl>
         <select
           onChange={(e) => setSelectCategory(e.target.value)}
           className="mr-3 mt-3 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"

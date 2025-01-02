@@ -65,7 +65,7 @@ export default function UserPromotionTable() {
         );
 
 
-        setTag(withdrawalsResult.data[0].tag);
+        setTag(withdrawalsResult.data[0]);
         setData(redeemPlayerListResult.data);
         setTotalData(filteredWithdrawals.length);
       } catch (error) {
@@ -88,7 +88,7 @@ export default function UserPromotionTable() {
 
   return (
     <div className="space-y-4 ">
-      <PromotionPage tag={tag} />
+      <PromotionPage tagData={tag} />
       <p className="flex justify-center font-bold">Player Redeem List</p>
       <UserPromotionTableView
         columns={columns}

@@ -1,6 +1,7 @@
 import { DashboardNav } from '@/components/dashboard-nav';
 import { navItems } from '@/constants/data';
 import { userNavItems } from '@/constants/data';
+import { AdminRoles } from '@/constants/roles';
 import { cn } from '@/lib/utils';
 
 const userInfoStr = localStorage.getItem('userinfo');
@@ -18,7 +19,7 @@ export default function Sidebar() {
               Overview
             </h2>
             <DashboardNav
-              items={userInfo.role === 'admin' ? navItems : userNavItems}
+              items={AdminRoles.includes(userInfo.role) ? navItems : userNavItems}
             />
           </div>
         </div>

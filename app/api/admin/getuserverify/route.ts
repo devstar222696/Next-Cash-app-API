@@ -9,12 +9,12 @@ export const GET = async (request: NextRequest) => {
   try {
     revalidatePath('/')
     const users = await User.find({
-      register: { $elemMatch: { nickname: { $ne: 'none' } } }
+      // register: { $elemMatch: { nickname: { $ne: 'none' } } }
     });
 
     const usersInfo = users.map((user) => {
       const completeRegisters = user.register.filter(
-        (entry: any) => entry.nickname !== 'none'
+        (entry: any) => entry.status === 'complete'
       );
       return {
         firstname: user.firstname,

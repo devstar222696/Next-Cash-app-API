@@ -10,6 +10,8 @@ import { toast } from '@/components/ui/use-toast';
 import { ColumnDef } from '@tanstack/react-table';
 import { useSearchParams } from 'next/navigation';
 import { RowStateProvider } from '@/app/shared/row-state-context';
+import AccessControl from '@/components/accessControl';
+import { PermissionsMap } from '@/constants/permissions';
 
 interface SelectMultiIdData {
   id?: string;
@@ -217,6 +219,7 @@ export default function RegisterTable() {
 
   return (
     <div className="space-y-4 ">
+      <AccessControl requiredPermissions={[PermissionsMap.multi_accept, PermissionsMap.multi_decline]}>
       <div className="flex justify-end">
         <Button variant="outline" handleClick={multiAccept} className="mr-3">
           Multi Accept
@@ -225,6 +228,7 @@ export default function RegisterTable() {
           Multi Decline
         </Button>
       </div>
+      </AccessControl>
       <RowStateProvider>
         <RegisterTablePage
           columns={columns as ColumnDef<UserRegister & AdminRegisterUsers>[]}

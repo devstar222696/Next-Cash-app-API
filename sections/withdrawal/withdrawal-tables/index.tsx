@@ -7,6 +7,8 @@ import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { useSearchParams } from 'next/navigation';
+import AccessControl from '@/components/accessControl';
+import { PermissionsMap } from '@/constants/permissions';
 
 interface SelectMultiIdData {
   id?: string;
@@ -233,6 +235,7 @@ export default function AdminWithdrawalTable() {
 
   return (
     <div className="space-y-4">
+      <AccessControl requiredPermissions={[PermissionsMap.multi_accept, PermissionsMap.multi_decline]}>
       <div className="flex justify-end">
         <Button variant="outline" handleClick={multiAccept} className="mr-3">
           Multi Accept
@@ -241,6 +244,7 @@ export default function AdminWithdrawalTable() {
           Multi Decline
         </Button>
       </div>
+      </AccessControl>
       <AdminWithdrawalTableView
         columns={columns}
         data={paginatedData}

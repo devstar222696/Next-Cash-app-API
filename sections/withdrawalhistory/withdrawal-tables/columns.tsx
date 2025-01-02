@@ -4,12 +4,16 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
+import { PermissionsMap } from '@/constants/permissions';
 
 const { socket } = useSocket();
 
 export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
   {
     id: 'select',
+    meta: {
+          requiredPermissions: [PermissionsMap.multi_select]
+    },
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}

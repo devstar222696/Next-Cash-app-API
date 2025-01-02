@@ -9,7 +9,7 @@ export const GET = async (request: NextRequest) => {
   try {
     revalidatePath('/')
     const users = await User.find({
-      register: { $elemMatch: { nickname: { $ne: 'none' } } },
+      // register: { $elemMatch: { nickname: { $ne: 'none' } } },
       action: 'yes'
     });
 

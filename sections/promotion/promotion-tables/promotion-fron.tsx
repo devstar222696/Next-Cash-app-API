@@ -3,8 +3,10 @@ import Image from 'next/image';
 import { GameLink } from './game-link';
 import { useRouter } from 'next/navigation';
 import TagId from '@/components/ui/tagId';
+import VIPTagId from '@/components/ui/VipTagId';
+import { Roles } from '@/constants/roles';
 
-export default function PromotionPage({ tag }: any) {
+export default function PromotionPage({ tagData }: any) {
   const router = useRouter();
 
   const register = () => {
@@ -18,7 +20,7 @@ export default function PromotionPage({ tag }: any) {
   const redeem = () => {
     router.push('/mypage/withdrawal');
   };
-  
+
   const ourUs = () => {
     router.push('/mypage/chat');
   };
@@ -35,7 +37,7 @@ export default function PromotionPage({ tag }: any) {
   return (
     <>
       <div className="w-full">
-        <TagId tagId={tag} />
+        {tagData?.role === Roles.vip_user ? <VIPTagId tagId={tagData?.tag} /> : <TagId tagId={tagData?.tag} />}
       </div>
       {/* <div className="grid justify-items-center">
         <Image src="/promo/promo1.png" width={1000} height={1000} alt="ad" />

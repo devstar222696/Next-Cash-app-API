@@ -9,6 +9,9 @@ import TagId from '@/components/ui/tagId';
 import { useState } from 'react';
 import { GameLink } from '@/sections/promotion/promotion-tables/game-link';
 import Image from 'next/image';
+import VIPTagId from '@/components/ui/VipTagId';
+import { AdminRegisterUsers } from '@/constants/data';
+import { Roles } from '@/constants/roles';
 
 const breadcrumbItems = [
   { title: 'Mypage', link: '/mypage' },
@@ -19,7 +22,8 @@ type TEmployeeListingPage = {};
 
 export default function UserredeemListingPage({ }: TEmployeeListingPage) {
   // Showcasing the use of search params cache in nested RSCs
-  const [tagId, setTagId] = useState('')
+  const [tagId, setTagId] = useState<AdminRegisterUsers | null>(null)
+  console.log('tagId: ---->', tagId);
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
@@ -32,7 +36,7 @@ export default function UserredeemListingPage({ }: TEmployeeListingPage) {
         <div className="grid justify-items-center">
           <Image src="/IH recharge notice.png" width={1000} height={1000} alt="ad" />
         </div>
-        <TagId tagId={tagId} />
+        {tagId?.role === Roles.vip_user ? <VIPTagId  tagId={tagId?.tag}/>:   <TagId tagId={tagId?.tag || ''} /> }
         <UserredeemForm setTagId={setTagId} />
         <p className="text-medium py-5 text-center font-bold">
           Deposit History

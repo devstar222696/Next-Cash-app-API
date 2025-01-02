@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { toast } from '../ui/use-toast';
 import { useSearchParams } from 'next/navigation';
-import { AdminRegisterUsers } from '@/constants/data';
+import { AdminRegisterUsers, UserRegister } from '@/constants/data';
+import { GamesList } from '@/constants/games';
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -25,7 +26,7 @@ export const RegisterModal: React.FC<AlertModalProps> = ({
   onClose,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [data, setData] = useState<AdminRegisterUsers[]>([]);
+  const [gameOptions, setGameOptions] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [loginId, setLoginId] = useState('');
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,7 +61,11 @@ export const RegisterModal: React.FC<AlertModalProps> = ({
         const result = await response.json();
 
         if (result.data && result.data.length > 0) {
-          setData(result.data || []);
+          const registeredRequests = result.data[0]?.register || [];
+          const categories = registeredRequests.map((request: UserRegister) => request.category);
+          const availableGames = GamesList.filter((option: string) => !categories.includes(option));
+          setSelectedOption(availableGames[0]|| '');
+          setGameOptions(availableGames);
         } else {
           console.error('No data found in the result:', result);
         }
@@ -146,7 +151,7 @@ export const RegisterModal: React.FC<AlertModalProps> = ({
           onChange={(e) => setSelectedOption(e.target.value)}
           className="mt-1 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
         >
-          <option value="FireKirin">FireKirin</option>
+          {/* <option value="FireKirin">FireKirin</option>
           <option value="MilkyWay">MilkyWay</option>
           <option value="OrionStars">OrionStars</option>
           <option value="Juwa">Juwa</option>
@@ -157,7 +162,14 @@ export const RegisterModal: React.FC<AlertModalProps> = ({
           <option value="VBlink">VBlink</option>
           <option value="Blue Dragon">Blue Dragon</option>
           <option value="Game Room">Game Room</option>
-          <option value="Mr. All In One">Mr. All In One</option>
+          <option value="Mr. All In One">Mr. All In One</option> */}
+                          {
+          gameOptions.map((option: string) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))
+          }
         </select>
         <label className="mt-3 text-sm font-medium">Login ID</label>
         <input
