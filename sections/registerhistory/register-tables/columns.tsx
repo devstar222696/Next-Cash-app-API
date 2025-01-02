@@ -66,7 +66,7 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     accessorKey: 'tag',
     header: 'TAG NUMBER',
-    cell: ({ row }) => <span>{row.original.user.tag}</span>
+    cell: ({ row }) => <span>{row.original.user.tag || 'none'}</span>
   },
   {
     accessorKey: 'nickname',
@@ -84,7 +84,7 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     accessorKey: 'phonenumber',
     header: 'PHONE NUMBER',
-    cell: ({ row }) => <span>{row.original.user.phoneno}</span>
+    cell: ({ row }) => <span>{row.original.user.phoneno || 'none'}</span>
   },
   {
     accessorKey: 'ip',
