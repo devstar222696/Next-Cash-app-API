@@ -14,7 +14,7 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     id: 'select',
     meta: {
-      requiredPermissions: [PermissionsMap.multi_select]
+      requiredPermissions: [PermissionsMap.multi_select],
     },
     header: ({ table }) => (
       <Checkbox
@@ -28,7 +28,7 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
                 .rows.filter((row) => row.getIsSelected());
               const idsAndDates = selectedRows.map((row) => ({
                 id: row.original.user?._id,
-                date: row.original.date
+                date: row.original.date,
               }));
               socket?.emit('selectRegisterAllIds', idsAndDates);
             } else {
@@ -47,12 +47,12 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
           if (value) {
             const idsAndDate = {
               id: row.original.user?._id,
-              date: row.original.date
+              date: row.original.date,
             };
             socket?.emit('selectRegisterIds', idsAndDate);
           } else {
             const deleteId = {
-              date: row.original.date
+              date: row.original.date,
             };
             socket?.emit('selectRegisterIds', deleteId);
           }
@@ -61,66 +61,72 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
       />
     ),
     enableSorting: false,
-    enableHiding: false
+    enableHiding: false,
   },
-  // {
-  //   accessorKey: 'tag',
-  //   header: 'TAG NUMBER',
-  //   cell: ({ row }) => <span>{row.original.user.tag || 'none'}</span>
-  // },
+  {
+    accessorKey: 'tag',
+    header: 'TAG NUMBER',
+    cell: ({ row }) => (
+      <span>
+        {/* user?.tag가 undefined/null이면 'none' 표시 */}
+        {row.original.user?.tag ?? 'none'}
+      </span>
+    ),
+  },
   {
     accessorKey: 'nickname',
-    header: 'NICKNAME'
+    header: 'NICKNAME',
   },
   {
     accessorKey: 'username',
     header: 'USERNAME',
     cell: ({ row }) => (
       <span>
-        {row.original.user.firstname} {row.original.user.lastname}
+        {row.original.user?.firstname ?? ''} {row.original.user?.lastname ?? ''}
       </span>
-    )
+    ),
   },
   {
     accessorKey: 'phonenumber',
     header: 'PHONE NUMBER',
-    cell: ({ row }) => <span>{row.original.user.phoneno || 'none'}</span>
+    cell: ({ row }) => <span>{row.original.user?.phoneno ?? 'none'}</span>,
   },
   {
     accessorKey: 'ip',
     header: 'IP ADDRESS',
-    cell: ({ row }) => <span>{row.original.user.ip}</span>
+    cell: ({ row }) => <span>{row.original.user?.ip ?? 'none'}</span>,
   },
   {
     accessorKey: 'category',
-    header: 'CATEGORY'
+    header: 'CATEGORY',
+    cell: ({ row }) => <span>{row.original.category ?? 'none'}</span>,
   },
   {
-    id: 'actions',
+    id: 'login-password',
     header: 'LOGIN ID AND PASSWORD CODE',
-    cell: ({ row,table }) => {
-      return(
+    cell: ({ row, table }) => {
+      return (
         <LoginIdAction
-        rowId={row.id}
-        dateV={row.original.date}
-        loginIdV={row.original.loginid}
-        passwordCodeV={row.original.passwordcode}
-        userName={row.original.user._id}
-      />
-      )
-    }
+          rowId={row.id}
+          dateV={row.original.date}
+          loginIdV={row.original.loginid}
+          passwordCodeV={row.original.passwordcode}
+          userName={row.original.user?._id ?? ''}
+        />
+      );
+    },
   },
   // {
   //   id: 'actions',
   //   header: 'CODE NUMBER',
   //   cell: ({ row }) => (
   //     <CodeAction
-  //     rowId={row.id}
-  //     registerDate={row.original.date}
-  //     codeNumber={row.original.codenumber}
-  //     regiStatus={row.original.status}
-  //     userName={row.original.user._id}
-  //   />
+  //       rowId={row.id}
+  //       registerDate={row.original.date}
+  //       codeNumber={row.original.codenumber}
+  //       regiStatus={row.original.status}
+  //       userName={row.original.user?._id ?? ''}
+  //     />
   //   )
   // },
   {
@@ -129,8 +135,8 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
     cell: ({ row }) => (
       <CellAction
         redeemDate={row.original.date}
-        userId={row.original.user._id}
+        userId={row.original.user?._id ?? ''}
       />
-    )
-  }
+    ),
+  },
 ];
