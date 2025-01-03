@@ -3,7 +3,7 @@ import dbConnect from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
-  const { token, paymentoption, paymenttype, amount, id } =
+  const { token, paymentoption, paymenttype, paymentgateway , amount, id } =
     await request.json();
   await dbConnect();
 
@@ -17,6 +17,7 @@ export const POST = async (request: NextRequest) => {
         amount: amount,
         paymentoption: paymentoption,
         paymenttype: paymenttype,
+        paymentgateway: paymentgateway,
         id: id
       });
 
