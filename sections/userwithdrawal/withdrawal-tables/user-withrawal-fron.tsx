@@ -18,6 +18,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { UserRegister } from '@/constants/data';
+import { StorageKeys } from '@/constants/storage';
 
 
 const userInfoStr = localStorage.getItem('userinfo');
@@ -139,7 +140,7 @@ export default function UserWithdrawalForm() {
           paymenttype: selectedWithdrawal
         }
 
-        localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
+        localStorage.setItem(StorageKeys.withdrawalData, JSON.stringify(withdrawalData));
 
         // const response = await userWithdrawal({
         //   token: userInfo.token,

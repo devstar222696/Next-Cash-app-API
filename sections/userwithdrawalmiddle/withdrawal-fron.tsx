@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
+import { StorageKeys } from '@/constants/storage';
 
 const formSchema = z.object({
   paymentgateway: z.string()
@@ -62,7 +63,7 @@ export default function UserWithdrawalMiddle() {
   };
 
   const onSubmit = async (data: UserFormValue) => {
-    const withDrawalData = localStorage.getItem('withdrawaldata');
+    const withDrawalData = localStorage.getItem(StorageKeys.withdrawalData);
     const withDrawalInfo = withDrawalData ? JSON.parse(withDrawalData) : null;  
     if (!withDrawalInfo) {
       toast({
