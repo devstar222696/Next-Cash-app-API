@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { formatInTimeZone } from 'date-fns-tz';
 
 const registerSchema: Schema = new Schema(
   {
@@ -31,11 +30,20 @@ const redeemSchema: Schema = new Schema(
     comdate: { type: Date },
     isBonusInitializeTime: {
       type: Date,
-      default: () => {
-        const currentDate = new Date();
-        const HstDate = formatInTimeZone(currentDate, 'Pacific/Honolulu', 'yyyy-MM-dd');
-        return `${HstDate}T00:00:00.000Z`;
-      }
+      // default: () => {
+      // // Step 1: Get the current moment in time (JS Date is UTC-based)
+      // const nowUTC = new Date();
+
+      // // Step 2: Format that moment as an HST local-time string
+      // // e.g. "2025-01-03 14:05:22"
+      // const hstString = formatInTimeZone(nowUTC, 'Pacific/Honolulu', 'yyyy-MM-dd HH:mm:ss');
+
+      // // Step 3: Convert that local HST string back into a real UTC Date object
+      // // e.g. If hstString was "2025-01-03 14:05:22" HST, 
+      // //      we get a Date that represents 2025-01-03 00:05:22 UTC (offset depends on time of year)
+      // const hstMomentAsUTC = zonedTimeToUtc(hstString, 'Pacific/Honolulu');
+      // return hstMomentAsUTC;
+      // }
     }
   },
   { _id: false }
