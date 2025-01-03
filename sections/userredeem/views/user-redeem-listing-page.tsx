@@ -37,7 +37,7 @@ export default function UserredeemListingPage({ }: TEmployeeListingPage) {
         <img src="/IH_register_2.png" alt="recharge" />
         </div>
         <div className="grid justify-items-center">
-          <Image src="/IH recharge notice.png" width={1000} height={1000} alt="ad" />
+          <Image src="/IHRechargeNotice.png" width={1000} height={1000} alt="ad" />
         </div>
         {tagId?.role === Roles.vip_user ? <VIPTagId  tagId={tagId?.tag}/>:   <TagId tagId={tagId?.tag || ''} /> }
         <UserredeemForm setTagId={setTagId} />

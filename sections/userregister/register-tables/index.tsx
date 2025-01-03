@@ -85,6 +85,9 @@ export default function UserRegisterTable() {
       <div className="flex justify-center w-full">
         <img src="/IH_register_1.png" alt="recharge" />
       </div>
+      <div className="grid justify-items-center">
+        <Image src="/IHRegisterNotice.png" width={1000} height={1000} alt="ad" />
+      </div>
       <UserRegistrationForm />
       <Button
         className="ml-[20%] w-[60%] border p-6 text-white"
