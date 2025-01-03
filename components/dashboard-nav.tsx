@@ -22,6 +22,7 @@ import {
   TooltipTrigger
 } from './ui/tooltip';
 import useSocket from '@/lib/socket';
+import { useSidebarCounts } from './layout/sidebar-context';
 
 interface DashboardNavProps {
   items: NavItem[];
@@ -42,28 +43,28 @@ const NavItemContent = React.memo(
     const Icon = item.icon ? Icons[item.icon] : Icons.logo;
     const hasChildren = item.children && item.children.length > 0;
 
-    const [registerR, setRegisterR] = useState(0);
+    // const [registerR, setRegisterR] = useState(0);
     const [verifyR, setVerifyR] = useState(0);
-    const [redeemR, setDepositR] = useState(0);
-    const [withdrawalR, setWithdrawalR] = useState(0);
+    // const [redeemR, setDepositR] = useState(0);
+    // const [withdrawalR, setWithdrawalR] = useState(0);
+    const counts = useSidebarCounts()
+    // const { socket } = useSocket();
 
-    const { socket } = useSocket();
+    // socket?.on('registerRecieve', (data: any) => {
+    //   setRegisterR(data);
+    // });
 
-    socket?.on('registerRecieve', (data: any) => {
-      setRegisterR(data);
-    });
+    // socket?.on('verifyRecieve', (data: any) => {
+    //   setVerifyR(data);
+    // });
 
-    socket?.on('verifyRecieve', (data: any) => {
-      setVerifyR(data);
-    });
+    // socket?.on('depositRecieve', (data: any) => {
+    //   setDepositR(data);
+    // });
 
-    socket?.on('depositRecieve', (data: any) => {
-      setDepositR(data);
-    });
-
-    socket?.on('withdrawalRecieve', (data: any) => {
-      setWithdrawalR(data);
-    });
+    // socket?.on('withdrawalRecieve', (data: any) => {
+    //   setWithdrawalR(data);
+    // });
 
     return (
       <div
@@ -75,19 +76,19 @@ const NavItemContent = React.memo(
       >
         <Icon className="size-5 flex-none" />
         {!isMinimized && <span className="mr-2 truncate">{item.title}</span>}
-        {registerR !== 0 && (
+        {counts.register !== 0 && (
           <p className="w-5 rounded-full bg-red-500 text-center text-white">
-            {item.title === 'Register' ? registerR : ''}
+            {item.title === 'Register' ? counts.register : ''}
           </p>
         )}
-        {redeemR !== 0 && (
+        {counts.redeem !== 0 && (
           <p className="w-5 rounded-full bg-red-500 text-center text-white">
-            {item.title === 'Deposit' ? redeemR : ''}
+            {item.title === 'Deposit' ? counts.redeem : ''}
           </p>
         )}
-        {withdrawalR !== 0 && (
+        {counts.withdrawal !== 0 && (
           <p className="w-5 rounded-full bg-red-500 text-center text-white">
-            {item.title === 'Withdrawal' ? withdrawalR : ''}
+            {item.title === 'Withdrawal' ? counts.withdrawal : ''}
           </p>
         )}
       </div>

@@ -57,7 +57,7 @@ export function UserNav() {
           })
         );
         const preparingItemsCount = combinedData.filter(
-          (item: any) => item.status === 'preparing'
+          (item: any) => (item.status === 'preparing' || item.status === 'Processing')
         ).length;
         socket?.emit('registerRequest', preparingItemsCount);
       } catch (error) {

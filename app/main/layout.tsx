@@ -1,11 +1,13 @@
+'use client';
 import Header from '@/components/layout/header';
 import Sidebar from '@/components/layout/sidebar';
+import { SidebarProvider } from '@/components/layout/sidebar-context';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Next Shadcn Main Starter',
-  description: 'Basic main with Next.js and Shadcn'
-};
+// export const metadata: Metadata = {
+//   title: 'Next Shadcn Main Starter',
+//   description: 'Basic main with Next.js and Shadcn'
+// };
 
 export default function DashboardLayout({
   children
@@ -13,6 +15,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
+    <SidebarProvider>
     <div className="flex">
       <Sidebar />
       <main className="w-full flex-1 overflow-hidden">
@@ -20,5 +23,6 @@ export default function DashboardLayout({
         {children}
       </main>
     </div>
+    </SidebarProvider>
   );
 }

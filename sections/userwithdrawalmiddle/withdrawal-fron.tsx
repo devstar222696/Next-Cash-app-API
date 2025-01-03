@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { StorageKeys } from '@/constants/storage';
+import useSocket from '@/lib/socket';
 
 const formSchema = z.object({
   paymentgateway: z.string()
@@ -29,6 +30,7 @@ type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserWithdrawalMiddle() {
   const router = useRouter();
+  const { socket } = useSocket();
   const [loading, startTransition] = useTransition();
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema)
@@ -85,6 +87,11 @@ export default function UserWithdrawalMiddle() {
         console.error('Signup error:', response.error);
         return;
       }
+
+      socket?.emit('userWithdrawal', {
+        userId: userInfo.userId,
+        message: `${userInfo.name} requested withdrawal!`
+      });
 
       toast({
         title: 'Withdrawal Request Successful!',

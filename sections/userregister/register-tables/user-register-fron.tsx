@@ -167,8 +167,10 @@ export default function UserRegistrationForm() {
           setCooldown(false);
           localStorage.removeItem(COOLDOWN_KEY);
         }, 30000);
-
-        location.reload();
+      
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
       } catch (error) {
         toast({
           title: 'Register Failed',

@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AdminRegisterUsers, UserRegister } from '@/constants/data';
+import useSocket from '@/lib/socket';
 
 const formSchema = z.object({
   amount: z.any()
@@ -44,6 +45,7 @@ interface IUserReemFormProps {
 
 export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   const router = useRouter();
+  const { socket } = useSocket();
   const [loading, startTransition] = useTransition();
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema)
@@ -195,6 +197,11 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
           });
           return;
         }
+
+        socket?.emit('userDeposit', {
+          userId: userInfo.userId,
+          message: `${userInfo.name} requested deposit!`
+        });
 
         router.push(DEPOSIT_URLS[selectedredeem]);
 
