@@ -1,3 +1,5 @@
+import { AdminRoles, Roles } from '@/constants/roles';
+import useUser from '@/hooks/use-user';
 import useSocket from '@/lib/socket';
 import { createContext, useContext, useEffect, useState } from 'react';
 
@@ -24,6 +26,7 @@ export const SidebarProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const [withdrawalCount, setWithdrawalCount] = useState(0);
 
   const { socket } = useSocket();
+  const user = useUser();
 
   const updateRegisterCount = (data: any) => {
     console.log('new register', data);
@@ -86,8 +89,9 @@ export const SidebarProvider = ({ children }: React.PropsWithChildren<{}>) => {
       };
 
     if (typeof window === 'undefined') return;
+    if (!user || !AdminRoles.includes(user.role as Roles)) return
     loadCounts();
-  }, [countsLoaded])
+  }, [countsLoaded, user])
 
   return (
     <SidebarContext.Provider

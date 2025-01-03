@@ -8,6 +8,7 @@ import { useSidebar } from '@/hooks/useSidebar';
 import { cn } from '@/lib/utils';
 import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
+import { SidebarProvider } from './sidebar-context';
 
 type SidebarProps = {
   className?: string;
@@ -24,6 +25,7 @@ export default function Sidebar({ className }: SidebarProps) {
   };
 
   return (
+    <SidebarProvider>
     <aside
       className={cn(
         `relative  hidden h-screen flex-none border-r bg-card transition-[width] duration-500 md:block`,
@@ -51,5 +53,6 @@ export default function Sidebar({ className }: SidebarProps) {
         </div>
       </div>
     </aside>
+    </SidebarProvider>
   );
 }

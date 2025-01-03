@@ -10,7 +10,7 @@ const io = new Server(server, {
   },
 });
 
-const PORT = parseInt(process.env.PORT || '3001', 10);
+const PORT = parseInt(process.env.PORT || '3000', 10);
 let connectedUsers = [];
 const adminRoles = [
   'admin',

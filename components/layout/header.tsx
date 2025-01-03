@@ -1,12 +1,15 @@
+'use client';
 import ThemeToggle from '@/components/layout/ThemeToggle/theme-toggle';
 import { cn } from '@/lib/utils';
 import { MobileSidebar } from './mobile-sidebar';
 import { UserNav } from './user-nav';
 import { UserAlarm } from './alarm';
 import Image from 'next/image';
+import { SidebarProvider } from './sidebar-context';
 
 export default function Header() {
   return (
+    <SidebarProvider>
     <header className="sticky inset-x-0 top-0 w-full">
       <nav className="flex items-center justify-between px-4 py-2 md:justify-end">
         <div className="grid grid-cols-2 items-center">
@@ -28,5 +31,6 @@ export default function Header() {
         </div>
       </nav>
     </header>
+    </SidebarProvider>
   );
 }
