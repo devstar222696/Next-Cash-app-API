@@ -17,7 +17,7 @@ export const POST = async (request: NextRequest) => {
         phonenumber: phonenumber,
         nickname: nickname,
         status: status,
-        id: id
+        id: user.id
       });
 
       try {
