@@ -1,3 +1,4 @@
+import { useTheme } from 'next-themes';
 import { useState, useEffect } from 'react';
 
 /**
@@ -6,6 +7,7 @@ import { useState, useEffect } from 'react';
  */
 const useDarkMode = (): boolean => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     // Check if window is available (to avoid SSR issues in Next.js)
@@ -17,7 +19,8 @@ const useDarkMode = (): boolean => {
 
       // Listener to update state when preference changes
       const handleChange = (e: MediaQueryListEvent) => {
-        setIsDarkMode(e.matches);
+        const hasDarkMode = theme === 'system' ? e.matches : theme === 'dark';
+        setIsDarkMode(hasDarkMode);
       };
 
       mediaQuery.addEventListener('change', handleChange);
@@ -25,8 +28,16 @@ const useDarkMode = (): boolean => {
       // Cleanup listener on unmount
       return () => mediaQuery.removeEventListener('change', handleChange);
     }
-  }, []);
+  }, [theme]);
 
+  useEffect(() => {
+    if (theme !== 'system') {
+      setIsDarkMode(theme === 'dark');
+    }
+  }, [theme])
+  
+
+  
   return isDarkMode;
 };
 
