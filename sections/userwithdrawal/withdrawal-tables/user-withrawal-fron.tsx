@@ -229,10 +229,10 @@ export default function UserWithdrawalForm() {
           className="mt-1 hover:opacity-80 lg:ml-2 lg:mt-0"
           alt="redeem"
         ></Image>
-        <div className="grid justify-items-center">
+      </div>
+      <div className="grid justify-items-center">
           <Image src="/IHRedeemNotice.png" width={1000} height={1000} alt="ad" />
         </div>
-      </div>
       <br />
       <Form {...form}>
         <form
