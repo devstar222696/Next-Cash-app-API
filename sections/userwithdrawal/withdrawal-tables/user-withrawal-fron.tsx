@@ -157,11 +157,6 @@ export default function UserWithdrawalForm() {
 
         router.push('/mypage/withdrawal/withdrawalmiddle');
 
-        toast({
-          title: 'Withdrawal Successful!',
-          description: 'Welcome! Your withdrawal has been request.'
-        });
-
         setCooldown(true);
         localStorage.setItem(
           COOLDOWN_KEY,
