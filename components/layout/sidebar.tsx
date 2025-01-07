@@ -34,7 +34,7 @@ export default function Sidebar({ className }: SidebarProps) {
       )}
     >
       <div className="hidden p-5 pt-10 lg:block">
-        <Image src="/logo.png" width={150} height={150} alt="logo-web" />
+        <Image src="/IH-LOGO.png" width={150} height={150} alt="logo-web" />
       </div>
       <ChevronLeft
         className={cn(

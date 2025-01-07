@@ -115,9 +115,9 @@ export default function UserAuthForm() {
 
   const ok = () => { };
 
-  const handleForgotPwd = async () => {
-    router.push('forgotpassword')
-  }
+  const handleClick = () => {
+    router.push('/signup');
+  };
 
   return (
     <>
@@ -152,10 +152,12 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-          <div className={"mt-5 text-sm font-medium cursor-pointer"} onClick={handleForgotPwd} > Forgot Password? </div>
-          <Button disabled={loading} className="ml-auto w-full" type="submit" handleClick={ok}>
-            LOG IN
-          </Button>
+          <button disabled={loading} type="submit" onClick={ok}>
+            <img src="/IH login.png" alt="not" className='w-[400px] h-[60px]'/>
+          </button>
+          <button disabled={loading} type="submit" onClick={handleClick}>
+            <img src="/IH sign up.png" alt="not" className='w-[400px] h-[60px]'/>
+          </button>
           {pop ? (
             <div className="rounded-lg border border-red-500 p-1 text-center text-red-500">
               Sorry, your action has been benned!

@@ -10,19 +10,19 @@ import { Mail } from 'lucide-react';
 export default function EmailSignInButton() {
   const router = useRouter();
 
-  const handleClick = () => {
-    router.push('/signup');
-  };
+  const handleForgotPwd = async () => {
+    router.push('forgotpassword')
+  }
 
   return (
     <Button
       className="w-full"
       variant="outline"
       type="button"
-      handleClick={handleClick}
+      handleClick={handleForgotPwd}
     >
       <Mail className="mr-2 h-4 w-4" />
-      Sign up with Email
+      Forgot Password?
     </Button>
   );
 }

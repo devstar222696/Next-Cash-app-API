@@ -30,7 +30,7 @@ export function MobileSidebar({ className }: SidebarProps) {
         <SheetContent side="left" className="!px-0">
           <div className="space-y-4 py-4">
             <div className="px-3 py-2">
-              <Image src="/logo.png" width={150} height={150} alt="logo" />
+              <Image src="/IH-LOGO.png" width={150} height={150} alt="logo" />
               <div className="mt-5 space-y-1">
                 <DashboardNav
                   items={user && AdminRoles.includes(user.role as Roles) ? navItems : userNavItems}

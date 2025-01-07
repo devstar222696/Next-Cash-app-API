@@ -14,7 +14,7 @@ export default function Header() {
       <nav className="flex items-center justify-between px-4 py-2 md:justify-end">
         <div className="grid grid-cols-2 items-center">
           <Image
-            src="/logo.png"
+            src="/IH-LOGO.png"
             width={40}
             height={40}
             alt="logo"

@@ -97,7 +97,7 @@ export default function OpenInBrowserPage() {
     >
       {/* Top Logo */}
       <Image
-        src="/logo.png"
+        src="/IH-LOGO.png"
         width={200}
         height={200}
         alt="Island House Logo"

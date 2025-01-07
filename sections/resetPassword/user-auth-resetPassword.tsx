@@ -90,7 +90,7 @@ export default function UserAuthResetPassword() {
       <div className="flex h-full items-center p-4 lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex w-full justify-center">
-              <Image src="/logo.png" width={170} height={170} alt="logo image" />
+              <Image src="/IH-LOGO.png" width={170} height={170} alt="logo image" />
           </div>
           <h1 className="text-center text-2xl font-semibold tracking-tight">
             Reset Password
