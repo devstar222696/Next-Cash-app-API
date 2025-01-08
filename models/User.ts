@@ -83,6 +83,7 @@ export interface IUser extends Document {
   paypal: string;
   zelle: string;
   bitcoin: string;
+  usdt: string;
   verifystatus: string;
   register: Array<typeof registerSchema>;
   redeem: Array<typeof redeemSchema>;
@@ -107,6 +108,7 @@ const userSchema: Schema = new Schema({
   venmo: { type: String, default: 'none' },
   paypal: { type: String, default: 'none' },
   zelle: { type: String, default: 'none' },
+  usdt: { type: String, default: 'none' },
   bitcoin: { type: String, default: 'none' },
   createdAt: { type: Date, default: Date.now },
   verifystatus: { type: String, default: 'no' },
