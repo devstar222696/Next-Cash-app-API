@@ -21,8 +21,8 @@ export default function PromotionPage({ tagData }: any) {
     router.push('/mypage/withdrawal');
   };
 
-  const ourUs = () => {
-    router.push('/mypage/chat');
+  const houseRule = () => {
+    router.push('/mypage/house-rules');
   };
 
   const facebook = () => {
@@ -34,10 +34,28 @@ export default function PromotionPage({ tagData }: any) {
   const instagram = () => {
     router.push('https://www.instagram.com/islandhouse2000/');
   };
+
+  const guide = () => {
+    router.push('/mypage/guide');
+  };
   return (
     <>
       <div className="w-full">
-        {tagData?.role === Roles.vip_user ? <VIPTagId tagId={tagData?.tag} /> : <TagId tagId={tagData?.tag} />}
+        <div className="flex items-center justify-center">
+          <Image
+            src="/start-guide.png"
+            width={350}
+            height={5}
+            className="pt-[2px] hover:cursor-pointer hover:opacity-80"
+            onClick={guide}
+            alt="start guide"
+          />
+        </div>
+        {tagData?.role === Roles.vip_user ? (
+          <VIPTagId tagId={tagData?.tag} />
+        ) : (
+          <TagId tagId={tagData?.tag} />
+        )}
       </div>
       {/* <div className="grid justify-items-center">
         <Image src="/promo/promo1.png" width={1000} height={1000} alt="ad" />
@@ -48,7 +66,7 @@ export default function PromotionPage({ tagData }: any) {
       <div className="grid w-full grid-cols-1 place-items-center">
         <div className="grid grid-cols-2 justify-items-center gap-2 lg:flex lg:justify-center">
           <Image
-            src="/my-page/button_1.png"
+            src="/my-page/IH main page button 1.png"
             width={300}
             height={5}
             className="hover:cursor-pointer hover:opacity-80 pt-[3px]"
@@ -56,7 +74,7 @@ export default function PromotionPage({ tagData }: any) {
             alt="register"
           ></Image>
           <Image
-            src="/my-page/button_2.png"
+            src="/my-page/IH main page button 2.png"
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
@@ -64,7 +82,7 @@ export default function PromotionPage({ tagData }: any) {
             alt="recharge"
           ></Image>
           <Image
-            src="/my-page/button_3.png"
+            src="/my-page/IH main page button 3.png"
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
@@ -72,12 +90,12 @@ export default function PromotionPage({ tagData }: any) {
             alt="redeem"
           ></Image>
           <Image
-            src="/my-page/button_4.png"
+            src="/my-page/IH main page button 4.png"
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
             alt="our us"
-            onClick={ourUs}
+            onClick={houseRule}
           ></Image>
         </div>
       </div>

@@ -36,6 +36,7 @@ const IntroductionFooter = () => {
               <Image src="/Zelle.png" width={36} height={36} alt="Zelle" />
               <Image src="/Bitcoins.png" width={34} height={36} alt="Bitcoin" />
               <Image src="/PayPal.png" width={36} height={36} alt="PayPal" />
+              <Image src="/usdt.png" width={36} height={36} alt="USDT" />
             </div>
           </div>
         </div>
