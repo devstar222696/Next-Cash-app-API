@@ -1,8 +1,7 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
-import { Heading } from '@/components/ui/heading';
-import { Separator } from '@/components/ui/separator';
 import UserChat from '../chat-fron';
+import Image from 'next/image';
 
 const breadcrumbItems = [
   { title: 'MyPage', link: '/mypage' },
@@ -15,12 +14,16 @@ export default async function UserChatPage({}: TEmployeeListingPage) {
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
-        <Breadcrumbs items={breadcrumbItems} />
-
-        <div className="flex items-start justify-between">
-          <Heading title={`Our us`} description="" />
+        <Breadcrumbs items={breadcrumbItems} showBreadcrumbs={false} />
+        <div className="flex justify-center">
+          <Image
+            src="/IH our us title.png"
+            width={500}
+            height={200}
+            className="mt-1 hover:opacity-80 lg:ml-2 lg:mt-0"
+            alt="ourus"
+          ></Image>
         </div>
-        <Separator />
         <UserChat />
       </div>
     </PageContainer>
