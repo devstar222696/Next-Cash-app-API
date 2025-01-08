@@ -20,6 +20,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import useSocket from '@/lib/socket';
+import { Roles } from '@/constants/roles';
 
 const formSchema = z.object({
   amount: z.any()
@@ -79,8 +80,14 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   };
 
   const handleCheckboxChange = (checked: boolean) => {
-    setCheckboxChecked(checked);
-    console.log(`Checkbox is now ${checked ? 'checked' : 'unchecked'}`);
+    if (userInfo.role === Roles.vip_user) {
+      setCheckboxChecked(checked);
+    } else {
+      toast({
+        title: 'Error',
+        description: 'Only VIP users can claim the Daily $2 FREEPLAY or 20% reward!'
+      });
+    }
   };
 
   useEffect(() => {
@@ -397,8 +404,8 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 )}
               />
             )}
-            <div className="mx-auto mt-[10px] flex max-w-[312px] items-center">
-              <div className="w-28 text-sm font-medium">Daily Bonus</div>
+            <div className="mx-auto mt-[10px] flex gap-4 max-w-[312px] items-center">
+              <p className='text-sm font-medium'>Daily $2 FREEPLAY or 20%</p>
               <Checkbox
                 checked={checkboxChecked}
                 onCheckedChange={handleCheckboxChange}
