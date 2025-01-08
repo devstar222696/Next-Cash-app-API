@@ -42,12 +42,12 @@ export default function UserPromotionTable() {
         const withdrawalsResult = await withdrawalsResponse.json();
 
         const redeemPlayerListResponse = await fetch('/api/customer/getredeemplayerlist', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userInfo.token}` // Assuming the token is sent this way
-          },
-          cache: 'no-store'
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${userInfo.token}` // Assuming the token is sent this way
+            },
+            cache: 'no-store'
         });
 
         if (!redeemPlayerListResponse.ok) {
@@ -86,6 +86,20 @@ export default function UserPromotionTable() {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 5);
 
+  const gameInfoImages = [
+    '/my-page/IH game info/001.png',
+    '/my-page/IH game info/002.png',
+    '/my-page/IH game info/003.png',
+    '/my-page/IH game info/004.png',
+    '/my-page/IH game info/005.png',
+    '/my-page/IH game info/006.png',
+    '/my-page/IH game info/007.png',
+    '/my-page/IH game info/008.png',
+    '/my-page/IH game info/009.png',
+    '/my-page/IH game info/010.png',
+    '/my-page/IH game info/011.png'
+  ];
+
   return (
     <div className="space-y-4 ">
       <PromotionPage tagData={tag} />
@@ -95,9 +109,19 @@ export default function UserPromotionTable() {
         data={latestData}
         totalItems={totalData}
       />
-      <div className="grid justify-items-center">
-        <Image src="/my-page/IH benefits 2.png" width={1000} height={1000} alt="ad" />
-        <Image src="/my-page/IH benefits 1.png" width={1000} height={1000} alt="ad" />
+      <div className="grid w-full place-items-center">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-2 lg:grid-cols-2 lg:gap-4">
+          {gameInfoImages.map((url, index) => (
+            <Image
+              key={index}
+              src={url}
+              width={1000}
+              height={1000}
+              alt={index.toString()}
+              className='shadow-lg rounded-md bg-white'
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
