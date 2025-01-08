@@ -56,7 +56,7 @@ export const GameLink = () => {
             <img
               src={game.imageurl}
               alt={game.name}
-              className="isFav hover:cursor-pointer hover:opacity-85"
+              className="hover:cursor-pointer hover:opacity-85"
               onClick={() => openGame(game.url)}
               loading="lazy"
             />

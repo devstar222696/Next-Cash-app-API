@@ -35,7 +35,8 @@ import {
   CreditCardIcon,
   LockKeyhole,
   BellRingIcon,
-  NotebookPenIcon
+  NotebookPenIcon,
+  Gamepad2
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -76,5 +77,6 @@ export const Icons = {
   ring: BellRingIcon,
   notebookpen: NotebookPenIcon,
   twitter: Twitter,
-  check: Check
+  check: Check,
+  gamePad: Gamepad2,
 };

@@ -142,6 +142,12 @@ export const navItems: NavItem[] = [
     href: '/main/bannedlist',
     icon: 'warning',
     label: 'banned list'
+  },
+  {
+    title: 'Season Game',
+    href: '/main/sessiongame',
+    icon: 'gamePad',
+    label: 'withdrawalHistory'
   }
 ];
 
