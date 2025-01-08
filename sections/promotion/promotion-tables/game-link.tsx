@@ -1,8 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
-
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
+import { GamePromotionItem } from '@/types';
 
 const sliderSettings = {
   dots: false,
@@ -18,112 +18,57 @@ const sliderSettings = {
   cssEase: "linear",
 }
 
+const userInfoStr = localStorage.getItem('userinfo');
+const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 export const GameLink = () => {
-  const router = useRouter();
+  const [promotionList, setPromotionList] = useState<GamePromotionItem[]>([]);
 
-  const firekirin = () => {
-    router.push('http://start.firekirin.xyz:8580/');
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('/api/admin/seasongame', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userInfo.token}` // Assuming the token is sent this way
+          },
+          cache: 'no-store'
+        });
+        const result = await response.json();
+        setPromotionList(result.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const openGame = (link: string) => {
+    window.open(link, '_blank');
   };
-  const gamevault = () => {
-    router.push('https://download.gamevault999.com/');
-  };
-  const juwa = () => {
-    router.push('https://dl.juwa777.com/');
-  };
-  const milkyway = () => {
-    router.push('http://milkywayapp.xyz');
-  };
-  const orionstar = () => {
-    router.push('http://start.orionstars.vip:8580/');
-  };
-  const panda = () => {
-    router.push('https://www.ultrapanda.mobi/');
-  };
-  const vblink = () => {
-    router.push('https://www.vblink777.club/');
-  };
-  const vagrs = () => {
-    router.push('https://m.lasvegassweeps.com/');
-  };
-  const yolo = () => {
-    router.push('https://yolo777.game');
-  };
+
   return (
     <div className="flex w-full overflow-x-auto lg:justify-center">
-      <Slider {...sliderSettings} className='grid w-full'>
-      <Image
-        src="/Glogo 1.png"
-        width={100}
-        height={100}
-        alt="firekirin"
-        className="hover:cursor-pointer hover:opacity-85"
-        onClick={firekirin}
-      />
-      <Image
-        src="/Glogo 2.png"
-        width={100}
-        height={100}
-        alt="gamevault"
-        className="hover:cursor-pointer hover:opacity-85"
-        onClick={milkyway}
-      />
-      <Image
-        src="/Glogo 3.png"
-        width={100}
-        height={100}
-        alt="juwa"
-        className="hover:cursor-pointer hover:opacity-85"
-        onClick={orionstar}
-      />
-      <Image
-        src="/Glogo 4.png"
-        width={100}
-        height={100}
-        alt="milkyway"
-        className="hover:cursor-pointer hover:opacity-85"
-        onClick={juwa}
-      />
-      <Image
-        src="/Glogo 5.png"
-        width={100}
-        height={100}
-        alt="orionstar"
-        className="hover:cursor-pointer hover:opacity-85"
-        onClick={gamevault}
-      />
-      <Image
-        src="/Glogo 6.png"
-        width={100}
-        height={100}
-        alt="panda"
-        className="hover:cursor-pointer hover:opacity-85"
-        onClick={vagrs}
-      />
-      <Image
-        src="/Glogo 7.png"
-        width={100}
-        height={100}
-        alt="vblink"
-        className="hover:cursor-pointer hover:opacity-85"
-        onClick={yolo}
-      />
-      <Image
-        src="/Glogo 8.png"
-        width={100}
-        height={100}
-        alt="vegrs"
-        className="hover:cursor-pointer hover:opacity-85"
-        onClick={panda}
-      />
-      <Image
-        src="/Glogo 9.png"
-        width={100}
-        height={100}
-        alt="yolo"
-        className="hover:cursor-pointer hover:opacity-85"
-        onClick={vblink}
-      />
+      <Slider {...sliderSettings} className="grid w-full">
+        {promotionList?.map((game) => (
+          <div className="w-100 relative inline-block" key={game._id}>
+            <img
+              src={game.imageurl}
+              alt={game.name}
+              className="isFav hover:cursor-pointer hover:opacity-85"
+              onClick={() => openGame(game.url)}
+              loading="lazy"
+            />
+            {game.isfavourite && (
+              <img
+                src="/star-3d.png"
+                className="absolute left-0 top-0 size-[30%]"
+                alt="star"
+              />
+            )}
+          </div>
+        ))}
       </Slider>
     </div>
   );

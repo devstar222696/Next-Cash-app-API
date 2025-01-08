@@ -45,3 +45,11 @@ export const ErrorCodes = {
   phoneNotVerified: 'PHONE_NUMBER_NOT_VERIFIED',
   emailNotVerified: 'EMAIL_NOT_VERIFIED',
 }
+
+export interface GamePromotionItem {
+  _id: string
+  name: string
+  imageurl: string
+  url: string
+  isfavourite: boolean
+}
