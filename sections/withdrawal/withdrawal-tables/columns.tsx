@@ -14,7 +14,7 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
   {
     id: 'select',
     meta: {
-          requiredPermissions: [PermissionsMap.multi_select]
+      requiredPermissions: [PermissionsMap.multi_select]
     },
     header: ({ table }) => (
       <Checkbox
@@ -75,26 +75,37 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
   {
     accessorKey: 'username',
     header: 'USERNAME',
-    cell: ({ row }) => (
-      <span>
-        {row.original.user.firstname} {row.original.user.lastname}
-      </span>
-    )
+    cell: ({ row }) => {
+      const paymentType = row.original.paymentoption;
+      return paymentType.toLowerCase() === 'test' ? (
+        <span>Test</span>
+      ) : (
+        <span>
+          {row.original.user.firstname} {row.original.user.lastname}
+        </span>
+      );
+    }
   },
   {
     accessorKey: 'user.loginid',
     header: 'GAME ID',
     cell: ({ row }) => {
       const paymentType = row.original.paymentoption;
-  
+
+      if (paymentType.toLowerCase() === 'test') {
+        return 'Test';
+      }
+
       const registers = row.original.user?.register ?? [];
-  
-      const filtered = registers.filter((r: { category: string; }) => r.category === paymentType);
+
+      const filtered = registers.filter(
+        (r: { category: string }) => r.category === paymentType
+      );
 
       const lastRegister = filtered[filtered.length - 1];
 
       return lastRegister?.loginid || 'none';
-    },
+    }
   },
   {
     accessorKey: 'paymenttype',
