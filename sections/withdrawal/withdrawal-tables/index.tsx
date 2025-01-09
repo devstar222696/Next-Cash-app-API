@@ -243,22 +243,22 @@ export default function AdminWithdrawalTable() {
   
   return (
     <div className="space-y-4">
-      <AccessControl
-        requiredPermissions={[
-          PermissionsMap.multi_accept,
-          PermissionsMap.multi_decline
-        ]}
-      >
-        <div className="flex justify-end gap-3">
-          {userInfo.role === Roles.super_admin && <AddRequestForm />}
+      <div className="flex justify-end gap-3">
+        {userInfo.role === Roles.super_admin && <AddRequestForm />}
+        <AccessControl
+          requiredPermissions={[
+            PermissionsMap.multi_accept,
+            PermissionsMap.multi_decline
+          ]}
+        >
           <Button variant="outline" handleClick={multiAccept} className="">
             Multi Accept
           </Button>
           <Button variant="outline" handleClick={multiDecline}>
             Multi Decline
           </Button>
-        </div>
-      </AccessControl>
+        </AccessControl>
+      </div>
       <AdminWithdrawalTableView
         columns={columns}
         data={paginatedData}
