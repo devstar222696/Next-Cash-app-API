@@ -201,5 +201,5 @@ export const paymentOption: Option[] = [
   { label: 'Venmo', value: 'Venmo' },
   { label: 'Paypal', value: 'Paypal' },
   { label: 'Zelle', value: 'Zelle' },
-  { label: 'USDT', value: 'usdt' },
+  { label: 'USDT', value: 'USDT' },
 ];
