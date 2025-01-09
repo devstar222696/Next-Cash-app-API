@@ -30,7 +30,7 @@ export const AmountAction = ({
   };
 
   const onSubmit = async (userData: UserData) => {
-    if (!amount) {
+    if (amount === null || amount === undefined) {
       toast({
         title: 'Amount  empty!',
         description: 'Please input amount!'
