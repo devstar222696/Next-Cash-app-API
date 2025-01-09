@@ -50,16 +50,20 @@ const AddRequestForm: React.FC<GameRequestFormProps> = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        if(response.status == 404){
+            throw new Error(`Error: User Not Found`);
+        }else{
+            throw new Error(`Error: ${response.statusText}`);
+        }
       }
 
       toast({
         title: 'Request submitted successfully!',
         description: 'Your request has been processed.'
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
-        title: 'Failed to submit request',
+        title: error?.message || 'Failed to submit request',
         description: 'Something went wrong. Please try again.'
       });
     } finally {
@@ -70,7 +74,6 @@ const AddRequestForm: React.FC<GameRequestFormProps> = () => {
 
   const onFormSubmit: SubmitHandler<FormData> = async (data) => {
     if(userInfo.userId){
-        console.log('userInfo.userId', userInfo.userId);  
        handleAddRequest(data);
     }
   };
