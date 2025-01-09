@@ -73,24 +73,26 @@ export const POST = async (request: NextRequest) => {
         );
       }
 
-      if (isVipFreeplay && user.role === 'vip_user') {
+      if (isVipFreeplay) {
         const sortedRedeem = [...user.redeem].sort((a, b) => {
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
 
         const lastBonus = sortedRedeem.find((redeem: any) => redeem.isVipFreeplay);
+        if (user.role !== 'vip_user') {
+          return NextResponse.json(
+            { error: 'VIP Daily Freeplay is available for VIP users only.' },
+            { status: 400 }
+          );
+        }
+
         if (lastBonus && hasAlreadyClaimedToday(lastBonus.vipFreeplayTime)) {
           return NextResponse.json(
             { error: 'You have already used your VIP Daily Freeplay today.' },
             { status: 400 }
           );
         }
-      } else if (user.role !== 'vip_user') {
-        return NextResponse.json(
-          { error: 'VIP Daily Freeplay is available for VIP users only.' },
-          { status: 400 }
-        );
-      }
+      } 
 
       const redeemObj: any = {
         amount: amount,
