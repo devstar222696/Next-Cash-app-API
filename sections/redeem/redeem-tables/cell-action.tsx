@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { CheckCircle, MoreHorizontal, X } from 'lucide-react';
+import { CheckCircle, MoreHorizontal, X, User2 } from 'lucide-react';
 import { useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
 
@@ -128,6 +128,11 @@ export const CellAction: React.FC<CellActionProps> = ({
     }
   };
 
+  const goToUserPage = () => {
+    const url = `/main/user/userdetail?id=${userId}`
+    window.open(url, '_blank')
+  }
+
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
   }
@@ -150,6 +155,9 @@ export const CellAction: React.FC<CellActionProps> = ({
           </DropdownMenuItem>
           <DropdownMenuItem onClick={unredeem}>
             <X className="mr-2 h-4 w-4" /> Decline
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={goToUserPage}>
+            <User2 className="mr-2 h-4 w-4" /> User Details
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
