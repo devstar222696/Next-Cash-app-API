@@ -122,6 +122,31 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     )
   },
   {
+    id: 'isMatchBonus',
+    header: 'Match',
+    cell: ({ row }) => (
+      <CheckboxDaily
+        redeemDate={row.original.date}
+        userId={row.original.user._id}
+        checkboxStatus={row.original.isMatchBonus}
+        disabled={true}
+      />
+    )
+  },
+  {
+    id: 'isVipFreeplay',
+    header: 'VIP',
+    cell: ({ row }) =>{
+      return  (
+      <CheckboxDaily
+        redeemDate={row.original.date}
+        userId={row.original.user._id}
+        checkboxStatus={row.original.isVipFreeplay}
+        disabled={true}
+      />
+    )
+}  },
+  {
     id: 'daily',
     header: 'Daily',
     cell: ({ row }) => (

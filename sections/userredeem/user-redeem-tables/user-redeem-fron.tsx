@@ -64,7 +64,9 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   const [gamesByName, setGameByName] = useState<{ [key: string]: UserRegister }>({});
   const [selectedredeem, setSelectedredeem] = useState('CashApp');
   const [selectedPayment, setSelectedPayment] = useState('');
-  const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [isDailyBonus, setIsDailyBonus] = useState(false);
+  const [isMatchBonus, setIsMatchBonus] = useState(false);
+  const [isVipFreeplay, setIsVipFreeplay] = useState(false);
   const [data, setData] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -84,17 +86,6 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
     }
   };
 
-  const handleCheckboxChange = (checked: boolean) => {
-    if (userInfo.role === Roles.vip_user) {
-      setCheckboxChecked(checked);
-    } else {
-      toast({
-        title: 'Error',
-        description:
-          'Only VIP users can claim the Daily $2 FREEPLAY or 20% reward!'
-      });
-    }
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -200,7 +191,9 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
           btc: bitcoin,
           token: userInfo.token,
           id: userInfo.userId,
-          isChecked: checkboxChecked
+          isChecked: isDailyBonus,
+          isMatchBonus: isMatchBonus,
+          isVipFreeplay: isVipFreeplay, 
         });
 
         if (response.error) {
@@ -250,6 +243,8 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
     btc: string;
     id: any;
     isChecked: boolean;
+    isMatchBonus: boolean;
+    isVipFreeplay: boolean; 
   }) => {
     try {
       const response = await fetch('/api/redeem', {
@@ -409,10 +404,28 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
               />
             )}
             <div className="mx-auto mt-[10px] flex gap-4 max-w-[312px] items-center">
-              <p className='text-sm font-medium'>Daily $2 FREEPLAY or 20%</p>
+              <p className='text-sm font-medium w-[140px]'>Match Bonus 100%</p>
               <Checkbox
-                checked={checkboxChecked}
-                onCheckedChange={handleCheckboxChange}
+                checked={isMatchBonus}
+                onCheckedChange={(value: boolean) => setIsMatchBonus(value)}
+                aria-label="Select Match Bonus"
+                disabled={loading || cooldown}
+              />
+            </div>
+            <div className="mx-auto mt-[10px] flex gap-4 max-w-[312px] items-center">
+              <p className='text-sm font-medium w-[140px]'>VIP Daily FREEPLAY</p>
+              <Checkbox
+                checked={isVipFreeplay}
+                onCheckedChange={(value: boolean) => setIsVipFreeplay(value)}
+                aria-label="Select VIP Daily FREEPLAY"
+                disabled={loading || cooldown}
+              />
+            </div>
+            <div className="mx-auto mt-[10px] flex gap-4 max-w-[312px] items-center">
+              <p className='text-sm font-medium w-[140px]'>Daily Bonus 20%</p>
+              <Checkbox
+                checked={isDailyBonus}
+                onCheckedChange={(value: boolean) => setIsDailyBonus(value)}
                 aria-label="Select row"
                 disabled={loading || cooldown}
               />

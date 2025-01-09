@@ -22,6 +22,8 @@ export type Paymentredeems = {
   bonusChecked: boolean;
   date: Date;
   comdate: Date;
+  isVipFreeplay?:  boolean
+  isMatchBonus?:  boolean
 };
 
 export type PaymentWithdrawals = {

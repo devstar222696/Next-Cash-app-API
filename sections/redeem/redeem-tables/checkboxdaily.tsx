@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
-export const CheckboxDaily = ({ userId, redeemDate, checkboxStatus }: any) => {
+export const CheckboxDaily = ({ userId, redeemDate, checkboxStatus, disabled = false }: any) => {
   const [isChecked, setIsChecked] = useState(checkboxStatus);
 
   const handleCheckboxChange = async () => {
@@ -53,6 +53,7 @@ export const CheckboxDaily = ({ userId, redeemDate, checkboxStatus }: any) => {
         checked={isChecked}
         onChange={handleCheckboxChange}
         className="h-4 w-4 rounded"
+        disabled={disabled}
       />
     </div>
   );
