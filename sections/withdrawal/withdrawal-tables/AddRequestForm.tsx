@@ -35,7 +35,7 @@ const AddRequestForm: React.FC<GameRequestFormProps> = () => {
         tag: data.tagNumber,
         username: 'Test',
         gameid: data.game,
-        paymentoption: 'Test',
+        paymentoption: data.game,
         paymenttype: 'Test',
         paymentgateway: 'Test',
         amount: data.amount,
@@ -126,7 +126,7 @@ const AddRequestForm: React.FC<GameRequestFormProps> = () => {
       <div>
         <select
           id="gameList"
-          className={`h-9 w-[200px] rounded-md border bg-background p-2 text-sm outline-none ${
+          className={`h-9 w-[200px] focus:border-[#DAAC95] dark:focus:border-[#5d32f5] rounded-md border bg-background p-2 text-sm outline-none ${
             errors.game ? 'border-red-500' : ''
           }`}
           {...register('game', {

@@ -76,8 +76,8 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
     accessorKey: 'username',
     header: 'USERNAME',
     cell: ({ row }) => {
-      const paymentType = row.original.paymentoption;
-      return paymentType.toLowerCase() === 'test' ? (
+      const paymentGateway = (row.original as any).paymentgateway;
+      return paymentGateway.toLowerCase() === 'test' ? (
         <span>Test</span>
       ) : (
         <span>
@@ -91,8 +91,9 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
     header: 'GAME ID',
     cell: ({ row }) => {
       const paymentType = row.original.paymentoption;
+      const paymentGateway = (row.original as any).paymentgateway;
 
-      if (paymentType.toLowerCase() === 'test') {
+      if (paymentGateway.toLowerCase() === 'test') {
         return 'Test';
       }
 
