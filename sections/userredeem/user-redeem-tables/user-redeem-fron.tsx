@@ -18,7 +18,11 @@ import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AdminRegisterUsers, UserRegister } from '@/constants/data';
+import {
+  AdminRegisterUsers,
+  paymentOption,
+  UserRegister
+} from '@/constants/data';
 import useSocket from '@/lib/socket';
 import { Roles } from '@/constants/roles';
 
@@ -85,7 +89,8 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
     } else {
       toast({
         title: 'Error',
-        description: 'Only VIP users can claim the Daily $2 FREEPLAY or 20% reward!'
+        description:
+          'Only VIP users can claim the Daily $2 FREEPLAY or 20% reward!'
       });
     }
   };
@@ -336,11 +341,9 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 onChange={(e) => setSelectedredeem(e.target.value)}
                 className="mt-3 h-9 w-[200px] rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
               >
-                <option value="CashApp">CashApp</option>
-                <option value="Bitcoin">Bitcoin</option>
-                <option value="Venmo">Venmo</option>
-                <option value="Paypal">Paypal</option>
-                <option value="Zelle">Zelle</option>
+                {paymentOption.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
               </select>
             </div>
             {selectedredeem === 'Bitcoin' ? (

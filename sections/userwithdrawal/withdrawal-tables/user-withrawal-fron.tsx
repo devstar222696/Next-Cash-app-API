@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { UserRegister } from '@/constants/data';
+import { paymentOption, UserRegister } from '@/constants/data';
 import { StorageKeys } from '@/constants/storage';
 
 
@@ -261,11 +261,9 @@ export default function UserWithdrawalForm() {
                 onChange={(e) => setSelectedWithdrawal(e.target.value)}
                 className="mt-3 h-9 w-[200px] rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
               >
-                <option value="CashApp">CashApp</option>
-                <option value="Bitcoin">Bitcoin</option>
-                <option value="Venmo">Venmo</option>
-                <option value="Paypal">Paypal</option>
-                <option value="Zelle">Zelle</option>
+                {paymentOption.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
               </select>
             </div>
             <FormField

@@ -60,6 +60,11 @@ export type AdminRegisterUsers = {
   codenumber: string
 };
 
+export interface Option {
+  label: string;
+  value: string;
+}
+
 export const navItems: NavItem[] = [
   {
     title: 'Main',
@@ -188,4 +193,13 @@ export const userNavItems: NavItem[] = [
     icon: 'help',
     label: 'house rule'
   }
+];
+
+export const paymentOption: Option[] = [
+  { label: 'CashApp', value: 'CashApp' },
+  { label: 'Bitcoin', value: 'Bitcoin' },
+  { label: 'Venmo', value: 'Venmo' },
+  { label: 'Paypal', value: 'Paypal' },
+  { label: 'Zelle', value: 'Zelle' },
+  { label: 'USDT', value: 'usdt' },
 ];
