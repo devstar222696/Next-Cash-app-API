@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from '@/components/ui/use-toast';
 import { GamePromotionItem } from '@/types';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -27,8 +28,12 @@ const SeasonGameList = () => {
         });
         const result = await response.json();
         setPromotionList(result.data);
+       
       } catch (error) {
-        console.error('Error fetching data:', error);
+        toast({
+          title: 'Somethings went wrong',
+          description: 'Please try again!'
+        });
       } finally {
         setIsLoading(false);
       }
@@ -58,8 +63,16 @@ const SeasonGameList = () => {
           }))
         })
       });
-    } catch (error) {
+      toast({
+        title: 'Modified Successfully!',
+        description: 'Welcome! Season Game Setting Updated!'
+      });
+    } catch (error: any) {
       console.error('Error fetching data:', error);
+      toast({
+        title: 'Modification Failed',
+        description: error?.message || 'Your action has been failed. Please try again!'
+      });
     } finally {
       setIsUpdating(false);
     }
