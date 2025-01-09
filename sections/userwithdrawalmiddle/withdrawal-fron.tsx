@@ -148,6 +148,9 @@ export default function UserWithdrawalMiddle() {
         <p className="mt-1 text-center text-xs text-black">
           Bitcoin: BTC Address
         </p>
+        <p className="mt-1 text-center text-xs text-black">
+          USDT: USDT Address
+        </p>
       </div>
       <br />
       <Form {...form}>

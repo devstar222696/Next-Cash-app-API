@@ -42,7 +42,8 @@ const DEPOSIT_URLS: Record<string, string> = {
   Bitcoin: '/mypage/deposit/bitcoin',
   Venmo: '/mypage/deposit/venmo',
   Paypal: '/mypage/deposit/paypal',
-  Zelle: '/mypage/deposit/zelle'
+  Zelle: '/mypage/deposit/zelle',
+  USDT: '/mypage/deposit/usdt',
 };
 interface IUserReemFormProps {
   setTagId: (args: AdminRegisterUsers | null) => void;

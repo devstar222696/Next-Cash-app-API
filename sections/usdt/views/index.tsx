@@ -1,0 +1,1 @@
+export {default as USDTPage} from "./usdt-page"
