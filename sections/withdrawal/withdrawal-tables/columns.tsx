@@ -64,11 +64,6 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'role',
-    header: 'ROLE',
-    cell: ({ row }) => <span>{row.original.user.role === Roles.vip_user ? "VIP" : "User" }</span>
-  },
-  {
     accessorKey: 'id',
     header: 'TAG NUMBER',
     cell: ({ row }) => <span>{row.original.user.tag}</span>

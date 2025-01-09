@@ -9,6 +9,7 @@ import { AmountAction } from './amount';
 import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
 import { PermissionsMap } from '@/constants/permissions';
+import { Roles } from '@/constants/roles';
 
 const { socket } = useSocket();
 
@@ -64,6 +65,11 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     ),
     enableSorting: false,
     enableHiding: false
+  },
+  {
+    accessorKey: 'role',
+    header: 'ROLE',
+    cell: ({ row }) => <span>{row.original.user.role === Roles.vip_user ? "VIP" : "User" }</span>
   },
   {
     accessorKey: 'id',
