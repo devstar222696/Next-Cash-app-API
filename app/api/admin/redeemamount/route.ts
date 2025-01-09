@@ -6,7 +6,7 @@ export const POST = async (request: NextRequest) => {
   const { date, id, amount } = await request.json();
 
   // Ensure our incoming data is valid
-  if (!date || !amount || !id) {
+  if (!date || !id) {
     return NextResponse.json(
       { error: 'Missing required fields' },
       { status: 400 }
@@ -47,6 +47,7 @@ export const POST = async (request: NextRequest) => {
       { status: 200 }
     );
   } catch (err: any) {
+    console.log('err: ', err);
     // Handle errors during DB operations
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

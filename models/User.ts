@@ -26,8 +26,11 @@ const redeemSchema: Schema = new Schema(
     paymentstatus: { type: String, default: 'Processing' },
     dailyChecked: { type: Boolean, default: false },
     bonusChecked: { type: Boolean, default: false },
+    isMatchBonus: { type: Boolean, default: false },
+    isVipFreeplay: { type: Boolean, default: false },
     date: { type: Date, default: Date.now },
     comdate: { type: Date },
+    vipFreeplayTime: {type: Date},
     isBonusInitializeTime: {
       type: Date,
       // default: () => {
