@@ -77,6 +77,10 @@
     height: 100vh; /* Fallback */
     height: 100dvh;
   }
+
+  .hide-number-arrows {
+    @apply appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
+  }
 }
 .phone-input .iti {
   display: block;

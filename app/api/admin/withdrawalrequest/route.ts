@@ -10,8 +10,7 @@ export const POST = async (request: NextRequest) => {
     paymentoption,
     paymenttype,
     paymentgateway,
-    amount,
-    id
+    amount
   } = await request.json();
   await dbConnect();
 
@@ -26,7 +25,7 @@ export const POST = async (request: NextRequest) => {
         paymentoption: paymentoption,
         paymenttype: paymenttype,
         paymentgateway: paymentgateway,
-        id: id
+        id: user._id
       });
 
       try {

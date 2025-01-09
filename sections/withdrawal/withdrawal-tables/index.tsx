@@ -1,7 +1,10 @@
 'use client';
 import { columns } from './columns';
 import { useState, useEffect, useTransition } from 'react';
-import { PaymentWithdrawals, AdminRegisterUsers } from '@/constants/data';
+import {
+  PaymentWithdrawals,
+  AdminRegisterUsers,
+} from '@/constants/data';
 import AdminWithdrawalTableView from './withdrawal-table';
 import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
@@ -9,11 +12,16 @@ import { Button } from '@/components/ui/button';
 import { useSearchParams } from 'next/navigation';
 import AccessControl from '@/components/accessControl';
 import { PermissionsMap } from '@/constants/permissions';
+import { Roles } from '@/constants/roles';
+import AddRequestForm from './AddRequestForm';
 
 interface SelectMultiIdData {
   id?: string;
   date?: string;
 }
+
+const userInfoStr = localStorage.getItem('userinfo');
+const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 export default function AdminWithdrawalTable() {
   const { socket } = useSocket();
@@ -28,7 +36,7 @@ export default function AdminWithdrawalTable() {
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
   const limitParam = searchParams.get('limit');
-  
+
   const page = Number(pageParam? pageParam : 1);
   const limit = Number(limitParam? limitParam : 10);
 
@@ -50,12 +58,12 @@ export default function AdminWithdrawalTable() {
                 withdrawal.paymentstatus === 'Processing'
             )
         );
-
+        
         const combinedData = filteredWithdrawals.map(
           (withdrawal: PaymentWithdrawals) => {
             const user = usersResult.data.find(
               (user: AdminRegisterUsers) => user._id === withdrawal.id
-            );
+            ) || [];
             return { ...withdrawal, user };
           }
         );
@@ -63,12 +71,12 @@ export default function AdminWithdrawalTable() {
         const sortedData = combinedData.sort((a: any, b: any) => {
           const dateA = new Date(a.date);
           const dateB = new Date(b.date);
-          
+
           if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
             console.error('Invalid date:', a.date, b.date);
-            return 0; 
+            return 0;
           }
-          
+
           return dateB.getTime() - dateA.getTime();
         });
 
@@ -231,19 +239,25 @@ export default function AdminWithdrawalTable() {
 
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
-  }
-
+  }  
+  
   return (
     <div className="space-y-4">
-      <AccessControl requiredPermissions={[PermissionsMap.multi_accept, PermissionsMap.multi_decline]}>
-      <div className="flex justify-end">
-        <Button variant="outline" handleClick={multiAccept} className="mr-3">
-          Multi Accept
-        </Button>
-        <Button variant="outline" handleClick={multiDecline}>
-          Multi Decline
-        </Button>
-      </div>
+      <AccessControl
+        requiredPermissions={[
+          PermissionsMap.multi_accept,
+          PermissionsMap.multi_decline
+        ]}
+      >
+        <div className="flex justify-end gap-3">
+          {userInfo.role === Roles.super_admin && <AddRequestForm />}
+          <Button variant="outline" handleClick={multiAccept} className="">
+            Multi Accept
+          </Button>
+          <Button variant="outline" handleClick={multiDecline}>
+            Multi Decline
+          </Button>
+        </div>
       </AccessControl>
       <AdminWithdrawalTableView
         columns={columns}
