@@ -61,6 +61,7 @@ const AddRequestForm: React.FC<GameRequestFormProps> = () => {
         title: 'Request submitted successfully!',
         description: 'Your request has been processed.'
       });
+      location.reload();
     } catch (error: any) {
       toast({
         title: error?.message || 'Failed to submit request',
