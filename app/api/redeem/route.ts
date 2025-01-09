@@ -22,13 +22,22 @@ function hasAlreadyClaimedToday(lastClaimUTC: string) {
   console.log('nowHST', nowHST, claimHST);
   const isSameDayDates = isSameDay(nowHST, claimHST);
   console.log('isSameDayDates', isSameDayDates);
-  
-  return isSameDayDates;  // returns true if both are in same HST date
+
+  return isSameDayDates; // returns true if both are in same HST date
 }
 
 export const POST = async (request: NextRequest) => {
-  const { token, paymentoption, paymenttype, amount, id, btc, isChecked } =
-    await request.json();
+  const {
+    token,
+    paymentoption,
+    paymenttype,
+    amount,
+    id,
+    btc,
+    isChecked,
+    isMatchBonus,
+    isVipFreeplay
+  } = await request.json();
   await dbConnect();
 
   try {
@@ -45,7 +54,7 @@ export const POST = async (request: NextRequest) => {
         // The first element in `sortedRedeem` is now the latest record
         const lastBonus = sortedRedeem.find((redeem: any) => redeem.dailyChecked);
         console.log('lastBonus record', lastBonus);
-        
+
         if (lastBonus && hasAlreadyClaimedToday(lastBonus.isBonusInitializeTime)) {
           return NextResponse.json(
             { error: 'Bonus already used today' },
@@ -54,19 +63,52 @@ export const POST = async (request: NextRequest) => {
         }
       }
 
+      if (
+        isMatchBonus &&
+        user.redeem.find((elem: any) => elem.isMatchBonus)?.isMatchBonus
+      ) {
+        return NextResponse.json(
+          { error: 'Match Bonus can only be claimed once per account.' },
+          { status: 400 }
+        );
+      }
+
+      if (isVipFreeplay && user.role === 'vip_user') {
+        const sortedRedeem = [...user.redeem].sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+
+        const lastBonus = sortedRedeem.find((redeem: any) => redeem.isVipFreeplay);
+        if (lastBonus && hasAlreadyClaimedToday(lastBonus.vipFreeplayTime)) {
+          return NextResponse.json(
+            { error: 'You have already used your VIP Daily Freeplay today.' },
+            { status: 400 }
+          );
+        }
+      } else if (user.role !== 'vip_user') {
+        return NextResponse.json(
+          { error: 'VIP Daily Freeplay is available for VIP users only.' },
+          { status: 400 }
+        );
+      }
+
       const redeemObj: any = {
         amount: amount,
         btc: btc,
         paymentoption: paymentoption,
         paymenttype: paymenttype,
         id: id,
-        dailyChecked: isChecked !== undefined ? isChecked : false
+        dailyChecked: isChecked !== undefined ? isChecked : false,
+        isMatchBonus: isMatchBonus !== undefined ? isMatchBonus : false,
+        isVipFreeplay: isVipFreeplay !== undefined ? isVipFreeplay : false
       };
 
       if (redeemObj.dailyChecked) {
         redeemObj.isBonusInitializeTime = getCurrentHSTUTCDate();
-        console.log('isBonusInitializeTime', redeemObj.isBonusInitializeTime);
-        
+      }
+
+      if (redeemObj.isVipFreeplay) {
+        redeemObj.vipFreeplayTime = getCurrentHSTUTCDate();
       }
       // Add new redeem information to the existing redeems array
       user.redeem.push(redeemObj);
