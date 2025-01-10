@@ -105,6 +105,20 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     header: 'Amount'
   },
   {
+    id: 'isMatchBonus',
+    header: 'VIP',
+    cell: ({ row }) => {
+      return <input type='checkbox' checked={row.original.isMatchBonus} className="h-4 w-4 rounded" disabled/>;
+    }
+  },
+  {
+    id: 'isVipFreeplay',
+    header: 'VIP',
+    cell: ({ row }) => {
+      return <input type='checkbox' checked={row.original.isVipFreeplay} className="h-4 w-4 rounded" disabled/>;
+    }
+  },
+  {
     id: 'daily',
     header: 'Daily',
     cell: ({ row }) => (
