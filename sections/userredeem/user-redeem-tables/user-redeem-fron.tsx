@@ -21,10 +21,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import {
   AdminRegisterUsers,
   paymentOption,
+  Paymentredeems,
   UserRegister
 } from '@/constants/data';
 import useSocket from '@/lib/socket';
 import { Roles } from '@/constants/roles';
+import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
   amount: z.any()
@@ -67,6 +69,11 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   const [isDailyBonus, setIsDailyBonus] = useState(false);
   const [isMatchBonus, setIsMatchBonus] = useState(false);
   const [isVipFreeplay, setIsVipFreeplay] = useState(false);
+
+  const [isDailyBonusDisabled, setIsDailyBonusDisabled] = useState(false);
+  const [isMatchBonusDisabled, setIsMatchBonusDisabled] = useState(false);
+  const [isVipFreeplayDisabled, setIsVipFreeplayDisabled] = useState(false);
+
   const [data, setData] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -168,6 +175,18 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
           acc[item.category] = item;
           return acc;
         }, {});
+
+        const isVIp = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.isVipFreeplay) ?? false;
+        const isMatch = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.isMatchBonus) ?? false;
+        const isDaily = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.dailyChecked) ?? false;
+
+        console.log('isMatch',result?.data);
+        
+
+        setIsDailyBonusDisabled(isDaily);
+        setIsMatchBonusDisabled(isMatch);
+        setIsVipFreeplayDisabled(isVIp);
+
         setGameByName(gamesKeyByName);
 
         const categories = registerArray.map((item: any) => item.category);
@@ -409,7 +428,10 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 checked={isMatchBonus}
                 onCheckedChange={(value: boolean) => setIsMatchBonus(value)}
                 aria-label="Select Match Bonus"
-                disabled={loading || cooldown}
+                disabled={loading || cooldown || isMatchBonusDisabled}
+                className={cn({
+                  "bg-[#a39595]": isMatchBonusDisabled
+                })}
               />
             </div>
             <div className="mx-auto mt-[10px] flex gap-4 max-w-[312px] items-center">
@@ -418,7 +440,10 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 checked={isVipFreeplay}
                 onCheckedChange={(value: boolean) => setIsVipFreeplay(value)}
                 aria-label="Select VIP Daily FREEPLAY"
-                disabled={loading || cooldown}
+                disabled={loading || cooldown || isVipFreeplayDisabled}
+                className={cn({
+                  "bg-[#a39595]": isVipFreeplayDisabled
+                })}
               />
             </div>
             <div className="mx-auto mt-[10px] flex gap-4 max-w-[312px] items-center">
@@ -427,7 +452,10 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 checked={isDailyBonus}
                 onCheckedChange={(value: boolean) => setIsDailyBonus(value)}
                 aria-label="Select row"
-                disabled={loading || cooldown}
+                disabled={loading || cooldown || isDailyBonusDisabled}
+                className={cn({
+                  "bg-[#a39595]": isDailyBonusDisabled
+                })}
               />
             </div>
           </div>

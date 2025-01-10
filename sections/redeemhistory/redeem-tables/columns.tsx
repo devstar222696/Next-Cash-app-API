@@ -106,7 +106,7 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   },
   {
     id: 'isMatchBonus',
-    header: 'VIP',
+    header: 'MATCH',
     cell: ({ row }) => {
       return <input type='checkbox' checked={row.original.isMatchBonus} className="h-4 w-4 rounded" disabled/>;
     }
