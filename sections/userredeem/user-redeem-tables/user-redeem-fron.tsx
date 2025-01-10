@@ -176,16 +176,16 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
           return acc;
         }, {});
 
-        const isVIp = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.isVipFreeplay) ?? false;
+        // const isVIp = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.isVipFreeplay) ?? false;
         const isMatch = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.isMatchBonus) ?? false;
-        const isDaily = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.dailyChecked) ?? false;
+        // const isDaily = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.dailyChecked) ?? false;
 
         console.log('isMatch',result?.data);
         
 
-        setIsDailyBonusDisabled(isDaily);
+        // setIsDailyBonusDisabled(isDaily);
         setIsMatchBonusDisabled(isMatch);
-        setIsVipFreeplayDisabled(isVIp);
+        // setIsVipFreeplayDisabled(isVIp);
 
         setGameByName(gamesKeyByName);
 
