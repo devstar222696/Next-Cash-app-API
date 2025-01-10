@@ -4,17 +4,19 @@ import React from 'react';
 const houseRules = [
   'Withdrawal Rule',
   'Your tag number is like a your ID. Please be sure to remember it.',
-  'DAILY $2 FREEPLAY and 20$ BONUS only available to VIP Players who have made deposits of $10 or more.',
-  'Free players who have not made deposits of $10 or more must have a spin record of over $100 per game account to make a redeem request. Additionally, only up to $100 can be redeemed per day.',
-  'Players who deposit $10 or more can receive a 100% First Deposit BONUS and be upgraded to VIP status.',
-  'When a player you referred makes their first deposit of $10 or more, you can receive a 50% bonus of that amount.',
-  'All bonuses cannot be claimed at once. Only one bonus can be received per recharge.',
+  'When making a deposit, Player must include your Tag Number in the Payment App Note to ensure a quick recharge.',
+  '100% Match BONUS and 20% Daily BONUS are only available to players who have made deposits of $10 or more.',
+  'Free Players who have not made deposits of $10 or more must have a spin record of over $100 per game account to make a redeem request. Additionally, only up to $100 can be redeemed per day.',
+  'Players who deposit $10 or more in a week will be upgraded to VIP status. The status resets every Monday.',
+  'When a player you referred makes their first deposit of $10 or more, you will receive 50% of that amount as a bonus.',
+  'All BONUS cannot be claimed at once. Only one bonus can be received per recharge.',
   'Redeem request requires a minimum number of spins equal to the deposit amount.',
-  'All daily bonuses reset at 00:00 HST time, 02:00 PST time, and 04:00 CST time.',
+  'Daily BONUS reset at 00:00 HST time, 02:00 PST time, and 04:00 CST time.',
   "All deposit and withdrawal history is kept for up to 2 weeks. This is the game company's recommendation.",
   'The Daily maximum Cashout is $3,000, and if it is exceeded, User can apply again the next day.',
   "The minimum deposit is $1, but we don't accept cents Dollars Only.",
-  'We do not ask for tips, and we do not accept also.'
+  'We do not ask for tips, and we do not accept also.',
+  'ISLAND HOUSE strictly prohibits users from creating duplicate accounts. We hold no responsibility for any damages or issues arising from the detection of duplicate accounts.'
 ];
 
 const HouseRules = () => (
