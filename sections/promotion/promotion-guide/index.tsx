@@ -38,6 +38,12 @@ const Guide = () => (
           height={5}
           alt="guide"
         />
+        <Image
+          src="/my-page/IH guide 5.png"
+          width={500}
+          height={5}
+          alt="guide"
+        />
       </div>
     </div>
   </div>
