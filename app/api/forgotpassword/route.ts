@@ -21,9 +21,9 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    if (user.verifystatus !== 'yes') {
-      return NextResponse.json({ error: 'User not verified' }, { status: 403 });
-    }
+    // if (user.verifystatus !== 'yes') {
+    //   return NextResponse.json({ error: 'User not verified' }, { status: 403 });
+    // }
 
     const token = new mongoose.Types.ObjectId();
     user.verifytoken = token.toString();

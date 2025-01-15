@@ -25,9 +25,9 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json({ error: 'Phone number not verified. Please verify your phone number first.', errCode: ErrorCodes.phoneNotVerified }, { status: 403 });
     }
 
-    if (user.verifystatus !== 'yes') {
-      return NextResponse.json({ error: 'User not verified', errCode: ErrorCodes.emailNotVerified }, { status: 403 });
-    }
+    // if (user.verifystatus !== 'yes') {
+    //   return NextResponse.json({ error: 'User not verified', errCode: ErrorCodes.emailNotVerified }, { status: 403 });
+    // }
 
 
     if (user.action !== 'yes') {

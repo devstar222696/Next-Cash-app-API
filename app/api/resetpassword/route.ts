@@ -17,9 +17,9 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    if (user.verifystatus !== 'yes') {
-      return NextResponse.json({ error: 'User not verified' }, { status: 403 });
-    }
+    // if (user.verifystatus !== 'yes') {
+    //   return NextResponse.json({ error: 'User not verified' }, { status: 403 });
+    // }
 
     // Hash the new password
     const hashedPassword = await bcrypt.hash(password, 10);
