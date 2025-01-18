@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Header from '@/components/layout/header';
 import Sidebar from '@/components/layout/sidebar';
 import { SidebarProvider } from '@/components/layout/sidebar-context';
@@ -15,15 +13,6 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const userInfoStr = localStorage.getItem('userinfo');
-  const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
-
-  useEffect(() => {
-    if (Object.keys(userInfo).length === 0 || userInfo.role === 'user' || userInfo.role === 'vip_user') {
-      router.push('/');
-    }
-  }, [router]);
 
   return (
     <div className="flex">
