@@ -53,12 +53,12 @@ export default function UserAuthForm() {
         });
 
         if (!response.error) {
+          localStorage.setItem('userinfo', JSON.stringify(response.user));
           if (AdminRoles.includes(response.user.role)) {
             router.push('/main');
           } else {
             router.push('/mypage');
           }
-          localStorage.setItem('userinfo', JSON.stringify(response.user));
           socket?.emit('register', {
             userId: response.user.userId,
             role: response.user.role
