@@ -54,6 +54,8 @@ export default function UserAuthForm() {
 
         if (!response.error) {
           localStorage.setItem('userinfo', JSON.stringify(response.user));
+          document.cookie = `userinfo=${JSON.stringify(response.user)}; path=/`;
+          
           if (AdminRoles.includes(response.user.role)) {
             router.push('/main');
           } else {

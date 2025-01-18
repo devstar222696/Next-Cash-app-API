@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-    const userInfoStr = localStorage.getItem('userinfo');
-    const userInfo = userInfoStr ? JSON.parse(userInfoStr) : null;
+  const userInfoStr = request.cookies.get('userinfo')?.value
+  const userInfo = userInfoStr ? JSON.parse(userInfoStr) : null
 
   // Protect admin routes
   if (request.nextUrl.pathname.startsWith('/main')) {
@@ -12,6 +12,7 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url))
     }
   }
+
   return NextResponse.next()
 }
 
