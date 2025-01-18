@@ -7,8 +7,8 @@ export function middleware(request: NextRequest) {
 
   // Protect admin routes
   if (request.nextUrl.pathname.startsWith('/main')) {
-    // If user is not logged in or is a regular/vip user, redirect to home
-    if (!userInfo || userInfo.role === 'user' || userInfo.role === 'vip_user') {
+    // Allow only 'admin' and 'sub_admin' roles
+    if (!userInfo || (userInfo.role !== 'admin' && userInfo.role !== 'sub_admin')) {
       return NextResponse.redirect(new URL('/', request.url))
     }
   }
