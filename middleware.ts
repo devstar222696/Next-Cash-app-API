@@ -13,9 +13,22 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  // Protect user routes
+  if (request.nextUrl.pathname.startsWith('/mypage')) {
+    // Check if user is logged in
+    if (!userInfo) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+    
+    // Allow only 'user' and 'vip_user' roles
+    if (userInfo.role !== 'user' && userInfo.role !== 'vip_user') {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+  }
+
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/main', '/main/:path*']
+  matcher: ['/main/:path*', '/mypage/:path*', '/main', '/mypage']
 }
