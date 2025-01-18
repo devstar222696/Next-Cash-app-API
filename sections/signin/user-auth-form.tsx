@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import GoogleSignInButton from './google-auth-button';
 import EmailSignInButton from './email-signup-button copy';
 import Link from 'next/link';
