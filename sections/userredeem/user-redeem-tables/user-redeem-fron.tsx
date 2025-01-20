@@ -27,6 +27,7 @@ import {
 import useSocket from '@/lib/socket';
 import { Roles } from '@/constants/roles';
 import { cn } from '@/lib/utils';
+import BackToHomeBtn from '@/components/BackToHomeBtn';
 
 const formSchema = z.object({
   amount: z.any()
@@ -422,51 +423,66 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 )}
               />
             )}
-            <div className="mx-auto mt-[10px] flex gap-4 max-w-[312px] items-center">
-              <p className='text-sm font-medium w-[140px]'>Match Bonus 100%</p>
-              <Checkbox
-                checked={isMatchBonus}
-                onCheckedChange={(value: boolean) => setIsMatchBonus(value)}
-                aria-label="Select Match Bonus"
-                disabled={loading || cooldown || isMatchBonusDisabled}
-                className={cn({
-                  "bg-[#a39595]": isMatchBonusDisabled
-                })}
-              />
+            <div className="flex justify-center items-end gap-8">
+              <div>
+                <div className="mx-auto mt-[10px] flex max-w-[312px] items-center gap-4">
+                  <p className="w-[140px] text-sm font-medium">
+                    Match Bonus 100%
+                  </p>
+                  <Checkbox
+                    checked={isMatchBonus}
+                    onCheckedChange={(value: boolean) => setIsMatchBonus(value)}
+                    aria-label="Select Match Bonus"
+                    disabled={loading || cooldown || isMatchBonusDisabled}
+                    className={cn({
+                      'bg-[#a39595]': isMatchBonusDisabled
+                    })}
+                  />
+                </div>
+                <div className="mx-auto mt-[10px] flex max-w-[312px] items-center gap-4">
+                  <p className="w-[140px] text-sm font-medium">
+                    VIP Daily FREEPLAY
+                  </p>
+                  <Checkbox
+                    checked={isVipFreeplay}
+                    onCheckedChange={(value: boolean) =>
+                      setIsVipFreeplay(value)
+                    }
+                    aria-label="Select VIP Daily FREEPLAY"
+                    disabled={loading || cooldown || isVipFreeplayDisabled}
+                    className={cn({
+                      'bg-[#a39595]': isVipFreeplayDisabled
+                    })}
+                  />
+                </div>
+                <div className="mx-auto mt-[10px] flex max-w-[312px] items-center gap-4">
+                  <p className="w-[140px] text-sm font-medium">
+                    Daily Bonus 20%
+                  </p>
+                  <Checkbox
+                    checked={isDailyBonus}
+                    onCheckedChange={(value: boolean) => setIsDailyBonus(value)}
+                    aria-label="Select row"
+                    disabled={loading || cooldown || isDailyBonusDisabled}
+                    className={cn({
+                      'bg-[#a39595]': isDailyBonusDisabled
+                    })}
+                  />
+                </div>
+              </div>
+              <Button
+                disabled={loading || cooldown || !allowRequest}
+                className="py-2 px-8 text-white"
+                type="submit"
+                handleClick={ok}
+              >
+                {cooldown ? `Waiting (${remainingTime}s)` : 'REQUEST'}
+              </Button>
             </div>
-            <div className="mx-auto mt-[10px] flex gap-4 max-w-[312px] items-center">
-              <p className='text-sm font-medium w-[140px]'>VIP Daily FREEPLAY</p>
-              <Checkbox
-                checked={isVipFreeplay}
-                onCheckedChange={(value: boolean) => setIsVipFreeplay(value)}
-                aria-label="Select VIP Daily FREEPLAY"
-                disabled={loading || cooldown || isVipFreeplayDisabled}
-                className={cn({
-                  "bg-[#a39595]": isVipFreeplayDisabled
-                })}
-              />
-            </div>
-            <div className="mx-auto mt-[10px] flex gap-4 max-w-[312px] items-center">
-              <p className='text-sm font-medium w-[140px]'>Daily Bonus 20%</p>
-              <Checkbox
-                checked={isDailyBonus}
-                onCheckedChange={(value: boolean) => setIsDailyBonus(value)}
-                aria-label="Select row"
-                disabled={loading || cooldown || isDailyBonusDisabled}
-                className={cn({
-                  "bg-[#a39595]": isDailyBonusDisabled
-                })}
-              />
+            <div className='flex justify-center mt-6'>
+              <BackToHomeBtn />
             </div>
           </div>
-          <Button
-            disabled={loading || cooldown || !allowRequest}
-            className="ml-[30%] mt-11 w-[40%] p-6 text-white"
-            type="submit"
-            handleClick={ok}
-          >
-            {cooldown ? `Waiting (${remainingTime}s)` : 'REQUEST'}
-          </Button>
         </form>
       </Form>
       <div className="">

@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { paymentOption, UserRegister } from '@/constants/data';
 import { StorageKeys } from '@/constants/storage';
+import BackToHomeBtn from '@/components/BackToHomeBtn';
 
 
 const userInfoStr = localStorage.getItem('userinfo');
@@ -296,6 +297,9 @@ export default function UserWithdrawalForm() {
           >
             {cooldown ? `Waiting (${remainingTime}s)` : 'REQUEST'}
           </Button>
+          <div className='flex justify-center mt-6'>
+            <BackToHomeBtn />
+          </div>
         </form>
       </Form>
     </div>
