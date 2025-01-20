@@ -1,9 +1,13 @@
-
 import Image from 'next/image';
-import React from 'react';
+import React, { FC } from 'react';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
-const BackToMypage = () => {
+interface Props {
+  className?: string;
+}
+
+const BackToMypage: FC<Props> = ({ className }) => {
   const router = useRouter();
 
   const handleBackToMyPage = () => {
@@ -15,7 +19,9 @@ const BackToMypage = () => {
       src="/btn/007.png"
       width={300}
       height={5}
-      className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
+      className={`mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0 ${
+        className || ''
+      }`}
       onClick={handleBackToMyPage}
       alt="backtohome"
     ></Image>

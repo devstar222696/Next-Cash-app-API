@@ -1,8 +1,13 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { FC } from 'react';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
-const BackToHomeBtn = () => {
+interface Props {
+  className?: string;
+}
+
+const BackToHomeBtn: FC<Props> = ({ className }) => {
   const router = useRouter();
 
   const handleBackToHome = () => {
@@ -14,7 +19,9 @@ const BackToHomeBtn = () => {
       src="/btn/008.png"
       width={300}
       height={5}
-      className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
+      className={`mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0 ${
+        className || ''
+      }`}
       onClick={handleBackToHome}
       alt="backtohome"
     ></Image>

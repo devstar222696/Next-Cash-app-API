@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import TagId from '@/components/ui/tagId';
 import VIPTagId from '@/components/ui/VipTagId';
 import { Roles } from '@/constants/roles';
+import BackToMypage from '@/components/BackToMypage';
 
 export default function PromotionPage({ tagData }: any) {
   const router = useRouter();
@@ -33,6 +34,10 @@ export default function PromotionPage({ tagData }: any) {
 
   const instagram = () => {
     router.push('https://www.instagram.com/islandhouse2000/');
+  };
+
+  const ourUs = () => {
+    router.push('/mypage/chat');
   };
 
   const guide = () => {
@@ -64,12 +69,12 @@ export default function PromotionPage({ tagData }: any) {
         <Image src="/promo/promo2.png" width={1000} height={1000} alt="ad" />
       </div> */}
       <div className="grid w-full grid-cols-1 place-items-center">
-        <div className="grid grid-cols-2 justify-items-center gap-2 lg:flex lg:justify-center">
+        <div className="grid grid-cols-2 justify-items-center gap-2 sm:grid-cols-2 lg:grid-cols-3">
           <Image
             src="/my-page/IH main page button 1.png"
             width={300}
             height={5}
-            className="hover:cursor-pointer hover:opacity-80 pt-[3px]"
+            className="pt-[3px] hover:cursor-pointer hover:opacity-80"
             onClick={register}
             alt="register"
           ></Image>
@@ -89,13 +94,22 @@ export default function PromotionPage({ tagData }: any) {
             onClick={redeem}
             alt="redeem"
           ></Image>
+          <BackToMypage className='h-full'/>
           <Image
-            src="/my-page/IH main page button 4.png"
+            src="/btn/006.png"
             width={300}
             height={5}
-            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
-            alt="our us"
+            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0 h-full"
+            alt="houserule"
             onClick={houseRule}
+          ></Image>
+          <Image
+            src="/btn/005.png"
+            width={300}
+            height={5}
+            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0 h-full"
+            alt="our us"
+            onClick={ourUs}
           ></Image>
         </div>
       </div>
