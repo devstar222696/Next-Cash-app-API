@@ -9,6 +9,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { GameLink } from '@/sections/promotion/promotion-tables/game-link';
 import Image from 'next/image';
+import BackToHomeBtn from '@/components/BackToHomeBtn';
+import BackToMypage from '@/components/BackToMypage';
 
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
@@ -72,14 +74,6 @@ export default function UserRegisterTable() {
     router.push('/mypage/promotion');
   };
 
-  const recharge = () => {
-    router.push('/mypage/deposit');
-  };
-
-  const redeem = () => {
-    router.push('/mypage/withdrawal');
-  };
-
   return (
     <div className="space-y-4 ">
       <div className="flex justify-center w-full">
@@ -97,22 +91,8 @@ export default function UserRegisterTable() {
       </Button>
       <div className="grid w-full grid-cols-1 place-items-center">
         <div className="grid grid-cols-2 justify-items-center gap-2 lg:flex lg:justify-center">
-          <Image
-            src="/IH_register_2.png"
-            width={300}
-            height={5}
-            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
-            onClick={recharge}
-            alt="recharge"
-          ></Image>
-          <Image
-            src="/IH_register_3.png"
-            width={300}
-            height={5}
-            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
-            onClick={redeem}
-            alt="redeem"
-          ></Image>
+          <BackToMypage />
+          <BackToHomeBtn />
         </div>
       </div>
       <p className="text-medium py-5 text-center font-bold">Register History</p>
