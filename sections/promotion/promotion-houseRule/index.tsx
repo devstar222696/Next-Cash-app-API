@@ -1,5 +1,8 @@
+'use client'
+
 import Image from 'next/image';
 import React from 'react';
+import BackToHomeBtn from '@/components/BackToHomeBtn';
 
 const houseRules = [
   'Withdrawal Rule',
@@ -39,6 +42,9 @@ const HouseRules = () => (
           </li>
         ))}
       </ul>
+    </div>
+    <div className='mt-3'>
+      <BackToHomeBtn className='m-auto' />
     </div>
   </div>
 );
