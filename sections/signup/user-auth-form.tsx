@@ -219,7 +219,7 @@ export default function UserAuthForm() {
           />
 
           <Button disabled={loading} className="ml-auto bg-red-500 w-full" type="submit" handleClick={ok}>
-            Sign Up
+            Verify
           </Button>
         </form>
       </Form>

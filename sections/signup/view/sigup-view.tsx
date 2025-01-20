@@ -17,7 +17,8 @@ export default function SignUpViewPage() {
               Create an account
             </h1>
             <p className="text-sm text-muted-foreground">
-              Enter your email below to create your account
+              Create your ISLAND HOUSE account by completing the verification
+              process. Make sure to provide accurate details!
             </p>
           </div>
           <UserAuthForm />
