@@ -157,7 +157,7 @@ export default function UserAuthForm() {
           <button disabled={loading} type="submit" onClick={ok}>
             <img src="/IH login.png" alt="not" className='w-[400px] h-[60px]'/>
           </button>
-          <button disabled={loading} type="submit" onClick={handleClick}>
+          <button disabled={loading} type="button" onClick={handleClick}>
             <img src="/IH sign up.png" alt="not" className='w-[400px] h-[60px]'/>
           </button>
           {pop ? (
