@@ -16,12 +16,12 @@ export default async function UserWithdrawalMiddlePage({}: TEmployeeListingPage)
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
-        <Breadcrumbs items={breadcrumbItems} />
+        <Breadcrumbs items={breadcrumbItems} showBreadcrumbs={false} />
 
-        <div className="flex items-start justify-between">
+        {/* <div className="flex items-start justify-between">
           <Heading title={`Withdrawal`} description="" />
-        </div>
-        <Separator />
+        </div> 
+        <Separator /> */}
         <UserredeemMiddle />
       </div>
     </PageContainer>

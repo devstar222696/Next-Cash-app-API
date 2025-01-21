@@ -19,6 +19,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { StorageKeys } from '@/constants/storage';
 import useSocket from '@/lib/socket';
+import Image from 'next/image';
 
 const formSchema = z.object({
   paymentgateway: z.string()
@@ -66,22 +67,23 @@ export default function UserWithdrawalMiddle() {
 
   const onSubmit = async (data: UserFormValue) => {
     const withDrawalData = localStorage.getItem(StorageKeys.withdrawalData);
-    const withDrawalInfo = withDrawalData ? JSON.parse(withDrawalData) : null;  
+    const withDrawalInfo = withDrawalData ? JSON.parse(withDrawalData) : null;
     if (!withDrawalInfo) {
       toast({
         title: 'Failed to Submit Withdrawal Request!',
-        description: 'Please submit your withdrawal info in first page and try again.'
+        description:
+          'Please submit your withdrawal info in first page and try again.'
       });
       router.push('/mypage/withdrawal');
       return false;
     }
     startTransition(async () => {
-    const response = await userWithdrawal({
-          token: userInfo.token,
-          id: userInfo.userId,
-          paymentgateway: data.paymentgateway,
-          ...withDrawalInfo
-        });
+      const response = await userWithdrawal({
+        token: userInfo.token,
+        id: userInfo.userId,
+        paymentgateway: data.paymentgateway,
+        ...withDrawalInfo
+      });
 
       if (response.error) {
         console.error('Signup error:', response.error);
@@ -98,7 +100,7 @@ export default function UserWithdrawalMiddle() {
         description: 'Welcome! Your withdrawal has been request.'
       });
 
-      router.push('/mypage/withdrawal');
+      router.push('/mypage');
     });
   };
 
@@ -131,26 +133,21 @@ export default function UserWithdrawalMiddle() {
 
   return (
     <div>
-      <div className="rounded-xl border border-4 border-solid border-gray-500 bg-white p-3">
-        <p className="text-center font-semibold text-red-500">※Warning※</p>
-        <p className="mt-1 text-center text-sm font-semibold text-black">
-          You must enter your account information correctly. Be careful not to
-          enter incorrect information. Thank you.
-        </p>
-        <p className="mt-1 text-center text-xs text-black">Venmo: @username</p>
-        <p className="mt-1 text-center text-xs text-black">CashApp: $CashTag</p>
-        <p className="mt-1 text-center text-xs text-black">
-          Zelle: Email or Phone Number
-        </p>
-        <p className="mt-1 text-center text-xs text-black">
-          Paypal: @username or Email
-        </p>
-        <p className="mt-1 text-center text-xs text-black">
-          Bitcoin: BTC Address
-        </p>
-        <p className="mt-1 text-center text-xs text-black">
-          USDT: USDT Address
-        </p>
+      <div>
+        <Image
+          height={300}
+          width={400}
+          src={'/pageTitle/redeem.png'}
+          alt="notice"
+          className="m-auto mb-5"
+        ></Image>
+        <Image
+          height={300}
+          width={500}
+          src={'/IH withdrawal notice-001.png'}
+          alt="notice"
+          className="m-auto"
+        ></Image>
       </div>
       <br />
       <Form {...form}>
