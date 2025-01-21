@@ -83,12 +83,12 @@ export default function UserRegisterTable() {
         <Image src="/IHRegisterNotice.png" width={1000} height={1000} alt="ad" />
       </div>
       <UserRegistrationForm />
-      <Button
+      {/* <Button
         className="ml-[20%] w-[60%] border p-6 text-white"
         handleClick={requestSuccess}
       >
         Check Your Register Info
-      </Button>
+      </Button> */}
       <div className="grid w-full grid-cols-1 place-items-center">
         <div className="grid grid-cols-2 justify-items-center gap-2 lg:flex lg:justify-center">
           <BackToMypage />
