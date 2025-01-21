@@ -47,6 +47,7 @@ const DEPOSIT_URLS: Record<string, string> = {
   Paypal: '/mypage/deposit/paypal',
   Zelle: '/mypage/deposit/zelle',
   USDT: '/mypage/deposit/usdt',
+  Tron: '/mypage/deposit/tron',
 };
 interface IUserReemFormProps {
   setTagId: (args: AdminRegisterUsers | null) => void;

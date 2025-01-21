@@ -1,0 +1,1 @@
+export {default as TronPage} from "./tron-page"

@@ -199,9 +199,10 @@ export const userNavItems: NavItem[] = [
 
 export const paymentOption: Option[] = [
   { label: 'CashApp', value: 'CashApp' },
-  { label: 'Bitcoin', value: 'Bitcoin' },
   { label: 'Venmo', value: 'Venmo' },
   { label: 'Paypal', value: 'Paypal' },
-  { label: 'Zelle', value: 'Zelle' },
-  { label: 'USDT', value: 'USDT' },
+  { label: 'Bitcoin (BTC)', value: 'Bitcoin' },
+  // { label: 'Zelle', value: 'Zelle' },
+  { label: 'Ethereum ERC20 (USDC, USDT)', value: 'USDT' },
+  { label: 'Tron TRC20 (USDC, USDT)', value: 'tron' },
 ];
