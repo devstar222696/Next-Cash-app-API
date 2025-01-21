@@ -71,7 +71,7 @@ export default function PromotionPage({ tagData }: any) {
       <div className="grid w-full grid-cols-1 place-items-center">
         <div className="grid grid-cols-2 justify-items-center gap-2 sm:grid-cols-2 lg:grid-cols-3">
           <Image
-            src="/my-page/IH main page button 1.png"
+            src="/btn/001.png"
             width={300}
             height={5}
             className="pt-[3px] hover:cursor-pointer hover:opacity-80"
@@ -79,7 +79,7 @@ export default function PromotionPage({ tagData }: any) {
             alt="register"
           ></Image>
           <Image
-            src="/my-page/IH main page button 2.png"
+            src="/btn/002.png"
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
@@ -87,7 +87,7 @@ export default function PromotionPage({ tagData }: any) {
             alt="recharge"
           ></Image>
           <Image
-            src="/my-page/IH main page button 3.png"
+            src="/btn/003.png"
             width={300}
             height={5}
             className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
