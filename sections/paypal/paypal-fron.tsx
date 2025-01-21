@@ -92,7 +92,9 @@ export default function UserPaypal() {
         className='m-auto'
       ></Image>
 
-      <BackToHomeBtn className="m-auto" />
+      <div className="flex justify-center mt-10">
+        <BackToHomeBtn />
+      </div>
     </div>
   );
 }

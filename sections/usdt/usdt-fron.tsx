@@ -73,7 +73,10 @@ export default function USDTform() {
           Copy
         </Button>
       </div>
-      <BackToHomeBtn className="m-auto" />
+
+      <div className="flex justify-center">
+        <BackToHomeBtn />
+      </div>
     </div>
   );
 }

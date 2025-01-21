@@ -10,7 +10,6 @@ export default function TronForm() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [data, setData] = useState('');
 
-
   const copyToClipboard = () => {
     if (inputRef.current) {
       inputRef.current.select();
@@ -68,7 +67,9 @@ export default function TronForm() {
           Copy
         </Button>
       </div>
-      <BackToHomeBtn className="m-auto" />
+      <div className="flex justify-center">
+        <BackToHomeBtn />
+      </div>
     </div>
   );
 }
