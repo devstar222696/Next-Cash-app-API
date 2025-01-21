@@ -20,6 +20,7 @@ import Image from 'next/image';
 import { paymentOption, UserRegister } from '@/constants/data';
 import { StorageKeys } from '@/constants/storage';
 import BackToHomeBtn from '@/components/BackToHomeBtn';
+import HeaderImg from '@/components/HeaderImg';
 
 
 const userInfoStr = localStorage.getItem('userinfo');
@@ -222,14 +223,8 @@ export default function UserWithdrawalForm() {
 
   return (
     <div>
-      <div className="flex justify-center w-full">
-        <Image
-          src="/IH_register_3.png"
-          width={500}
-          height={200}
-          className="mt-1 hover:opacity-80 lg:ml-2 lg:mt-0"
-          alt="redeem"
-        ></Image>
+      <div className="flex justify-center w-full mb-6">
+        <HeaderImg src="/pageTitle/redeem.png"/>
       </div>
       <div className="grid justify-items-center">
           <Image src="/IHRedeemNotice.png" width={1000} height={1000} alt="ad" />

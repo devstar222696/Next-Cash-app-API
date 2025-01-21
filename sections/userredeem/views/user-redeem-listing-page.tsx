@@ -12,6 +12,7 @@ import Image from 'next/image';
 import VIPTagId from '@/components/ui/VipTagId';
 import { AdminRegisterUsers } from '@/constants/data';
 import { Roles } from '@/constants/roles';
+import HeaderImg from '@/components/HeaderImg';
 
 const breadcrumbItems = [
   { title: 'Mypage', link: '/mypage' },
@@ -34,7 +35,8 @@ export default function UserredeemListingPage({ }: TEmployeeListingPage) {
         </div>
         <Separator /> */}
         <div className="flex justify-center w-full">
-        <img src="/IH_register_2.png" alt="recharge" />
+        {/* <img src="/IH_register_2.png" alt="recharge" /> */}
+        <HeaderImg src='/pageTitle/002.png'/>
         </div>
         <div className="grid justify-items-center">
           <Image src="/IHRechargeNotice.png" width={1000} height={1000} alt="ad" />
