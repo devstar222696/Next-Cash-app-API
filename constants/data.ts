@@ -204,5 +204,5 @@ export const paymentOption: Option[] = [
   { label: 'Bitcoin (BTC)', value: 'Bitcoin' },
   // { label: 'Zelle', value: 'Zelle' },
   { label: 'Ethereum ERC20 (USDC, USDT)', value: 'USDT' },
-  { label: 'Tron TRC20 (USDC, USDT)', value: 'tron' },
+  { label: 'Tron TRC20 (USDC, USDT)', value: 'Tron' },
 ];
