@@ -87,6 +87,7 @@ export interface IUser extends Document {
   zelle: string;
   bitcoin: string;
   usdt: string;
+  tron: string;
   verifystatus: string;
   register: Array<typeof registerSchema>;
   redeem: Array<typeof redeemSchema>;
@@ -112,6 +113,7 @@ const userSchema: Schema = new Schema({
   paypal: { type: String, default: 'none' },
   zelle: { type: String, default: 'none' },
   usdt: { type: String, default: 'none' },
+  tron: { type: String, default: 'none' },
   bitcoin: { type: String, default: 'none' },
   createdAt: { type: Date, default: Date.now },
   verifystatus: { type: String, default: 'no' },
