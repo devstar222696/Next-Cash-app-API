@@ -106,8 +106,10 @@
   max-height: 700px;
 }
 
+
 .phone-input .iti__country-container {
   left: 0;
+  right: unset !important;
 }
 
 .phone-input input {
