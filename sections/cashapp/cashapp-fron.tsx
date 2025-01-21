@@ -6,6 +6,8 @@ import { toast } from '@/components/ui/use-toast';
 import { QRCodeSVG } from 'qrcode.react';
 import { getUserNameByPaymentType } from '@/lib/utils';
 import { PaymentTypes } from '@/types';
+import HeaderImg from '@/components/HeaderImg';
+import BackToHomeBtn from '@/components/BackToHomeBtn';
 
 export default function UserCashApp() {
   const router = useRouter();
@@ -46,22 +48,19 @@ export default function UserCashApp() {
     fetchData();
   }, []);
 
-  const back = () => {
-    router.push('/mypage/deposit');
-  };
-
   return (
     <div>
-      <div className="mt-20 flex justify-center">
-        {data !== 'none' ? (
+      <HeaderImg src="/paymentHeader/ca.png" />
+      {data !== 'none' ? (
+        <div className="mt-10 flex justify-center">
           <div className="border p-2">
             <QRCodeSVG value={url} size={180} level={'H'} />
           </div>
-        ) : (
-          ''
-        )}
-      </div>
-      <div className="mt-10 flex items-center justify-center">
+        </div>
+      ) : (
+        ''
+      )}
+      <div className="my-10 flex items-center justify-center">
         <input
           type="text"
           value={data}
@@ -73,9 +72,8 @@ export default function UserCashApp() {
           Copy
         </Button>
       </div>
-      <Button className="ml-[30%] mt-11 w-[40%] border p-6" handleClick={back}>
-        OK
-      </Button>
+
+      <BackToHomeBtn className="m-auto" />
     </div>
   );
 }
