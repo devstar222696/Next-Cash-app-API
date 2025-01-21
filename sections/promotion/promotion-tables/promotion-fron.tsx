@@ -48,7 +48,11 @@ export default function PromotionPage({ tagData }: any) {
     <>
       <div className="w-full">
         <div className="flex items-center justify-center">
-          <ButtonImg src="/btn/IH Start Guide.png" width={350} />
+          <ButtonImg
+            src="/btn/IH Start Guide.png"
+            width={350}
+            onClick={guide}
+          />
         </div>
         {tagData?.role === Roles.vip_user ? (
           <VIPTagId tagId={tagData?.tag} />
