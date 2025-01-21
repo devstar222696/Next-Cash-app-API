@@ -480,9 +480,6 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 {cooldown ? `Waiting (${remainingTime}s)` : 'REQUEST'}
               </Button>
             </div>
-            <div className='flex justify-center mt-6'>
-              <BackToHomeBtn />
-            </div>
           </div>
         </form>
       </Form>
@@ -508,6 +505,9 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
         ) : (
           <></>
         )}
+      </div>
+      <div className='flex justify-center mt-6'>
+        <BackToHomeBtn />
       </div>
     </div>
   );
