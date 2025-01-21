@@ -11,6 +11,7 @@ export default function CashAppInfoPageView() {
   const [zelleV, setZelle] = useState("");
   const [bitcoinV, setBitcoin] = useState("");
   const [usdtV, setUsdtV] = useState("");
+  const [tronV, setTronV] = useState("");
   const [loading, startTransition] = useTransition();
   const [cashapptag, setCashapptag] = useState(cashtag);
   const [paypalvalue, setPaypalValue] = useState(paypalV);
@@ -18,6 +19,7 @@ export default function CashAppInfoPageView() {
   const [zellevalue, setZelleValue] = useState(zelleV);
   const [bitcoinvalue, setBitcoinValue] = useState(bitcoinV);
   const [usdtValue, setUsdtValue] = useState(usdtV);
+  const [tronValue, setTronValue] = useState(tronV);
 
   const userInfoStr = localStorage.getItem('userinfo');
   const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
@@ -314,6 +316,55 @@ export default function CashAppInfoPageView() {
     }
   };
 
+  const tronInfo = async () => {
+    startTransition(async () => {
+      try {
+        const response = await tronData({
+          tron: tronValue,
+          token: userInfo.token
+        });
+
+        if (response.error) {
+          return;
+        }
+
+        toast({
+          title: 'Tron update successful!',
+          description:
+            'Welcome! Your Tron address have updated successfully.'
+        });
+
+        location.reload();
+      } catch (error) {
+        toast({
+          title: 'Tron address update failed!',
+          description: 'Tron address update failed. Please try again!'
+        });
+      }
+    });
+  };
+
+  const tronData = async (userData: { tron: any; token: string }) => {
+    try {
+      const response = await fetch('/api/admin/tron', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'Tron update failed' };
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -325,6 +376,7 @@ export default function CashAppInfoPageView() {
         setZelle(result.data[0].zelle);
         setBitcoin(result.data[0].bitcoin);
         setUsdtV(result.data[0].usdt);
+        setTronV(result.data[0].tron);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -438,6 +490,23 @@ export default function CashAppInfoPageView() {
         <Button
           className="ml-[10px] w-[20%] border p-5 text-white"
           handleClick={usdtInfo}
+        >
+          OK
+        </Button>
+      </div>
+      <div className="mt-3 flex items-center justify-center">
+        <p className="w-[100px]">Tron:</p>
+        <input
+          type="text"
+          defaultValue={tronV}
+          className="w-1/3 rounded-md border p-2 text-center outline-none"
+          onChange={(e) => {
+            setTronValue(e.target.value);
+          }}
+        />
+        <Button
+          className="ml-[10px] w-[20%] border p-5 text-white"
+          handleClick={tronInfo}
         >
           OK
         </Button>
