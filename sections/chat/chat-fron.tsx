@@ -72,8 +72,8 @@ export default function UserChat() {
         ></Image>
         <p className='font-extrabold text-2xl'>+1 (808) 479-8908</p>
       </div>
-      <div className="mt-3">
-        <BackToHomeBtn className="m-auto" />
+      <div className="mt-3 flex justify-center">
+        <BackToHomeBtn />
       </div>
     </div>
   );

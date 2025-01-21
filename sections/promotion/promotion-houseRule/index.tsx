@@ -43,8 +43,8 @@ const HouseRules = () => (
         ))}
       </ul>
     </div>
-    <div className='mt-3'>
-      <BackToHomeBtn className='m-auto' />
+    <div className='mt-3 flex justify-center'>
+      <BackToHomeBtn />
     </div>
   </div>
 );
