@@ -16,11 +16,11 @@ export default async function UserBitcoinPage({}: TEmployeeListingPage) {
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
-        <Breadcrumbs items={breadcrumbItems} />
+        {/* <Breadcrumbs items={breadcrumbItems} />
         <div className="flex items-start justify-between">
           <Heading title={`Bitcoin`} description="" />
         </div>
-        <Separator />
+        <Separator /> */}
         <UserBitcoin />
       </div>
     </PageContainer>
