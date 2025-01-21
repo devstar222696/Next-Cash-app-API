@@ -3,13 +3,22 @@
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 export default function NotFound() {
   const router = useRouter();
 
+  const handleRedirect = ()  => {
+    const userInfoStr = localStorage.getItem('userinfo');
+    if(userInfoStr){
+      router.push('/mypage')
+    }else{
+      router.push('/')
+    }
+  }
   return (
     <div className="absolute left-1/2 top-1/2 mb-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center text-center">
-      <span className="bg-gradient-to-b from-foreground to-transparent bg-clip-text text-[10rem] font-extrabold leading-none text-transparent">
+      {/* <span className="bg-gradient-to-b from-foreground to-transparent bg-clip-text text-[10rem] font-extrabold leading-none text-transparent">
         404
       </span>
       <h2 className="font-heading my-2 text-2xl font-bold">
@@ -18,10 +27,15 @@ export default function NotFound() {
       <p>
         Sorry, the page you are looking for doesn&apos;t exist or has been
         moved.
-      </p>
+      </p> */}
+      <Image src="/IH main 2-001.png" width={400} height={100} alt="notice" />
       <div className="mt-8 flex justify-center gap-2">
-        <Button handleClick={() => router.back()} variant="default" size="lg">
-          Go back
+        <Button handleClick={() =>handleRedirect()} variant="outline" style={{
+          border: '4px solid',
+          borderRadius: 0,
+          padding: '35px 55px'
+        }}>
+          Go to ISLAND HOUSE
         </Button>
       </div>
     </div>
