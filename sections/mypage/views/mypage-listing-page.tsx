@@ -4,6 +4,7 @@ import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import MyPageTable from '../mypage-tables';
 import Image from 'next/image';
+import HeaderImg from '@/components/HeaderImg';
 
 const breadcrumbItems = [
   { title: 'MyPage', link: '/mypage' },
@@ -23,13 +24,7 @@ export default async function MyPageListingPage({}: TEmployeeListingPage) {
         </div>
         <Separator /> */}
         <div className='flex justify-center'>
-          <Image
-            src="/my-page.png"
-            width={500}
-            height={200}
-            className="mt-1 hover:opacity-80 lg:ml-2 lg:mt-0"
-            alt="house rule"
-          ></Image>
+          <HeaderImg src='/my-page.png'/>
         </div>
         <MyPageTable />
       </div>

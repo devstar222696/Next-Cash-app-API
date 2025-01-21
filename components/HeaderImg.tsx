@@ -12,7 +12,7 @@ const HeaderImg: React.FC<Props> = ({ src, className }) => {
       <Image
         src={src}
         width={500}
-        height={200}
+        height={5}
         className="mt-1 hover:opacity-80 lg:ml-2 lg:mt-0"
         alt="img"
       ></Image>

@@ -5,9 +5,10 @@ import { cn } from '@/lib/utils';
 
 interface Props {
   className?: string;
+  width?: number
 }
 
-const BackToHomeBtn: FC<Props> = ({ className }) => {
+const BackToHomeBtn: FC<Props> = ({ className, width }) => {
   const router = useRouter();
 
   const handleBackToHome = () => {
@@ -17,7 +18,7 @@ const BackToHomeBtn: FC<Props> = ({ className }) => {
   return (
     <Image
       src="/btn/008.png"
-      width={200}
+      width={width || 200}
       height={5}
       className={`mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0 ${
         className || ''
