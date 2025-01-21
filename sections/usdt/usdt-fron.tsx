@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
+import BackToHomeBtn from '@/components/BackToHomeBtn';
+import HeaderImg from '@/components/HeaderImg';
 
 export default function USDTform() {
   const router = useRouter();
@@ -49,16 +51,17 @@ export default function USDTform() {
 
   return (
     <div>
-      <div className="mt-20 flex justify-center">
-        {data !== 'none' ? (
+      <HeaderImg src="/paymentHeader/erc.png" />
+      {data !== 'none' ? (
+        <div className="mt-10 flex justify-center">
           <div className="border p-2">
             <QRCodeSVG value={data} size={180} level={'H'} />
           </div>
-        ) : (
-          ''
-        )}
-      </div>
-      <div className="mt-10 flex items-center justify-center">
+        </div>
+      ) : (
+        ''
+      )}
+      <div className="my-10 flex items-center justify-center">
         <input
           type="text"
           value={data}
@@ -70,12 +73,7 @@ export default function USDTform() {
           Copy
         </Button>
       </div>
-      <Button
-        className="ml-[30%] mt-32 w-[40%] border p-6"
-        handleClick={back}
-      >
-        OK
-      </Button>
+      <BackToHomeBtn className="m-auto" />
     </div>
   );
 }
