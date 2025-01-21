@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import QRCode from 'qrcode';
 import { getUserNameByPaymentType } from '@/lib/utils';
 import { PaymentTypes } from '@/types';
+import HeaderImg from '@/components/HeaderImg';
+import BackToHomeBtn from '@/components/BackToHomeBtn';
 
 export default function UserVenmo() {
   const router = useRouter();
@@ -17,11 +19,15 @@ export default function UserVenmo() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/admin/getadmin', { cache: 'no-store' });
+        const response = await fetch('/api/admin/getadmin', {
+          cache: 'no-store'
+        });
         const result = await response.json();
         const venmoUserName = result.data[0].venmo;
         setData(venmoUserName);
-        setUserName(getUserNameByPaymentType(venmoUserName, PaymentTypes.Venmo));
+        setUserName(
+          getUserNameByPaymentType(venmoUserName, PaymentTypes.Venmo)
+        );
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -31,7 +37,10 @@ export default function UserVenmo() {
     fetchData();
   }, []);
 
-  const venmoLink = useMemo(() => `https://venmo.com/u/${userName}`, [userName]);
+  const venmoLink = useMemo(
+    () => `https://venmo.com/u/${userName}`,
+    [userName]
+  );
 
   useEffect(() => {
     async function qrcodeData() {
@@ -64,12 +73,13 @@ export default function UserVenmo() {
         description: 'Venmo have copied failed. Please try again!'
       });
     }
-  };  
+  };
 
   return (
     <div>
-      <div className="mt-20 flex justify-center">
-        {qrCodeUrl && data !== 'none' && (
+      <HeaderImg src="/paymentHeader/vm.png" />
+      {qrCodeUrl && data !== 'none' && (
+        <div className="mt-10 flex justify-center">
           <div className="border p-2">
             <img
               src={qrCodeUrl}
@@ -77,9 +87,9 @@ export default function UserVenmo() {
               className="w-[200px], h-[200px]"
             />
           </div>
-        )}
-      </div>
-      <div className="mt-10 flex items-center justify-center">
+        </div>
+      )}
+      <div className="my-10 flex items-center justify-center">
         <input
           type="text"
           value={data}
@@ -91,9 +101,7 @@ export default function UserVenmo() {
           Copy
         </Button>
       </div>
-      <Button className="ml-[30%] mt-28 w-[40%] border p-6" handleClick={venmo}>
-        OK
-      </Button>
+      <BackToHomeBtn className="m-auto" />
     </div>
   );
 }
