@@ -16,11 +16,11 @@ export default async function UserPaypalPage({}: TEmployeeListingPage) {
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
-        <Breadcrumbs items={breadcrumbItems} />
+        {/* <Breadcrumbs items={breadcrumbItems} />
         <div className="flex items-start justify-between">
           <Heading title={`Paypal`} description="" />
         </div>
-        <Separator />
+        <Separator /> */}
         <UserPaypal />
       </div>
     </PageContainer>

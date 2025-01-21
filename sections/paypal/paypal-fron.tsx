@@ -6,6 +6,9 @@ import { useRouter } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
 import { getUserNameByPaymentType } from '@/lib/utils';
 import { PaymentTypes } from '@/types';
+import BackToHomeBtn from '@/components/BackToHomeBtn';
+import HeaderImg from '@/components/HeaderImg';
+import Image from 'next/image';
 
 export default function UserPaypal() {
   const router = useRouter();
@@ -36,11 +39,18 @@ export default function UserPaypal() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api/admin/getadmin', { cache: 'no-store'});
+        const response = await fetch('/api/admin/getadmin', {
+          cache: 'no-store'
+        });
         const result = await response.json();
         const userName = result.data[0].paypal;
         setData(userName);
-        setUrl(`https://paypal.me/${getUserNameByPaymentType(userName, PaymentTypes.PayPal)}`);
+        setUrl(
+          `https://paypal.me/${getUserNameByPaymentType(
+            userName,
+            PaymentTypes.PayPal
+          )}`
+        );
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -48,20 +58,21 @@ export default function UserPaypal() {
     }
 
     fetchData();
-  }, []);  
+  }, []);
 
   return (
     <div>
-      <div className="mt-20 flex justify-center">
-        {data !== 'none' ? (
+      <HeaderImg src="/paymentHeader/pp.png" />
+      {data !== 'none' ? (
+        <div className="mt-10 flex justify-center">
           <div className="border p-2">
             <QRCodeSVG value={url} size={180} level={'H'} />
           </div>
-        ) : (
-          ''
-        )}
-      </div>
-      <div className="mt-10 flex items-center justify-center">
+        </div>
+      ) : (
+        ''
+      )}
+      <div className="my-10 flex items-center justify-center">
         <input
           type="text"
           value={data}
@@ -73,12 +84,15 @@ export default function UserPaypal() {
           Copy
         </Button>
       </div>
-      <Button
-        className="ml-[30%] mt-28 w-[40%] border p-6"
-        handleClick={paypal}
-      >
-        OK
-      </Button>
+      <Image
+        src="/IH PayPal Notice.png"
+        width={400}
+        height={100}
+        alt="notice"
+        className='m-auto'
+      ></Image>
+
+      <BackToHomeBtn className="m-auto" />
     </div>
   );
 }
