@@ -91,8 +91,8 @@ export default function UserRegisterTable() {
       </Button> */}
       <div className="grid w-full grid-cols-1 place-items-center">
         <div className="grid grid-cols-2 justify-items-center gap-2 lg:flex lg:justify-center">
-          <BackToMypage />
-          <BackToHomeBtn width={300}/>
+          <BackToMypage width={300} />
+          <BackToHomeBtn width={300} />
         </div>
       </div>
       <p className="text-medium py-5 text-center font-bold">Register History</p>

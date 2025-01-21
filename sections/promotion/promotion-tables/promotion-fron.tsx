@@ -6,6 +6,7 @@ import TagId from '@/components/ui/tagId';
 import VIPTagId from '@/components/ui/VipTagId';
 import { Roles } from '@/constants/roles';
 import BackToMypage from '@/components/BackToMypage';
+import ButtonImg from '@/components/ButtonImg';
 
 export default function PromotionPage({ tagData }: any) {
   const router = useRouter();
@@ -47,14 +48,7 @@ export default function PromotionPage({ tagData }: any) {
     <>
       <div className="w-full">
         <div className="flex items-center justify-center">
-          <Image
-            src="/start-guide.png"
-            width={350}
-            height={5}
-            className="pt-[2px] hover:cursor-pointer hover:opacity-80"
-            onClick={guide}
-            alt="start guide"
-          />
+          <ButtonImg src="/btn/IH Start Guide.png" width={350} />
         </div>
         {tagData?.role === Roles.vip_user ? (
           <VIPTagId tagId={tagData?.tag} />
@@ -94,12 +88,12 @@ export default function PromotionPage({ tagData }: any) {
             onClick={redeem}
             alt="redeem"
           ></Image>
-          <BackToMypage className='h-full'/>
+          <BackToMypage className="h-full" width={300} />
           <Image
             src="/btn/006.png"
             width={300}
             height={5}
-            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0 h-full"
+            className="mt-1 h-full hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
             alt="houserule"
             onClick={houseRule}
           ></Image>
@@ -107,7 +101,7 @@ export default function PromotionPage({ tagData }: any) {
             src="/btn/005.png"
             width={300}
             height={5}
-            className="mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0 h-full"
+            className="mt-1 h-full hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0"
             alt="our us"
             onClick={ourUs}
           ></Image>
