@@ -17,7 +17,7 @@ const BackToHomeBtn: FC<Props> = ({ className }) => {
   return (
     <Image
       src="/btn/008.png"
-      width={300}
+      width={200}
       height={5}
       className={`mt-1 hover:cursor-pointer hover:opacity-80 lg:ml-2 lg:mt-0 ${
         className || ''
