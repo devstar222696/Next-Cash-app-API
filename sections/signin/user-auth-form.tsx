@@ -155,10 +155,10 @@ export default function UserAuthForm() {
             )}
           />
           <button disabled={loading} type="submit" onClick={ok}>
-            <img src="/IH login.png" alt="not" className='w-[400px] h-[60px]'/>
+            <img src="/IH login.png" alt="not" className='w-[405px] h-[150px]'/>
           </button>
           <button disabled={loading} type="button" onClick={handleClick}>
-            <img src="/IH sign up.png" alt="not" className='w-[400px] h-[60px]'/>
+            <img src="/IH sign up.png" alt="not" className='w-[405px] h-[150px]'/>
           </button>
           {pop ? (
             <div className="rounded-lg border border-red-500 p-1 text-center text-red-500">
