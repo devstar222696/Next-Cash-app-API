@@ -44,7 +44,6 @@ const sliderSettings = {
 }
 
 const posterImages = [
-  "/promo/main_poster_1.png",
   "/promo/main_poster_2.png",
   "/promo/main_poster_3.png",
   "/promo/main_poster_4.png",
