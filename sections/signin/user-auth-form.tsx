@@ -22,6 +22,7 @@ import Link from 'next/link';
 import { VerificationModal } from '@/components/modal/verification-modal';
 import { ErrorCodes } from '@/types';
 import { AdminRoles } from '@/constants/roles';
+import useAuth from '@/hooks/useAuth';
 
 
 const formSchema = z.object({
@@ -120,6 +121,13 @@ export default function UserAuthForm() {
   const handleClick = () => {
     router.push('/signup');
   };
+
+  const { isChecking } = useAuth();
+
+  if (isChecking) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <>
