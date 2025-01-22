@@ -17,7 +17,7 @@ export default async function UserChatPage({}: TEmployeeListingPage) {
         <Breadcrumbs items={breadcrumbItems} showBreadcrumbs={false} />
         <div className="flex justify-center">
           <Image
-            src="/IH our us title.png"
+            src="/pageTitle/004.png"
             width={500}
             height={200}
             className="mt-1 hover:opacity-80 lg:ml-2 lg:mt-0"

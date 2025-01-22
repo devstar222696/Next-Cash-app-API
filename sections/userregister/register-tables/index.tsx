@@ -80,7 +80,7 @@ export default function UserRegisterTable() {
         <img src="/IH_register_1.png" alt="recharge" />
       </div>
       <div className="grid justify-items-center">
-        <Image src="/IHRegisterNotice.png" width={1000} height={1000} alt="ad" />
+        <Image src="/pageTitle/001.png" width={1000} height={1000} alt="ad" />
       </div>
       <UserRegistrationForm />
       {/* <Button

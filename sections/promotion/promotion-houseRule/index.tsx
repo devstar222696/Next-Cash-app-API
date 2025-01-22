@@ -27,7 +27,7 @@ const HouseRules = () => (
     {/* <h2 className="mb-6 text-center text-2xl font-semibold">House Rules</h2>  */}
     <div className="mb-4 flex justify-center">
       <Image
-        src="/IH house rule title.png"
+        src="/pageTitle/005.png"
         width={500}
         height={200}
         className="mt-1 hover:opacity-80 lg:ml-2 lg:mt-0"
