@@ -46,13 +46,15 @@ export default function UserWithdrawalTable() {
         const result = await response.json();
 
         const sortedData = result.data[0].withdrawal.sort((a: any, b: any) => {
-          const dateA = new Date(a.createdAt);
-          const dateB = new Date(b.createdAt);
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
 
           if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
             console.error('Invalid date:', a.createdAt, b.createdAt);
             return 0;
           }
+
+          return dateB.getTime() - dateA.getTime();
         });
 
         setData(sortedData);
