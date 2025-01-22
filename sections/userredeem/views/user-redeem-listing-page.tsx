@@ -38,10 +38,10 @@ export default function UserredeemListingPage({ }: TEmployeeListingPage) {
         {/* <img src="/IH_register_2.png" alt="recharge" /> */}
         <HeaderImg src='/pageTitle/002.png'/>
         </div>
+        {tagId?.role === Roles.vip_user ? <VIPTagId  tagId={tagId?.tag}/>:   <TagId tagId={tagId?.tag || ''} /> }
         <div className="grid justify-items-center">
           <Image src="/IHRechargeNotice.png" width={1000} height={1000} alt="ad" />
         </div>
-        {tagId?.role === Roles.vip_user ? <VIPTagId  tagId={tagId?.tag}/>:   <TagId tagId={tagId?.tag || ''} /> }
         <UserredeemForm setTagId={setTagId} />
         <p className="text-medium py-5 text-center font-bold">
           Deposit History

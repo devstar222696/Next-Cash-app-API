@@ -408,23 +408,26 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 render={({ field }) => (
                   <FormItem className="flex justify-center">
                     <FormLabel className="mt-4 w-28">Amount</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="w-[200px]"
-                        disabled={loading || cooldown}
-                        {...field}
-                        onInput={(e) => {
-                          const target = e.target as HTMLInputElement;
-                          target.value = target.value.replace(/[^0-9]/g, '');
-                        }}
-                      />
+                    <FormControl className="relative">
+                      <div className='relative'>
+                        <Input
+                          className="w-[200px] !pr-8"
+                          disabled={loading || cooldown}
+                          {...field}
+                          onInput={(e) => {
+                            const target = e.target as HTMLInputElement;
+                            target.value = target.value.replace(/[^0-9]/g, '');
+                          }}
+                        />
+                        <span className="absolute top-1/2 right-2 translate-y-[-50%] transform">$</span>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             )}
-            <div className="flex justify-center items-end gap-8">
+            <div className="flex items-end justify-center gap-8">
               <div>
                 <div className="mx-auto mt-[10px] flex max-w-[312px] items-center gap-4">
                   <p className="w-[140px] text-sm font-medium">
