@@ -17,9 +17,9 @@ export default function UserredeemTable() {
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
   const limitParam = searchParams.get('limit');
-  
-  const page = Number(pageParam? pageParam : 1);
-  const limit = Number(limitParam? limitParam : 10);
+
+  const page = Number(pageParam ? pageParam : 1);
+  const limit = Number(limitParam ? limitParam : 10);
 
   useEffect(() => {
     async function fetchData() {
@@ -46,13 +46,15 @@ export default function UserredeemTable() {
         const result = await response.json();
 
         const sortedData = result.data[0].redeem.sort((a: any, b: any) => {
-          const dateA = new Date(a.createdAt);
-          const dateB = new Date(b.createdAt);
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
 
           if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
             console.error('Invalid date:', a.createdAt, b.createdAt);
             return 0;
           }
+
+          return dateB.getTime() - dateA.getTime();
         });
 
         setData(sortedData);
