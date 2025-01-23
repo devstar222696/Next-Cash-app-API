@@ -71,10 +71,12 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   const [isDailyBonus, setIsDailyBonus] = useState(false);
   const [isMatchBonus, setIsMatchBonus] = useState(false);
   const [isVipFreeplay, setIsVipFreeplay] = useState(false);
+  const [isPromoBonus , setIsPromoBonus] = useState(false);
 
   const [isDailyBonusDisabled, setIsDailyBonusDisabled] = useState(false);
   const [isMatchBonusDisabled, setIsMatchBonusDisabled] = useState(false);
   const [isVipFreeplayDisabled, setIsVipFreeplayDisabled] = useState(false);
+  const [isPromoBonusDisabled, setIsPromoBonusDisabled] = useState(false);
 
   const [data, setData] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -181,12 +183,14 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
         // const isVIp = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.isVipFreeplay) ?? false;
         const isMatch = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.isMatchBonus) ?? false;
         // const isDaily = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.dailyChecked) ?? false;
+        const isPromo = result?.data?.[0]?.promoBonus
 
-        console.log('isMatch',result?.data);
+        console.log('**isPromo', isPromo);
         
 
         // setIsDailyBonusDisabled(isDaily);
         setIsMatchBonusDisabled(isMatch);
+        setIsPromoBonusDisabled(isPromo);
         // setIsVipFreeplayDisabled(isVIp);
 
         setGameByName(gamesKeyByName);
@@ -215,6 +219,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
           isChecked: isDailyBonus,
           isMatchBonus: isMatchBonus,
           isVipFreeplay: isVipFreeplay, 
+          promoBonus: isPromoBonus,
         });
 
         if (response.error) {
@@ -265,7 +270,8 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
     id: any;
     isChecked: boolean;
     isMatchBonus: boolean;
-    isVipFreeplay: boolean; 
+    isVipFreeplay: boolean;
+    promoBonus: boolean;
   }) => {
     try {
       const response = await fetch('/api/redeem', {
@@ -470,6 +476,20 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                     disabled={loading || cooldown || isDailyBonusDisabled}
                     className={cn({
                       'bg-[#a39595]': isDailyBonusDisabled
+                    })}
+                  />
+                </div>
+                <div className="mx-auto mt-[10px] flex max-w-[312px] items-center gap-4">
+                  <p className="w-[140px] text-sm font-medium">
+                    Promo Bonus
+                  </p>
+                  <Checkbox
+                    checked={isPromoBonus}
+                    onCheckedChange={(value: boolean) => setIsPromoBonus(value)}
+                    aria-label="Select row"
+                    disabled={loading || cooldown || isPromoBonusDisabled} 
+                    className={cn({
+                      'bg-[#a39595]': isPromoBonusDisabled
                     })}
                   />
                 </div>
