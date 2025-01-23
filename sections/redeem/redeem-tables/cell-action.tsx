@@ -157,7 +157,7 @@ export const CellAction: React.FC<CellActionProps> = ({
             <X className="mr-2 h-4 w-4" /> Decline
           </DropdownMenuItem>
           <DropdownMenuItem onClick={goToUserPage}>
-            <User2 className="mr-2 h-4 w-4" /> User Details
+            <User2 className="mr-2 h-4 w-4" /> User Detail
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
