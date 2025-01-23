@@ -36,7 +36,8 @@ export const POST = async (request: NextRequest) => {
     btc,
     isChecked,
     isMatchBonus,
-    isVipFreeplay
+    isVipFreeplay,
+    promoBonus 
   } = await request.json();
   await dbConnect();
 
@@ -45,6 +46,15 @@ export const POST = async (request: NextRequest) => {
     const user = await User.findOne({ token: token });
 
     if (user) {
+
+      if (promoBonus && user.promoBonus) {
+        return NextResponse.json(
+          { error: 'PromoBonus already used' },
+          { status: 400 }
+        );
+      }
+      user.promoBonus = promoBonus !== undefined ? promoBonus: false
+
       if (isChecked) {
         // Make a shallow copy before sorting, to avoid mutating the original array
         const sortedRedeem = [...user.redeem].sort((a, b) => {

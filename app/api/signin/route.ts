@@ -11,8 +11,11 @@ export const POST = async (request: NextRequest) => {
   const { email, password } = await request.json();
   await dbConnect();
 
+  const rawIp = request.headers.get('x-forwarded-for') || request.ip || '0.0.0.0';
+  const ip = rawIp.split(',')[0].replace(/^.*:ffff:/, '');
+
   try {
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
 
     if (!user) {
       return NextResponse.json(
@@ -53,6 +56,8 @@ export const POST = async (request: NextRequest) => {
     );
 
     user.token = token;
+    user.lastLoginIp = ip
+   
     await user.save();
 
     const responsePayload = {

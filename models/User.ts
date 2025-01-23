@@ -119,7 +119,9 @@ const userSchema: Schema = new Schema({
   verifystatus: { type: String, default: 'no' },
   register: [registerSchema],
   redeem: [redeemSchema],
-  withdrawal: [withdrawalSchema]
+  withdrawal: [withdrawalSchema],
+  promoBonus: { type: Boolean, default: false },
+  lastLoginIp: { type: String }
 });
 
 const User = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
