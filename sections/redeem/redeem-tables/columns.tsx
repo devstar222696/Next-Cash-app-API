@@ -158,6 +158,13 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     )
   },
   {
+    id: 'promo',
+    header: 'Promo',
+    cell: ({ row }) => (
+      <input type='checkbox' checked={row.original.user.promoBonus} className="h-4 w-4 rounded" disabled/>
+    )
+  },
+  {
     id: 'bonus',
     header: 'BONUS',
     cell: ({ row }) => (
