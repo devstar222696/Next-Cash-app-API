@@ -61,6 +61,8 @@ export type AdminRegisterUsers = {
   status: string
   codenumber: string
   lastLoginIp?: string
+  totalDepositsCount?: number
+  totalWithdrawalsCount?: number
 };
 
 export interface Option {

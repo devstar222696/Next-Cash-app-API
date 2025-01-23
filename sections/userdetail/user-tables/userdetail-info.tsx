@@ -184,12 +184,12 @@ export default function UserdetailInfo() {
 
         <div className="mt-5 flex">
           <p className="text-md font-semibold w-[280px]">Total Accepted Deposits Amount</p>
-          <p className="text-start"></p>
+          <p className="text-start">${data[0]?.totalDepositsCount || 0}</p>
         </div>
 
         <div className="mt-5 flex">
           <p className="text-md font-semibold w-[280px]">Total Accepted Withdrawal Amount</p>
-          <p className="text-start"></p>
+          <p className="text-start">${data[0]?.totalWithdrawalsCount || 0}</p>
         </div>
       </div>
     </>
