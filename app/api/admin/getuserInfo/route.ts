@@ -17,7 +17,22 @@ export const GET = async (request: NextRequest) => {
   try {
     const users = await User.find({ _id: id });
 
-    const usersInfo = users.map((user) => user.toObject());
+    const usersInfo = users.map((user) => {
+      const totalDepositsCount =
+        user.redeem?.filter(
+          (redeem: any) => redeem.paymentstatus === 'complete'
+        ).length || 0; // Count deposits with status "complete"
+      const totalWithdrawalsCount =
+        user.withdrawal?.filter(
+          (withdrawal: any) => withdrawal.paymentstatus === 'complete'
+        ).length || 0; // Count withdrawals with status "complete"
+
+      return {
+        ...user.toObject(),
+        totalDepositsCount,
+        totalWithdrawalsCount
+      };
+    });
 
     return NextResponse.json(
       { ok: 'Fetch successful', data: usersInfo },
