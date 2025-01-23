@@ -154,7 +154,7 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-          <div className="flex flex-row items-center justify-center gap-4 space-y-2">
+          <div className="flex flex-row items-center justify-center gap-4">
             {/* Sign In Button */}
             <button
               disabled={loading}
