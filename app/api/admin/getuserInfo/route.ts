@@ -18,14 +18,24 @@ export const GET = async (request: NextRequest) => {
     const users = await User.find({ _id: id });
 
     const usersInfo = users.map((user) => {
-      const totalDepositsCount =
-        user.redeem?.filter(
-          (redeem: any) => redeem.paymentstatus === 'complete'
-        ).length || 0; // Count deposits with status "complete"
-      const totalWithdrawalsCount =
+      // Calculate count and total amount for deposits
+      const completedDeposits =
+        user.redeem?.filter((redeem: any) => redeem.paymentstatus === 'complete') ||
+        [];
+      const totalDepositsCount = completedDeposits.reduce(
+        (sum: number, redeem: any) => sum + (redeem.amount || 0),
+        0
+      );
+
+      // Calculate count and total amount for withdrawals
+      const completedWithdrawals =
         user.withdrawal?.filter(
           (withdrawal: any) => withdrawal.paymentstatus === 'complete'
-        ).length || 0; // Count withdrawals with status "complete"
+        ) || [];
+      const totalWithdrawalsCount = completedWithdrawals.reduce(
+        (sum: number, withdrawal: any) => sum + (withdrawal.amount || 0),
+        0
+      );
 
       return {
         ...user.toObject(),
