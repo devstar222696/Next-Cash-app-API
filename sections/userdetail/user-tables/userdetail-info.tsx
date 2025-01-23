@@ -173,8 +173,23 @@ export default function UserdetailInfo() {
           </p>
         </div>
         <div className="mt-5 flex">
-          <p className="text-md w-[150px] font-semibold">IP Address</p>
+          <p className="text-md w-[180px] font-semibold">Sign-UP IP Address</p>
           <p className="text-start">{data[0].ip}</p>
+        </div>
+
+        <div className="mt-5 flex">
+          <p className="text-md w-[180px] font-semibold">Last Login IP Address</p>
+          <p className="text-start">{data[0]?.lastLoginIp}</p>
+        </div>
+
+        <div className="mt-5 flex">
+          <p className="text-md font-semibold w-[280px]">Total Accepted Deposits Amount</p>
+          <p className="text-start"></p>
+        </div>
+
+        <div className="mt-5 flex">
+          <p className="text-md font-semibold w-[280px]">Total Accepted Withdrawal Amount</p>
+          <p className="text-start"></p>
         </div>
       </div>
     </>

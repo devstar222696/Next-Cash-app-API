@@ -60,6 +60,7 @@ export type AdminRegisterUsers = {
   loginid: string
   status: string
   codenumber: string
+  lastLoginIp?: string
 };
 
 export interface Option {

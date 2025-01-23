@@ -90,7 +90,7 @@ const AddRequestForm: React.FC<GameRequestFormProps> = () => {
         cache: 'no-store'
       });
       const result = await response.json();
-      setGameList(result.data?.length > 0 ? result.data : 0);
+      setGameList(result.data?.length > 0 ? result.data : []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -134,7 +134,7 @@ const AddRequestForm: React.FC<GameRequestFormProps> = () => {
           })}
         >
           <option value="">Select a game</option>
-          {gameList.map((option, index) => (
+          {gameList?.map((option, index) => (
             <option key={index} value={option.name}>
               {option.name}
             </option>
