@@ -15,7 +15,7 @@ export const POST = async (request: NextRequest) => {
   const ip = rawIp.split(',')[0].replace(/^.*:ffff:/, '');
 
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: email.toLowerCase() });
 
     if (!user) {
       return NextResponse.json(

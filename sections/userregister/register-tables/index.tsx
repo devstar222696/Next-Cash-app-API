@@ -77,7 +77,7 @@ export default function UserRegisterTable() {
   return (
     <div className="space-y-4 ">
       <div className="flex justify-center w-full">
-        <img src="/IH_register_1.png" alt="recharge" />
+        <img src="/pageTitle/001.png" alt="recharge" />
       </div>
       <div className="grid justify-items-center">
         <Image src="/IHRegisterNotice.png" width={1000} height={1000} alt="ad" />

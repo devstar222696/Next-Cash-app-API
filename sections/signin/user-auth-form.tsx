@@ -162,12 +162,35 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-          <button disabled={loading} type="submit" onClick={ok}>
-            <img src="/IH login.png" alt="not" className='w-[400px] h-[60px]'/>
-          </button>
-          <button disabled={loading} type="button" onClick={handleClick}>
-            <img src="/IH sign up.png" alt="not" className='w-[400px] h-[60px]'/>
-          </button>
+          <div className="flex flex-row items-center justify-center gap-4">
+            {/* Sign In Button */}
+            <button
+              disabled={loading}
+              type="submit"
+              className="flex items-center justify-center bg-transparent p-0"
+              onClick={ok}
+            >
+              <img
+                src="/IH login.png"
+                alt="Sign In"
+                className="h-auto w-[200px] object-contain"
+              />
+            </button>
+
+            {/* Sign Up Button */}
+            <button
+              disabled={loading}
+              type="button"
+              onClick={handleClick}
+              className="flex items-center justify-center bg-transparent p-0"
+            >
+              <img
+                src="/IH sign up.png"
+                alt="Sign Up"
+                className="h-auto w-[200px] object-contain"
+              />
+            </button>
+          </div>
           {pop ? (
             <div className="rounded-lg border border-red-500 p-1 text-center text-red-500">
               Sorry, your action has been benned!

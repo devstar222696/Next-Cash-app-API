@@ -21,7 +21,7 @@ export const POST = async (request: NextRequest) => {
       const newUser = new User({
         firstname,
         lastname,
-        email,
+        email: email.toLowerCase(),
         phoneno,
         password: hashedPassword,
         ip, 

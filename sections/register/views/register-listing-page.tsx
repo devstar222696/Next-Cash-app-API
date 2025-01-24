@@ -1,8 +1,10 @@
+'use client';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import RegisterTable from '../register-tables';
+import { RowStateProvider } from '@/app/shared/row-state-context';
 
 const breadcrumbItems = [
   { title: 'Main', link: '/main' },
@@ -11,7 +13,7 @@ const breadcrumbItems = [
 
 type TEmployeeListingPage = {};
 
-export default async function RegisterListingPage({}: TEmployeeListingPage) {
+export default function RegisterListingPage({}: TEmployeeListingPage) {
   // Showcasing the use of search params cache in nested RSCs
 
   return (
@@ -23,7 +25,9 @@ export default async function RegisterListingPage({}: TEmployeeListingPage) {
           <Heading title={`Register`} description="" />
         </div>
         <Separator />
-        <RegisterTable />
+        <RowStateProvider>
+          <RegisterTable />
+        </RowStateProvider>
       </div>
     </PageContainer>
   );

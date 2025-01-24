@@ -34,7 +34,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import useSkipper from './hooks/use-skipper';
-import { setInitialRowState, useRowDispatch, useRowState } from '@/app/shared/row-state-context';
 import { Identifiable } from '@/app/shared/row-state-context/types';
 import useRole from '@/hooks/use-role';
 import { filterColumnsByPermissions } from '@/lib/permission-utils';
@@ -58,7 +57,6 @@ export default function UserWithdrawalTableView<T extends Identifiable>({
     'page',
     parseAsInteger.withOptions({ shallow: false }).withDefault(1)
   );
-  const rowDispatch = useRowDispatch();
 
   const [pageSize, setPageSize] = useQueryState(
     'limit',
@@ -106,12 +104,6 @@ export default function UserWithdrawalTableView<T extends Identifiable>({
     manualFiltering: true,
     debugTable: true,
   });
-
-  useEffect(() => {
-    data.forEach((row) => {
-      setInitialRowState(rowDispatch, (row as any).rowId, row);
-    });
-  }, [data, rowDispatch]);
 
 
   return (

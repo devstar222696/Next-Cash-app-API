@@ -19,7 +19,7 @@ const registerSchema: Schema = new Schema(
 const redeemSchema: Schema = new Schema(
   {
     id: { type: String, default: 'none' },
-    amount: { type: Number, default: 0 },
+    amount: { type: String, default: '0' },
     btc: { type: String, default: '0' },
     paymentoption: { type: String, default: 'none' },
     paymenttype: { type: String, default: 'none' },
@@ -28,6 +28,7 @@ const redeemSchema: Schema = new Schema(
     bonusChecked: { type: Boolean, default: false },
     isMatchBonus: { type: Boolean, default: false },
     isVipFreeplay: { type: Boolean, default: false },
+    isPromoBonus: { type: Boolean, default: false },
     date: { type: Date, default: Date.now },
     comdate: { type: Date },
     vipFreeplayTime: {type: Date},
@@ -92,6 +93,8 @@ export interface IUser extends Document {
   register: Array<typeof registerSchema>;
   redeem: Array<typeof redeemSchema>;
   withdrawal: Array<typeof withdrawalSchema>;
+  promoBonus: boolean,
+  lastLoginIp: string
 }
 
 const userSchema: Schema = new Schema({

@@ -112,6 +112,7 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
           onChange={(e) => setSelectedOption(e.target.value)}
           className="mt-1 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
         >
+          <option value="" disabled style={{display: 'none'}}></option>
           <option value="FireKirin">FireKirin</option>
           <option value="MilkyWay">MilkyWay</option>
           <option value="OrionStars">OrionStars</option>

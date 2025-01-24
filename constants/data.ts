@@ -24,6 +24,9 @@ export type Paymentredeems = {
   comdate: Date;
   isVipFreeplay?:  boolean
   isMatchBonus?:  boolean
+  vipFreeplayTime?: string
+  isBonusInitializeTime?: string
+  isPromoBonus?: boolean
 };
 
 export type PaymentWithdrawals = {
