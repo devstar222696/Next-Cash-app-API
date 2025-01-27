@@ -22,20 +22,21 @@ export const GET = async (request: NextRequest) => {
       const completedDeposits =
         user.redeem?.filter((redeem: any) => redeem.paymentstatus === 'complete') ||
         [];
-      const totalDepositsCount = completedDeposits.reduce(
-        (sum: number, redeem: any) => sum + (redeem.amount || 0),
-        0
-      );
+        const totalDepositsCount = completedDeposits.reduce(
+          (sum: number, redeem: any) => sum + (parseFloat(redeem.amount) || 0),
+          0
+        );
 
       // Calculate count and total amount for withdrawals
       const completedWithdrawals =
         user.withdrawal?.filter(
           (withdrawal: any) => withdrawal.paymentstatus === 'complete'
         ) || [];
-      const totalWithdrawalsCount = completedWithdrawals.reduce(
-        (sum: number, withdrawal: any) => sum + (withdrawal.amount || 0),
-        0
-      );
+        const totalWithdrawalsCount = completedWithdrawals.reduce(
+          (sum: number, withdrawal: any) =>
+            sum + (parseFloat(withdrawal.amount) || 0),
+          0
+        );
 
       return {
         ...user.toObject(),
