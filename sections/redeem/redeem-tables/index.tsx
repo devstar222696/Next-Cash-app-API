@@ -12,7 +12,7 @@ import { PermissionsMap } from '@/constants/permissions';
 
 interface SelectMultiIdData {
   id?: string;
-  date?: string; 
+  date?: string;
 }
 
 export default function AdminRedeemTable() {
@@ -22,23 +22,29 @@ export default function AdminRedeemTable() {
   const [loading, setLoading] = useState<boolean>(true);
   const [multiIds, setMultiIds] = useState<SelectMultiIdData[]>([]);
   const [load, startTransition] = useTransition();
+  const [promoload, startPromoTransition] = useTransition();
 
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
   const limitParam = searchParams.get('limit');
-  
-  const page = Number(pageParam? pageParam : 1);
-  const limit = Number(limitParam? limitParam : 10);
+
+  const page = Number(pageParam ? pageParam : 1);
+  const limit = Number(limitParam ? limitParam : 10);
 
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
 
-        const redeemsResponse = await fetch('/api/admin/getuser', { cache: 'no-store' });
+        const redeemsResponse = await fetch('/api/admin/getuser', {
+          cache: 'no-store'
+        });
         const redeemsResult = await redeemsResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getuser', { cache: 'no-store' });
+        const usersResponse = await fetch('/api/admin/getuser', {
+          cache: 'no-store'
+        });
+
         const usersResult = await usersResponse.json();
 
         const combinedData = redeemsResult.data.flatMap((redeemEntry: any) =>
@@ -57,12 +63,12 @@ export default function AdminRedeemTable() {
         const sortedData = combinedData.sort((a: any, b: any) => {
           const dateA = new Date(a.date);
           const dateB = new Date(b.date);
-          
+
           if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
             console.error('Invalid date:', a.date, b.date);
-            return 0; 
+            return 0;
           }
-          
+
           return dateB.getTime() - dateA.getTime();
         });
 
@@ -223,21 +229,68 @@ export default function AdminRedeemTable() {
   const offset = (page - 1) * limit;
   const paginatedData = data.slice(offset, offset + limit);
 
+  const handleResetPromo = () => {
+    startPromoTransition(async () => {
+      try {
+        const response = await fetch('/api/admin/resetpromobonus', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Redeem failed');
+        }
+
+        const data = await response.json();
+
+        toast({
+          title: 'Promo Reset Successful!',
+          description: 'The promo bonus has been reset successfully.'
+        });
+        
+
+        location.reload();
+
+        return data;
+      } catch (error) {
+        toast({
+          title: 'Promo Reset Failed!',
+          description: 'Something went wrong. Please try again.'
+        });
+      }
+    });
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="space-y-4">
-      <AccessControl requiredPermissions={[PermissionsMap.multi_accept, PermissionsMap.multi_decline]}>
-      <div className="flex justify-end">
-        <Button variant="outline" handleClick={multiAccept} className="mr-3">
-          Multi Accept
-        </Button>
-        <Button variant="outline" handleClick={multiDecline}>
-          Multi Decline
-        </Button>
-      </div>
+      <AccessControl
+        requiredPermissions={[
+          PermissionsMap.multi_accept,
+          PermissionsMap.multi_decline
+        ]}
+      >
+        <div className="flex justify-end">
+          <Button variant="outline" handleClick={multiAccept} className="mr-3">
+            Multi Accept
+          </Button>
+          <Button variant="outline" handleClick={multiDecline} className="mr-3">
+            Multi Decline
+          </Button>
+          <Button
+            variant="outline"
+            handleClick={handleResetPromo}
+            disabled={promoload}
+          >
+            {promoload ? 'Loading...' : 'Reset Promo'}
+          </Button>
+        </div>
       </AccessControl>
       <AdminRedeemTableView
         columns={columns}

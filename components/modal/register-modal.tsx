@@ -64,7 +64,7 @@ export const RegisterModal: React.FC<AlertModalProps> = ({
           const registeredRequests = result.data[0]?.register || [];
           const categories = registeredRequests.map((request: UserRegister) => request.category);
           const availableGames = GamesList.filter((option: string) => !categories.includes(option));
-          setSelectedOption(availableGames[0]|| '');
+          // setSelectedOption('');
           setGameOptions(availableGames);
         } else {
           console.error('No data found in the result:', result);
@@ -163,6 +163,9 @@ export const RegisterModal: React.FC<AlertModalProps> = ({
           <option value="Blue Dragon">Blue Dragon</option>
           <option value="Game Room">Game Room</option>
           <option value="Mr. All In One">Mr. All In One</option> */}
+          <option value="" disabled style={{display: 'none'}}>
+            
+          </option>
                           {
           gameOptions.map((option: string) => (
                     <option key={option} value={option}>

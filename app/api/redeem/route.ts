@@ -1,30 +1,11 @@
 import User from '@/models/User';
 import dbConnect from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
-import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
-import { isSameDay } from 'date-fns';
-
-const timeZone = 'Pacific/Honolulu';
-
-function getCurrentHSTUTCDate() {
-  const nowUTC = new Date();
-  const hstString = formatInTimeZone(nowUTC, timeZone, 'yyyy-MM-dd HH:mm:ss');
-  const hstMomentAsUTC = zonedTimeToUtc(hstString, timeZone);
-  return hstMomentAsUTC;
-}
-
-function hasAlreadyClaimedToday(lastClaimUTC: string) {
-  if (!lastClaimUTC) return false;
-
-  const nowUTC = new Date();
-  const nowHST = utcToZonedTime(nowUTC, timeZone);
-  const claimHST = utcToZonedTime(lastClaimUTC, timeZone);
-  console.log('nowHST', nowHST, claimHST);
-  const isSameDayDates = isSameDay(nowHST, claimHST);
-  console.log('isSameDayDates', isSameDayDates);
-
-  return isSameDayDates; // returns true if both are in same HST date
-}
+import {
+  getCurrentHSTUTCDate,
+  getDailyCheckedRecords,
+  getVipFreePlayRecords
+} from '@/lib/utils';
 
 export const POST = async (request: NextRequest) => {
   const {
@@ -36,7 +17,8 @@ export const POST = async (request: NextRequest) => {
     btc,
     isChecked,
     isMatchBonus,
-    isVipFreeplay
+    isVipFreeplay,
+    promoBonus
   } = await request.json();
   await dbConnect();
 
@@ -46,16 +28,8 @@ export const POST = async (request: NextRequest) => {
 
     if (user) {
       if (isChecked) {
-        // Make a shallow copy before sorting, to avoid mutating the original array
-        const sortedRedeem = [...user.redeem].sort((a, b) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        });
-
-        // The first element in `sortedRedeem` is now the latest record
-        const lastBonus = sortedRedeem.find((redeem: any) => redeem.dailyChecked);
-        console.log('lastBonus record', lastBonus);
-
-        if (lastBonus && hasAlreadyClaimedToday(lastBonus.isBonusInitializeTime)) {
+        const anyDailyBonus = getDailyCheckedRecords(user.redeem);
+        if (anyDailyBonus && anyDailyBonus.length > 0) {
           return NextResponse.json(
             { error: 'Bonus already used today' },
             { status: 400 }
@@ -74,11 +48,6 @@ export const POST = async (request: NextRequest) => {
       }
 
       if (isVipFreeplay) {
-        const sortedRedeem = [...user.redeem].sort((a, b) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        });
-
-        const lastBonus = sortedRedeem.find((redeem: any) => redeem.isVipFreeplay);
         if (user.role !== 'vip_user') {
           return NextResponse.json(
             { error: 'VIP Daily Freeplay is available for VIP users only.' },
@@ -86,13 +55,21 @@ export const POST = async (request: NextRequest) => {
           );
         }
 
-        if (lastBonus && hasAlreadyClaimedToday(lastBonus.vipFreeplayTime)) {
+        const anyVIPBonus = getVipFreePlayRecords(user.redeem);
+        if (anyVIPBonus && anyVIPBonus.length > 0) {
           return NextResponse.json(
             { error: 'You have already used your VIP Daily Freeplay today.' },
             { status: 400 }
           );
         }
-      } 
+      }
+
+      if (promoBonus && user.promoBonus) {
+        return NextResponse.json(
+          { error: 'Promo bonus is already used' },
+          { status: 400 }
+        );
+      }
 
       const redeemObj: any = {
         amount: amount,
@@ -112,9 +89,16 @@ export const POST = async (request: NextRequest) => {
       if (redeemObj.isVipFreeplay) {
         redeemObj.vipFreeplayTime = getCurrentHSTUTCDate();
       }
+
+      if (promoBonus !== user.promoBonus) {
+        redeemObj.isPromoBonus = promoBonus;
+      }
+      if (promoBonus) {
+        user.promoBonus = promoBonus;
+      }
+
       // Add new redeem information to the existing redeems array
       user.redeem.push(redeemObj);
-
       try {
         // Save the updated user document
         await user.save();

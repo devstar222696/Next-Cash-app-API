@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { ArchiveRestore, MoreHorizontal, Trash2 } from 'lucide-react';
+import { ArchiveRestore, MoreHorizontal, Trash2, User2 } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { PermissionsMap } from '@/constants/permissions';
@@ -135,6 +135,11 @@ export const CellAction: React.FC<CellActionProps> = ({
 
   const ok = () => {};
 
+  const goToUserPage = () => {
+    const url = `/main/user/userdetail?id=${userId}`
+    window.open(url, '_blank')
+  }
+
   return (
     <>
       <AlertModal
@@ -160,6 +165,9 @@ export const CellAction: React.FC<CellActionProps> = ({
             <Trash2 className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
           </AccessControl>
+          <DropdownMenuItem onClick={goToUserPage}>
+            <User2 className="mr-2 h-4 w-4" /> User Detail
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

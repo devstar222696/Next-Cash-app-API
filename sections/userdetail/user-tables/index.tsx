@@ -58,7 +58,7 @@ export default function UserdetailTable() {
 
   return (
     <div className="lg:flex">
-      <div className="w-full lg:w-[400px]">
+      <div className="w-full lg:w-[800px]">
         <UserdetailInfo />
       </div>
       <div className="ml-2 mt-5 w-full lg:mt-0">

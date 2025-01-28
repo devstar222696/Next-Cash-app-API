@@ -18,6 +18,7 @@ import { useState, useTransition } from 'react';
 import { VerificationModal } from '@/components/modal/verification-modal';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import PhoneInput from '@/components/ui/phoneInput';
+import useAuth from '@/hooks/useAuth';
 
 const formSchema = z
   .object({
@@ -131,6 +132,12 @@ export default function UserAuthForm() {
   };
 
   const ok = () => { };
+  
+  const { isChecking } = useAuth();
+
+  if (isChecking) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

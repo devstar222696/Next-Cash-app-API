@@ -26,7 +26,8 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
                 .rows.filter((row) => row.getIsSelected());
               const idsAndDates = selectedRows.map((row) => ({
                 id: row.original.user?._id,
-                date: row.original.date
+                date: row.original.date,
+                rowId: row.id,
               }));
               socket?.emit('selectRegisterAllIds', idsAndDates);
             } else {
@@ -45,7 +46,8 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
           if (value) {
             const idsAndDate = {
               id: row.original.user?._id,
-              date: row.original.date
+              date: row.original.date,
+              rowId: row.id,
             };
             socket?.emit('selectRegisterIds', idsAndDate);
           } else {

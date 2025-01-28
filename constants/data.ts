@@ -24,6 +24,9 @@ export type Paymentredeems = {
   comdate: Date;
   isVipFreeplay?:  boolean
   isMatchBonus?:  boolean
+  vipFreeplayTime?: string
+  isBonusInitializeTime?: string
+  isPromoBonus?: boolean
 };
 
 export type PaymentWithdrawals = {
@@ -60,6 +63,9 @@ export type AdminRegisterUsers = {
   loginid: string
   status: string
   codenumber: string
+  lastLoginIp?: string
+  totalDepositsCount?: number
+  totalWithdrawalsCount?: number
 };
 
 export interface Option {

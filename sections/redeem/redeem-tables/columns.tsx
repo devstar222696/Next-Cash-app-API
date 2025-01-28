@@ -17,7 +17,7 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     id: 'select',
     meta: {
-          requiredPermissions: [PermissionsMap.multi_select]
+      requiredPermissions: [PermissionsMap.multi_select]
     },
     header: ({ table }) => (
       <Checkbox
@@ -77,10 +77,6 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     cell: ({ row }) => <span>{row.original.user.tag}</span>
   },
   {
-    accessorKey: 'paymentoption',
-    header: 'GAME'
-  },
-  {
     accessorKey: 'username',
     header: 'USERNAME',
     cell: ({ row }) => (
@@ -89,6 +85,10 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
         {row.original.user.firstname} {row.original.user.lastname}{' '}
       </span>
     )
+  },
+  {
+    accessorKey: 'paymentoption',
+    header: 'GAME'
   },
   {
     accessorKey: 'user.loginid',
@@ -156,6 +156,20 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
         checkboxStatus={row.original.dailyChecked}
       />
     )
+  },
+  {
+    id: 'promo',
+    header: 'Promo',
+    cell: ({ row }) => {
+      return (
+        <input
+          type="checkbox"
+          checked={row.original.isPromoBonus}
+          className="h-4 w-4 rounded"
+          disabled
+        />
+      );
+    }
   },
   {
     id: 'bonus',

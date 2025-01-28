@@ -26,7 +26,7 @@ import {
 } from '@/constants/data';
 import useSocket from '@/lib/socket';
 import { Roles } from '@/constants/roles';
-import { cn } from '@/lib/utils';
+import { cn, getDailyCheckedRecords, getVipFreePlayRecords } from '@/lib/utils';
 import BackToHomeBtn from '@/components/BackToHomeBtn';
 
 const formSchema = z.object({
@@ -47,7 +47,7 @@ const DEPOSIT_URLS: Record<string, string> = {
   Paypal: '/mypage/deposit/paypal',
   Zelle: '/mypage/deposit/zelle',
   USDT: '/mypage/deposit/usdt',
-  Tron: '/mypage/deposit/tron',
+  Tron: '/mypage/deposit/tron'
 };
 interface IUserReemFormProps {
   setTagId: (args: AdminRegisterUsers | null) => void;
@@ -65,16 +65,22 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   const [remainingTime, setRemainingTime] = useState(30);
   const [bitcoin, setBitcoin] = useState('0.00000000');
   const [game, setGame] = useState<string[]>([]);
-  const [gamesByName, setGameByName] = useState<{ [key: string]: UserRegister }>({});
+  const [gamesByName, setGameByName] = useState<{
+    [key: string]: UserRegister;
+  }>({});
   const [selectedredeem, setSelectedredeem] = useState('CashApp');
   const [selectedPayment, setSelectedPayment] = useState('');
   const [isDailyBonus, setIsDailyBonus] = useState(false);
   const [isMatchBonus, setIsMatchBonus] = useState(false);
   const [isVipFreeplay, setIsVipFreeplay] = useState(false);
+  const [isPromoBonus, setIsPromoBonus] = useState(false);
+  // const [isPromoBonusPipe, setIsPromoBonusPipe] = useState(false);
 
   const [isDailyBonusDisabled, setIsDailyBonusDisabled] = useState(false);
   const [isMatchBonusDisabled, setIsMatchBonusDisabled] = useState(false);
   const [isVipFreeplayDisabled, setIsVipFreeplayDisabled] = useState(false);
+  const [isPromoBonusDisabled, setIsPromoBonusDisabled] = useState(false);
+  const [userData, setUserData] = useState<AdminRegisterUsers | null>();
 
   const [data, setData] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -94,7 +100,6 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
       });
     }
   };
-
 
   useEffect(() => {
     async function fetchData() {
@@ -179,14 +184,18 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
         }, {});
 
         // const isVIp = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.isVipFreeplay) ?? false;
-        const isMatch = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.isMatchBonus) ?? false;
+        const isMatch =
+          result?.data?.[0]?.redeem?.some(
+            (item: Paymentredeems) => item.isMatchBonus
+          ) ?? false;
         // const isDaily = result?.data?.[0]?.redeem?.some((item: Paymentredeems) => item.dailyChecked) ?? false;
-
-        console.log('isMatch',result?.data);
-        
+        const isPromo = !!result?.data?.[0]?.promoBonus; //* Is User Claimed Promo
+        setUserData(result?.data?.[0] || []);
 
         // setIsDailyBonusDisabled(isDaily);
         setIsMatchBonusDisabled(isMatch);
+        setIsPromoBonusDisabled(isPromo);
+        // setIsPromoBonusPipe(isPromo);
         // setIsVipFreeplayDisabled(isVIp);
 
         setGameByName(gamesKeyByName);
@@ -202,56 +211,98 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
     fetchData();
   }, [userInfo]);
 
+  const manageValidation = () => {
+    const isVipUser = userInfo.role === Roles.vip_user;
+    const redeem = userData?.redeem ? [...userData?.redeem] : [];
+    const isAnyVIPFreePlayChecked = getVipFreePlayRecords(redeem);
+    const isAnyDailyChecked = getDailyCheckedRecords(redeem);
+    //TODO : Remove Below Log
+    console.log('***isAnydailyChecked', isAnyDailyChecked);
+    console.log('***isAnyVIPFreePlayChecked', isAnyVIPFreePlayChecked);
+    console.log('for test');
+    
+    setIsDailyBonusDisabled(isAnyDailyChecked.length > 0);
+
+    if (isVipUser) {
+      setIsVipFreeplayDisabled(isAnyVIPFreePlayChecked.length > 0);
+    } else {
+      setIsVipFreeplayDisabled(true);
+    }
+  };
+
+  useEffect(() => {
+    manageValidation();
+    const intervalId = setInterval(() => {
+      manageValidation();
+    }, 60000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [userData]);
+
+  const [isValidAmount, setIsValidAmount] = useState(true);
+
   const onSubmit = async (data: UserFormValue) => {
     startTransition(async () => {
-      try {
-        const response = await userredeem({
-          paymentoption: selectedPayment,
-          paymenttype: selectedredeem,
-          amount: data.amount,
-          btc: bitcoin,
-          token: userInfo.token,
-          id: userInfo.userId,
-          isChecked: isDailyBonus,
-          isMatchBonus: isMatchBonus,
-          isVipFreeplay: isVipFreeplay, 
-        });
+      if (
+        ((isDailyBonus && !isDailyBonusDisabled) ||
+          (isMatchBonus && !isMatchBonusDisabled)) &&
+        (Number(data.amount) || 0) < 10
+      ) {
+        setIsValidAmount(false);
+      } else {
+        setIsValidAmount(true);
 
-        if (response.error) {
-          toast({
-            title: 'Request Failed!',
-            description: response.error
+        try {
+          const response = await userredeem({
+            paymentoption: selectedPayment,
+            paymenttype: selectedredeem,
+            amount: data.amount,
+            btc: bitcoin,
+            token: userInfo.token,
+            id: userInfo.userId,
+            isChecked: isDailyBonus,
+            isMatchBonus: isMatchBonus,
+            isVipFreeplay: isVipFreeplay,
+            promoBonus: isPromoBonus
           });
-          return;
+
+          if (response.error) {
+            toast({
+              title: 'Request Failed!',
+              description: response.error
+            });
+            return;
+          }
+
+          socket?.emit('userDeposit', {
+            userId: userInfo.userId,
+            message: `${userInfo.name} requested deposit!`
+          });
+
+          router.push(DEPOSIT_URLS[selectedredeem]);
+
+          toast({
+            title: 'Deposit Request Successful!',
+            description: 'Welcome! Your deposit request has been request.'
+          });
+
+          setCooldown(true);
+          localStorage.setItem(
+            COOLDOWN_KEY,
+            JSON.stringify({ cooldown: true, remainingTime: 59 })
+          );
+
+          setTimeout(() => {
+            setCooldown(false);
+            localStorage.removeItem(COOLDOWN_KEY);
+          }, 30000);
+        } catch (error) {
+          toast({
+            title: 'Deposit Request Failed!',
+            description: 'Your request has been failed. Please try again!'
+          });
         }
-
-        socket?.emit('userDeposit', {
-          userId: userInfo.userId,
-          message: `${userInfo.name} requested deposit!`
-        });
-
-        router.push(DEPOSIT_URLS[selectedredeem]);
-
-        toast({
-          title: 'Deposit Request Successful!',
-          description: 'Welcome! Your deposit request has been request.'
-        });
-
-        setCooldown(true);
-        localStorage.setItem(
-          COOLDOWN_KEY,
-          JSON.stringify({ cooldown: true, remainingTime: 59 })
-        );
-
-        setTimeout(() => {
-          setCooldown(false);
-          localStorage.removeItem(COOLDOWN_KEY);
-        }, 30000);
-      } catch (error) {
-        toast({
-          title: 'Deposit Request Failed!',
-          description: 'Your request has been failed. Please try again!'
-        });
       }
     });
   };
@@ -265,7 +316,8 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
     id: any;
     isChecked: boolean;
     isMatchBonus: boolean;
-    isVipFreeplay: boolean; 
+    isVipFreeplay: boolean;
+    promoBonus?: boolean;
   }) => {
     try {
       const response = await fetch('/api/redeem', {
@@ -312,7 +364,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
 
   console.log(selectedPayment);
 
-  const ok = () => { };
+  const ok = () => {};
 
   const allowRequest = useMemo(() => {
     console.log('selectedPayment', gamesByName[selectedPayment]);
@@ -359,7 +411,9 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 className="mt-3 h-9 w-[200px] rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
               >
                 {paymentOption.map((option) => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -408,23 +462,39 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                 render={({ field }) => (
                   <FormItem className="flex justify-center">
                     <FormLabel className="mt-4 w-28">Amount</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="w-[200px]"
-                        disabled={loading || cooldown}
-                        {...field}
-                        onInput={(e) => {
-                          const target = e.target as HTMLInputElement;
-                          target.value = target.value.replace(/[^0-9]/g, '');
-                        }}
-                      />
+                    <FormControl className="relative">
+                      <div>
+                        <div className="relative">
+                          <Input
+                            className="w-[200px] !pr-8"
+                            disabled={loading || cooldown}
+                            {...field}
+                            onInput={(e) => {
+                              const target = e.target as HTMLInputElement;
+                              target.value = target.value.replace(
+                                /[^0-9]/g,
+                                ''
+                              );
+                            }}
+                          />
+                          <span className="absolute right-2 top-1/2 translate-y-[-50%] transform">
+                            $
+                          </span>
+                        </div>
+                        {!isValidAmount && (
+                          <p className="text-danger mb-0 mt-1 w-[195px] text-sm text-red-500">
+                            Deposit of $10 or more is required to receive the
+                            bonus
+                          </p>
+                        )}
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             )}
-            <div className="flex justify-center items-end gap-8">
+            <div className="flex items-end justify-center gap-8">
               <div>
                 <div className="mx-auto mt-[10px] flex max-w-[312px] items-center gap-4">
                   <p className="w-[140px] text-sm font-medium">
@@ -470,10 +540,25 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
                     })}
                   />
                 </div>
+                <div className="mx-auto mt-[10px] flex max-w-[312px] items-center gap-4">
+                  <p className="w-[140px] text-sm font-medium">Promo Bonus</p>
+                  <Checkbox
+                    checked={isPromoBonus}
+                    onCheckedChange={(value: boolean) => {
+                      setIsPromoBonus(value);
+                      // setIsPromoBonusPipe(value);
+                    }}
+                    aria-label="Select row"
+                    disabled={loading || cooldown || isPromoBonusDisabled}
+                    className={cn({
+                      'bg-[#a39595]': isPromoBonusDisabled
+                    })}
+                  />
+                </div>
               </div>
               <Button
                 disabled={loading || cooldown || !allowRequest}
-                className="py-2 px-8 text-white"
+                className="px-8 py-2 text-white"
                 type="submit"
                 handleClick={ok}
               >
@@ -506,7 +591,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
           <></>
         )}
       </div>
-      <div className='flex justify-center mt-6'>
+      <div className="mt-6 flex justify-center">
         <BackToHomeBtn />
       </div>
     </div>

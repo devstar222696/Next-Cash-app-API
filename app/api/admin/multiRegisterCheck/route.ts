@@ -33,7 +33,7 @@ export const POST = async (request: NextRequest) => {
 
     // Iterate over the data array
     for (const item of data) {
-      const { id, date } = item;
+      const { id, date, loginid, passwordcode } = item;
 
       // Ensure id and date are present
       if (!id || !date) {
@@ -66,7 +66,8 @@ export const POST = async (request: NextRequest) => {
 
       // Add the current date and time to the 'comdate' field
       user.register[registerIndex]._doc.comdate = new Date(); // Captures the current date and time
-
+      user.register[registerIndex].loginid = loginid;
+      user.register[registerIndex].passwordcode = passwordcode;
       // Save the user document
       await user.save();
 

@@ -2,26 +2,32 @@
 
 import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { columns } from './columns';
-import { useState, useEffect, useTransition } from 'react';
+import { useState, useEffect, useTransition, useMemo } from 'react';
 import RegisterTablePage from './register-table';
 import { Button } from '@/components/ui/button';
 import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
 import { ColumnDef } from '@tanstack/react-table';
 import { useSearchParams } from 'next/navigation';
-import { RowStateProvider } from '@/app/shared/row-state-context';
+import {
+  setInitialRowState,
+  useRowDispatch,
+  useRowState
+} from '@/app/shared/row-state-context';
 import AccessControl from '@/components/accessControl';
 import { PermissionsMap } from '@/constants/permissions';
 
 interface SelectMultiIdData {
   id?: string;
   date?: string;
+  rowId?: number;
 }
 
 export default function RegisterTable() {
   const { socket } = useSocket();
   const [data, setData] = useState<(AdminRegisterUsers & UserRegister)[]>([]);
-  const [currentData, setCurrentData] = useState<(AdminRegisterUsers & UserRegister)[]>(data);
+  const [currentData, setCurrentData] =
+    useState<(AdminRegisterUsers & UserRegister)[]>(data);
   const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [multiIds, setMultiIds] = useState<SelectMultiIdData[]>([]);
@@ -33,23 +39,30 @@ export default function RegisterTable() {
 
   const page = Number(pageParam ? pageParam : 1);
   const limit = Number(limitParam ? limitParam : 10);
+  const rowStates = useRowState();
+  const rowDispatch = useRowDispatch();
 
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
 
-        const registerResponse = await fetch('/api/admin/getregister', { cache: 'no-store' });
+        const registerResponse = await fetch('/api/admin/getregister', {
+          cache: 'no-store'
+        });
         const registerResult = await registerResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getregister', { cache: 'no-store' });
+        const usersResponse = await fetch('/api/admin/getregister', {
+          cache: 'no-store'
+        });
         const usersResult = await usersResponse.json();
 
         const filteredWithdrawals = registerResult.data.flatMap(
           (registerEntry: any) =>
             registerEntry.register.filter(
               (register: UserRegister) =>
-                register.status === 'Processing' || register.status === 'preparing'
+                register.status === 'Processing' ||
+                register.status === 'preparing'
             )
         );
 
@@ -78,9 +91,13 @@ export default function RegisterTable() {
           ...item,
           rowId: (index + 1).toString()
         }));
+        dataWithRowId.forEach((row: any) => {
+          console.log('set initial state', row);
+          setInitialRowState(rowDispatch, (row as any).rowId, row);
+        });
 
         setData(dataWithRowId);
-        setTotalData(registerResult.totalCount);
+        setTotalData(dataWithRowId.length);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -89,7 +106,7 @@ export default function RegisterTable() {
     }
 
     fetchData();
-  }, []);
+  }, [rowDispatch]);
 
   useEffect(() => {
     socket?.on('selectRegisterMultiIds', (data: any) => {
@@ -157,11 +174,21 @@ export default function RegisterTable() {
       });
       return;
     }
+    const payload = multiIds.map((item) => {
+      const { loginid, passwordcode } = (rowStates[item.rowId as unknown as number]!.current) as UserRegister & AdminRegisterUsers;
+      return ({
+        status: 'complete',
+        date: item.date as string,
+        id: item.id as string,
+        loginid,
+        passwordcode
+      })
+    })  
     startTransition(async () => {
       try {
         const response = await userMultiCheck({
           status: 'complete',
-          data: multiIds
+          data: payload
         });
 
         if (response.error) {
@@ -183,11 +210,7 @@ export default function RegisterTable() {
     });
   };
 
-
-  const userMultiCheck = async (userData: {
-    status: string;
-    data: any;
-  }) => {
+  const userMultiCheck = async (userData: { status: string; data: any }) => {
     try {
       const response = await fetch('/api/admin/multiRegisterCheck', {
         method: 'POST',
@@ -208,10 +231,12 @@ export default function RegisterTable() {
     }
   };
 
-
   const offset = (page - 1) * limit;
-  
-  const paginatedData = data.slice(offset, offset + limit);
+
+  const paginatedData = useMemo(
+    () => data.slice(offset, offset + limit),
+    [data, offset, limit]
+  );
 
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
@@ -219,24 +244,27 @@ export default function RegisterTable() {
 
   return (
     <div className="space-y-4 ">
-      <AccessControl requiredPermissions={[PermissionsMap.multi_accept, PermissionsMap.multi_decline]}>
-      <div className="flex justify-end">
-        <Button variant="outline" handleClick={multiAccept} className="mr-3">
-          Multi Accept
-        </Button>
-        <Button variant="outline" handleClick={multiDecline}>
-          Multi Decline
-        </Button>
-      </div>
+      <AccessControl
+        requiredPermissions={[
+          PermissionsMap.multi_accept,
+          PermissionsMap.multi_decline
+        ]}
+      >
+        <div className="flex justify-end">
+          <Button variant="outline" handleClick={multiAccept} className="mr-3">
+            Multi Accept
+          </Button>
+          <Button variant="outline" handleClick={multiDecline}>
+            Multi Decline
+          </Button>
+        </div>
       </AccessControl>
-      <RowStateProvider>
-        <RegisterTablePage
-          columns={columns as ColumnDef<UserRegister & AdminRegisterUsers>[]}
-          data={paginatedData}
-          setData={setCurrentData}
-          totalItems={data.length}
-        />
-      </RowStateProvider>
+      <RegisterTablePage
+        columns={columns as ColumnDef<UserRegister & AdminRegisterUsers>[]}
+        data={paginatedData}
+        setData={setCurrentData}
+        totalItems={totalData}
+      />
     </div>
   );
 }
