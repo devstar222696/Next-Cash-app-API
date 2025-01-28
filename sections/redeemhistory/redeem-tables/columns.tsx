@@ -7,6 +7,7 @@ import { CheckboxBonus } from './checkboxbonus';
 import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
 import { PermissionsMap } from '@/constants/permissions';
+import { Roles } from '@/constants/roles';
 
 const { socket } = useSocket();
 
@@ -64,13 +65,24 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'id',
-    header: 'TAG NUMBER',
-    cell: ({ row }) => <span>{row.original.user.tag}</span>
+    accessorKey: 'role',
+    header: 'ROLE',
+    cell: ({ row }) => <span>{row.original.user.role === Roles.vip_user ? "VIP" : "User"}</span>
   },
   {
-    accessorKey: 'paymentoption',
-    header: 'GAME'
+    accessorKey: 'id',
+    header: 'TAG NUMBER',
+    cell: ({ row }) => (
+      <span
+        onClick={() => {
+          const tagNumber = row.original.user.tag;
+          window.open(`/main/redeemhistory?tag=${tagNumber}`, '_blank');
+        }}
+        style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+      >
+        {row.original.user.tag}
+      </span>
+    )
   },
   {
     accessorKey: 'username',
@@ -82,13 +94,17 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     )
   },
   {
+    accessorKey: 'paymentoption',
+    header: 'GAME'
+  },
+  {
     accessorKey: 'user.loginid',
     header: 'GAME ID',
     cell: ({ row }) => {
       const paymentType = row.original.paymentoption;
-  
+
       const registers = row.original.user?.register ?? [];
-  
+
       const filtered = registers.filter((r: { category: string; }) => r.category === paymentType);
 
       const lastRegister = filtered[filtered.length - 1];
@@ -108,14 +124,14 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     id: 'isMatchBonus',
     header: 'MATCH',
     cell: ({ row }) => {
-      return <input type='checkbox' checked={row.original.isMatchBonus} className="h-4 w-4 rounded" disabled/>;
+      return <input type='checkbox' checked={row.original.isMatchBonus} className="h-4 w-4 rounded" disabled />;
     }
   },
   {
     id: 'isVipFreeplay',
     header: 'VIP',
     cell: ({ row }) => {
-      return <input type='checkbox' checked={row.original.isVipFreeplay} className="h-4 w-4 rounded" disabled/>;
+      return <input type='checkbox' checked={row.original.isVipFreeplay} className="h-4 w-4 rounded" disabled />;
     }
   },
   {
@@ -129,7 +145,7 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     id: 'promo',
     header: 'Promo',
     cell: ({ row }) => (
-      <input type='checkbox' checked={row.original.user.promoBonus} className="h-4 w-4 rounded" disabled/>
+      <input type='checkbox' checked={row.original.user.promoBonus} className="h-4 w-4 rounded" disabled />
     )
   },
   {

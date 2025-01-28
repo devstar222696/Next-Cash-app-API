@@ -11,8 +11,6 @@ import {
 import { ArchiveRestore, MoreHorizontal, Trash2, User2 } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import AccessControl from '@/components/accessControl';
-import { PermissionsMap } from '@/constants/permissions';
 
 interface CellActionProps {
   userId: any,
@@ -133,7 +131,7 @@ export const CellAction: React.FC<CellActionProps> = ({
     }
   };
 
-  const ok = () => {};
+  const ok = () => { };
 
   const goToUserPage = () => {
     const url = `/main/user/userdetail?id=${userId}`
@@ -160,11 +158,11 @@ export const CellAction: React.FC<CellActionProps> = ({
           {/* <DropdownMenuItem onClick={restore}>
             <ArchiveRestore className="mr-2 h-4 w-4" /> Restore
           </DropdownMenuItem> */}
-          <AccessControl requiredPermissions={[PermissionsMap.delete]}>
+          {/* <AccessControl requiredPermissions={[PermissionsMap.delete]}>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
-          </AccessControl>
+          </AccessControl> */}
           <DropdownMenuItem onClick={goToUserPage}>
             <User2 className="mr-2 h-4 w-4" /> User Detail
           </DropdownMenuItem>

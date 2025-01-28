@@ -13,7 +13,7 @@ import { PermissionsMap } from '@/constants/permissions';
 
 interface SelectMultiIdData {
   id?: string;
-  date?: string; 
+  date?: string;
 }
 
 export default function AdminredeemHistoryTable() {
@@ -29,9 +29,10 @@ export default function AdminredeemHistoryTable() {
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
   const limitParam = searchParams.get('limit');
-  
-  const page = Number(pageParam? pageParam : 1);
-  const limit = Number(limitParam? limitParam : 10);
+  const tagNumberParam = searchParams.get('tag');
+
+  const page = Number(pageParam ? pageParam : 1);
+  const limit = Number(limitParam ? limitParam : 10);
 
   useEffect(() => {
     async function fetchData() {
@@ -61,16 +62,21 @@ export default function AdminredeemHistoryTable() {
         const sortedData = combinedData.sort((a: any, b: any) => {
           const dateA = new Date(a.date);
           const dateB = new Date(b.date);
-          
+
           if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
             console.error('Invalid date:', a.date, b.date);
-            return 0; 
+            return 0;
           }
-          
+
           return dateB.getTime() - dateA.getTime();
         });
 
-        setData(sortedData);
+        if (tagNumberParam) {
+          const filteredByTag = sortedData.filter((item: any) => item.user?.tag?.toString() === tagNumberParam);
+          setData(filteredByTag);
+        } else {
+          setData(sortedData);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -79,7 +85,7 @@ export default function AdminredeemHistoryTable() {
     }
 
     fetchData();
-  }, []);
+  }, [tagNumberParam]);
 
   const filteredData = data.filter((item) => {
     const param = searchParam.toLowerCase();
@@ -249,20 +255,20 @@ export default function AdminredeemHistoryTable() {
     <div className="space-y-4 ">
       <div className="flex justify-end">
         <AccessControl requiredPermissions={[PermissionsMap.multi_restore, PermissionsMap.multi_delete]}>
-        <Button
-          variant="outline"
-          handleClick={multiRestore}
-          className="mr-3 mt-3"
-        >
-          Multi Restore
-        </Button>
-        <Button
-          variant="outline"
-          handleClick={multiDelete}
-          className="mr-3 mt-3"
-        >
-          Multi Delete
-        </Button>
+          <Button
+            variant="outline"
+            handleClick={multiRestore}
+            className="mr-3 mt-3"
+          >
+            Multi Restore
+          </Button>
+          <Button
+            variant="outline"
+            handleClick={multiDelete}
+            className="mr-3 mt-3"
+          >
+            Multi Delete
+          </Button>
         </AccessControl>
         <select
           onChange={(e) => setSelectCategory(e.target.value)}

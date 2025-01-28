@@ -15,9 +15,10 @@ export default function UserTable() {
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
   const limitParam = searchParams.get('limit');
-  
-  const page = Number(pageParam? pageParam : 1);
-  const limit = Number(limitParam? limitParam : 10);
+  const ipParam = searchParams.get('ip');
+
+  const page = Number(pageParam ? pageParam : 1);
+  const limit = Number(limitParam ? limitParam : 10);
 
   useEffect(() => {
     async function fetchData() {
@@ -30,12 +31,12 @@ export default function UserTable() {
         const sortedData = UserResult.data.sort((a: any, b: any) => {
           const dateA = new Date(a.createdAt);
           const dateB = new Date(b.createdAt);
-          
+
           if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
             console.error('Invalid date:', a.createdAt, b.createdAt);
-            return 0; 
+            return 0;
           }
-          
+
           return dateB.getTime() - dateA.getTime();
         });
 
@@ -49,6 +50,13 @@ export default function UserTable() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (ipParam) {
+      setSearchParam(ipParam);
+      setSelectCategory('ip');
+    }
+  }, [ipParam]);
+
   const filteredData = data.filter((item) => {
     const param = searchParam.toLowerCase();
     switch (selectCategory) {
@@ -59,7 +67,7 @@ export default function UserTable() {
       case 'email':
         return item.email?.toLowerCase().includes(param);
       case 'ip':
-        return item.ip?.toLowerCase().includes(param);
+        return item.ip?.toLowerCase().includes(param) || item.lastLoginIp?.toLowerCase().includes(param);
       case 'phonenumber':
         return item.phoneno?.toLowerCase().includes(param);
       default:
@@ -79,6 +87,7 @@ export default function UserTable() {
       <div className="flex justify-end">
         <select
           onChange={(e) => setSelectCategory(e.target.value)}
+          value={selectCategory}
           className="mt-3 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
         >
           <option value="tag">Tag Number</option>
@@ -90,6 +99,7 @@ export default function UserTable() {
         <input
           className="mt-3 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
           placeholder="Search..."
+          value={searchParam}
           onChange={(e) => setSearchParam(e.target.value)}
         />
       </div>

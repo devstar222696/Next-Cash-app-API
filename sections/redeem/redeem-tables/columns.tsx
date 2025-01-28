@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
 import { PermissionsMap } from '@/constants/permissions';
 import { Roles } from '@/constants/roles';
+import { useState } from 'react';
 
 const { socket } = useSocket();
 
@@ -69,12 +70,22 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     accessorKey: 'role',
     header: 'ROLE',
-    cell: ({ row }) => <span>{row.original.user.role === Roles.vip_user ? "VIP" : "User" }</span>
+    cell: ({ row }) => <span>{row.original.user.role === Roles.vip_user ? "VIP" : "User"}</span>
   },
   {
     accessorKey: 'id',
     header: 'TAG NUMBER',
-    cell: ({ row }) => <span>{row.original.user.tag}</span>
+    cell: ({ row }) => (
+      <span
+        onClick={() => {
+          const tagNumber = row.original.user.tag;
+          window.open(`/main/redeemhistory?tag=${tagNumber}`, '_blank');
+        }}
+        style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+      >
+        {row.original.user.tag}
+      </span>
+    )
   },
   {
     accessorKey: 'username',
@@ -95,9 +106,9 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     header: 'GAME ID',
     cell: ({ row }) => {
       const paymentType = row.original.paymentoption;
-  
+
       const registers = row.original.user?.register ?? [];
-  
+
       const filtered = registers.filter((r: { category: string; }) => r.category === paymentType);
 
       const lastRegister = filtered[filtered.length - 1];
@@ -112,14 +123,17 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     id: 'amount',
     header: 'AMOUNT',
-    cell: ({ row }) => (
-      <AmountAction
-        redeemDate={row.original.date}
-        userId={row.original.user._id}
-        redeemAmount={row.original.amount}
-        bitcoin={row.original.btc}
-      />
-    )
+    cell: ({ row }) => {
+      return (
+        <AmountAction
+          rowId={row.id}
+          redeemDate={row.original.date}
+          userId={row.original.user._id}
+          redeemAmountV={row.original.amount}
+          bitcoin={row.original.btc}
+        />
+      );
+    }
   },
   {
     id: 'isMatchBonus',
@@ -136,16 +150,17 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     id: 'isVipFreeplay',
     header: 'VIP',
-    cell: ({ row }) =>{
-      return  (
-      <CheckboxDaily
-        redeemDate={row.original.date}
-        userId={row.original.user._id}
-        checkboxStatus={row.original.isVipFreeplay}
-        disabled={true}
-      />
-    )
-}  },
+    cell: ({ row }) => {
+      return (
+        <CheckboxDaily
+          redeemDate={row.original.date}
+          userId={row.original.user._id}
+          checkboxStatus={row.original.isVipFreeplay}
+          disabled={true}
+        />
+      )
+    }
+  },
   {
     id: 'daily',
     header: 'Daily',
@@ -201,8 +216,10 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     header: 'ACTION',
     cell: ({ row }) => (
       <CellAction
+        rowId={row.id}
         Date={row.original.date}
         userId={row.original.user._id}
+        originalAmount={row.original.amount}
       />
     )
   }

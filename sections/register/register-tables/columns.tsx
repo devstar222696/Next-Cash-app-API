@@ -101,10 +101,19 @@ export const columns: ColumnDef<UserRegister & AdminRegisterUsers>[] = [
   },
   {
     accessorKey: 'ip',
-    header: 'IP ADDRESS',
+    header: 'SIGN UP IP',
     cell: ({ row }) => (
       <span>
         {row.original.user?.ip ?? 'N/A'}
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'lastLoginIp',
+    header: 'LAST IP',
+    cell: ({ row }) => (
+      <span>
+        {row.original.user?.lastLoginIp ?? 'N/A'}
       </span>
     ),
   },

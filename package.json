@@ -80,6 +80,7 @@
     "next-auth": "^5.0.0-beta.18",
     "next-themes": "^0.2.1",
     "nextjs-toploader": "^1.6.12",
+    "nextshcdndashboardstarter": "file:",
     "nodemailer": "^6.9.16",
     "nuqs": "^1.19.1",
     "postcss": "^8.4.49",

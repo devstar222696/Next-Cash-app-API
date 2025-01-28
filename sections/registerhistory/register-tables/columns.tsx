@@ -93,8 +93,27 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   },
   {
     accessorKey: 'ip',
-    header: 'IP ADDRESS',
-    cell: ({ row }) => <span>{row.original.user?.ip ?? 'none'}</span>,
+    header: 'SIGN UP IP',
+    cell: ({ row }) => (
+      <button
+        onClick={() => window.open(`/main/user?ip=${row.original.user?.ip ?? ''}`)}
+        style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+      >
+        {row.original.user?.ip ?? 'none'}
+      </button>
+    ),
+  },
+  {
+    accessorKey: 'lastLoginIp',
+    header: 'LAST IP',
+    cell: ({ row }) => (
+      <button
+        onClick={() => window.open(`/main/user?ip=${row.original.user?.lastLoginIp ?? ''}`)}
+        style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+      >
+        {row.original.user?.lastLoginIp ?? 'none'}
+      </button>
+    ),
   },
   {
     accessorKey: 'category',
