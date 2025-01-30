@@ -1,27 +1,31 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import Image from 'next/image';
+import { updateRowState, useRowDispatch } from '@/app/shared/row-state-context';
 
 interface UserData {
   id: string;
-  amount: number;
+  amount: string | number;
   date: string;
 }
 
 export const AmountAction = ({
+  rowId,
   redeemDate,
   userId,
-  redeemAmount,
+  redeemAmountV,
   bitcoin
 }: {
+  rowId: string;
   redeemDate: any;
   userId: string;
-  redeemAmount: number;
+  redeemAmountV: number | string;
   bitcoin: string;
 }) => {
-  const [amount, setAmount] = useState<number>(redeemAmount);
+  const rowDispatch = useRowDispatch();
+  const [amount, setAmount] = useState<string | number>(redeemAmountV);
 
   const userData: UserData = {
     id: userId,
@@ -29,10 +33,18 @@ export const AmountAction = ({
     date: redeemDate
   };
 
+  useEffect(() => {
+    if (redeemAmountV) {
+      setAmount(redeemAmountV);
+    } else {
+      setAmount('');
+    }
+  }, [redeemAmountV]);
+
   const onSubmit = async (userData: UserData) => {
-    if (amount === null || amount === undefined) {
+    if (amount === null || amount === undefined || amount === '') {
       toast({
-        title: 'Amount  empty!',
+        title: 'Amount empty!',
         description: 'Please input amount!'
       });
       return;
@@ -85,12 +97,13 @@ export const AmountAction = ({
         className=" w-16 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         value={amount}
         onChange={(e) => {
-          const sanitizedValue = e.target.value.replace(/[^0-9]/g, '');
-          setAmount(sanitizedValue ? parseInt(sanitizedValue, 10) : 0);
+          const sanitizedValue = e.target.value.replace(/[^0-9VB]/g, '');
+          updateRowState(rowDispatch, rowId, { id: userId, amount: sanitizedValue });
+          setAmount(sanitizedValue);
         }}
         onInput={(e) => {
           const target = e.target as HTMLInputElement;
-          target.value = target.value.replace(/[^0-9]/g, ''); 
+          target.value = target.value.replace(/[^0-9VB]/g, '');
         }}
       />
       <Button

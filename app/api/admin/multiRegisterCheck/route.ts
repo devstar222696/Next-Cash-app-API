@@ -61,6 +61,14 @@ export const POST = async (request: NextRequest) => {
         continue; // Move on to the next item
       }
 
+      if (status === 'decline') {
+        // Remove the register entry if the status is declined
+        user.register.splice(registerIndex, 1);
+        await user.save();
+        results.push({ id, status: 'register entry declined and deleted' });
+        continue; // Move on to the next item
+      }
+
       // Update the status of the found register entry
       user.register[registerIndex].status = status;
 

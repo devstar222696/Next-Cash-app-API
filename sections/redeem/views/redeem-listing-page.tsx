@@ -1,8 +1,11 @@
+'use client';
+
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import AdminRedeemTable from '../redeem-tables';
+import { RowStateProvider } from '@/app/shared/row-state-context';
 
 const breadcrumbItems = [
   { title: 'Main', link: '/main' },
@@ -11,7 +14,7 @@ const breadcrumbItems = [
 
 type TEmployeeListingPage = {};
 
-export default async function RedeemListingPage({}: TEmployeeListingPage) {
+export default function RedeemListingPage({ }: TEmployeeListingPage) {
   // Showcasing the use of search params cache in nested RSCs
 
   return (
@@ -23,7 +26,9 @@ export default async function RedeemListingPage({}: TEmployeeListingPage) {
           <Heading title={`Deposit`} description="" />
         </div>
         <Separator />
-        <AdminRedeemTable />
+        <RowStateProvider>
+          <AdminRedeemTable />
+        </RowStateProvider>
       </div>
     </PageContainer>
   );

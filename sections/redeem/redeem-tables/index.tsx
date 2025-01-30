@@ -1,4 +1,5 @@
 'use client';
+
 import { columns } from './columns';
 import { useState, useEffect, useTransition } from 'react';
 import { Paymentredeems, AdminRegisterUsers } from '@/constants/data';
@@ -7,6 +8,11 @@ import { Button } from '@/components/ui/button';
 import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
 import { useSearchParams } from 'next/navigation';
+import {
+  setInitialRowState,
+  useRowDispatch,
+  useRowState
+} from '@/app/shared/row-state-context';
 import AccessControl from '@/components/accessControl';
 import { PermissionsMap } from '@/constants/permissions';
 
@@ -30,6 +36,8 @@ export default function AdminRedeemTable() {
 
   const page = Number(pageParam ? pageParam : 1);
   const limit = Number(limitParam ? limitParam : 10);
+  const rowStates = useRowState();
+  const rowDispatch = useRowDispatch();
 
   useEffect(() => {
     async function fetchData() {
@@ -72,7 +80,17 @@ export default function AdminRedeemTable() {
           return dateB.getTime() - dateA.getTime();
         });
 
-        setData(sortedData);
+        const dataWithRowId = sortedData.map((item: any, index: number) => ({
+          ...item,
+          rowId: (index + 1).toString()
+        }));
+        dataWithRowId.forEach((row: any) => {
+          console.log('set initial state', row);
+          setInitialRowState(rowDispatch, (row as any).rowId, row);
+          
+        });
+
+        setData(dataWithRowId);
         setTotalData(redeemsResult.totalCount);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -82,7 +100,7 @@ export default function AdminRedeemTable() {
     }
 
     fetchData();
-  }, []);
+  }, [rowDispatch]);
 
   useEffect(() => {
     socket?.on('selectMultiIds', (data: any) => {
@@ -250,7 +268,7 @@ export default function AdminRedeemTable() {
           title: 'Promo Reset Successful!',
           description: 'The promo bonus has been reset successfully.'
         });
-        
+
 
         location.reload();
 

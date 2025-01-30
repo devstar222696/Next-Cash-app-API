@@ -47,18 +47,22 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    user.register[registerIndex].status = status;
-    user.register[registerIndex].loginid = loginid;
-    user.register[registerIndex].passwordcode = passwordcode;
-
-    user.register[registerIndex]._doc.comdate = new Date();
+    if (status === 'decline') {
+      // Remove the registration entry
+      user.register.splice(registerIndex, 1);
+    } else {
+      user.register[registerIndex].status = status;
+      user.register[registerIndex].loginid = loginid;
+      user.register[registerIndex].passwordcode = passwordcode;
+      user.register[registerIndex]._doc.comdate = new Date();
+    }
 
     // Save the user document
     const updatedUser = await user.save();
 
     return NextResponse.json(
       {
-        ok: 'register updated successfully',
+        ok: status === 'decline' ? 'register declined and removed successfully' : 'register updated successfully',
         user: updatedUser
       },
       { status: 200 }

@@ -14,9 +14,9 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  const { id, paymentstatus, date } = requestData;
+  const { id, paymentstatus, date, amount } = requestData;
 
-  if (!id || !paymentstatus || !date) {
+  if (!id || !paymentstatus || !date || !amount) {
     return NextResponse.json(
       { error: 'Missing required fields' },
       { status: 400 }
@@ -48,6 +48,8 @@ export const POST = async (request: NextRequest) => {
     user.redeem[redeemIndex].paymentstatus = paymentstatus;
 
     user.redeem[redeemIndex].comdate = new Date();
+
+    user.redeem[redeemIndex].amount = amount;
 
     const updatedUser = await user.save();
 

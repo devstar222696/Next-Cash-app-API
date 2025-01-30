@@ -2,8 +2,14 @@
 import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
+import { Roles } from '@/constants/roles';
 
 export const columns: ColumnDef<AdminRegisterUsers, UserRegister>[] = [
+  {
+    accessorKey: 'role',
+    header: 'ROLE',
+    cell: ({ row }) => <span>{row.original.role === Roles.vip_user ? "VIP" : "User"}</span>
+  },
   {
     accessorKey: 'tag',
     header: 'TAG NUMBER',
@@ -25,8 +31,13 @@ export const columns: ColumnDef<AdminRegisterUsers, UserRegister>[] = [
   },
   {
     accessorKey: 'ip',
-    header: 'IP ADDRESS',
+    header: 'SIGN UP IP',
     cell: ({ row }) => <span>{row.original.ip}</span>
+  },
+  {
+    accessorKey: 'lastLoginIp',
+    header: 'LAST IP',
+    cell: ({ row }) => <span>{row.original.lastLoginIp}</span>
   },
   {
     accessorKey: 'phonenumber',
@@ -34,8 +45,8 @@ export const columns: ColumnDef<AdminRegisterUsers, UserRegister>[] = [
     cell: ({ row }) => (
       <span>
         {row.original &&
-        row.original.phoneno
-        ? row.original.phoneno
+          row.original.phoneno
+          ? row.original.phoneno
           : 'none'}
       </span>
     )
