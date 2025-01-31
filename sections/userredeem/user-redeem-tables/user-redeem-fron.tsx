@@ -212,7 +212,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
   }, [userInfo]);
 
   const manageValidation = () => {
-    const isVipUser = userInfo.role === Roles.vip_user;
+    const isVipUser = userData?.role === Roles.vip_user;
     const redeem = userData?.redeem ? [...userData?.redeem] : [];
     const isAnyVIPFreePlayChecked = getVipFreePlayRecords(redeem);
     const isAnyDailyChecked = getDailyCheckedRecords(redeem);
@@ -220,7 +220,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
     console.log('***isAnydailyChecked', isAnyDailyChecked);
     console.log('***isAnyVIPFreePlayChecked', isAnyVIPFreePlayChecked);
     console.log('for test');
-    
+
     setIsDailyBonusDisabled(isAnyDailyChecked.length > 0);
 
     if (isVipUser) {
@@ -364,7 +364,7 @@ export default function UserredeemForm({ setTagId }: IUserReemFormProps) {
 
   console.log(selectedPayment);
 
-  const ok = () => {};
+  const ok = () => { };
 
   const allowRequest = useMemo(() => {
     console.log('selectedPayment', gamesByName[selectedPayment]);

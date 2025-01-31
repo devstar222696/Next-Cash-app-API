@@ -86,7 +86,7 @@ export const CellAction: React.FC<CellActionProps> = ({
   };
 
   const unredeem = async () => {
-    const { amount } = (rowStates[rowId as unknown as number]!.current) as Paymentredeems & AdminRegisterUsers ?? { amount: originalAmount };
+    const { amount } = (rowStates[rowId as unknown as number]?.current) as Paymentredeems & AdminRegisterUsers ?? { amount: originalAmount };
 
     startTransition(async () => {
       try {
