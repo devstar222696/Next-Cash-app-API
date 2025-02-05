@@ -82,12 +82,12 @@ export default function AdminRedeemTable() {
 
         const dataWithRowId = sortedData.map((item: any, index: number) => ({
           ...item,
-          rowId: (index + 1).toString()
+          rowId: index.toString()
         }));
         dataWithRowId.forEach((row: any) => {
           console.log('set initial state', row);
           setInitialRowState(rowDispatch, (row as any).rowId, row);
-          
+
         });
 
         setData(dataWithRowId);
